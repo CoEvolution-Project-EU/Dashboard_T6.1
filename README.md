@@ -6,8 +6,12 @@ components, the dashboard aggregates data from backend services and pools, allow
 users to navigate metadata, and review results in real time.
 
 
-Run with Docker and Docker Compose.
+Frontend dashboard for the CoEvolution platform.
 
+This application is built with **Angular** and served via **Nginx** inside a Docker container.
+It can be deployed locally using Docker or in a **Kubernetes cluster**.
+
+---
 Based on the Advanced Visualisation Toolkit (AVT) developed by Aegis IT Research:
 
 * [AEGIS](https://aegisresearch.eu/)
@@ -30,7 +34,7 @@ docker-compose up
 * Docker Engine version **18.06.0** or newer
 * Docker Compose version **1.28.0** or newer
 * 2 GB of RAM
-
+* 
 By default, it exposes the following port:
 
 * 4200
@@ -46,6 +50,215 @@ browser.
 
 ---
 
+# Project Structure
+
+```
+.
+├── src/                 Angular application source code
+├── nginx/               Nginx configuration
+├── k8s/                 Kubernetes deployment manifests
+├── Dockerfile           Docker build configuration
+├── docker-compose.yaml  Local container orchestration
+├── nginx.conf           Nginx server configuration
+└── README.md
+```
+
+---
+
+# Environment Variables
+
+The application reads runtime configuration from `assets/env.js`.
+
+The following variables must be defined:
+
+| Variable     | Description                    |
+| ------------ | ------------------------------ |
+| SERV_HOST    | Backend API host               |
+| SOCKET_HOST  | Websocket service host         |
+| KEYCLOAK_URL | Keycloak authentication server |
+
+
+---
+
+# Running the Application
+
+# FVT Dashboard
+
+Frontend dashboard for the CoEvolution platform.
+
+This application is built with **Angular** and served via **Nginx** inside a Docker container.
+It can be deployed locally using Docker or in a **Kubernetes cluster**.
+
+---
+
+# Project Structure
+
+```
+.
+├── src/                 Angular application source code
+├── nginx/               Nginx configuration
+├── k8s/                 Kubernetes deployment manifests
+├── Dockerfile           Docker build configuration
+├── docker-compose.yaml  Local container orchestration
+├── nginx.conf           Nginx server configuration
+└── README.md
+```
+
+---
+
+# Environment Variables
+
+The application reads runtime configuration from `assets/env.js`.
+
+The following variables must be defined:
+
+| Variable     | Description                    |
+| ------------ | ------------------------------ |
+| SERV_HOST    | Backend API host               |
+| SOCKET_HOST  | Websocket service host         |
+| KEYCLOAK_URL | Keycloak authentication server |
+
+These values are injected at container startup using `envsubst`.
+
+---
+
+# Running the Application
+
+## 1. Run Angular locally (development)
+
+Requirements:
+
+* Node.js 18+
+* npm
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start development server:
+
+```bash
+ng serve
+```
+
+Open:
+
+```
+http://localhost:4200
+```
+
+---
+
+# Running with Docker
+
+Build the container image:
+
+```bash
+docker build -t fvt-dashboard .
+```
+
+Run the container:
+
+```bash
+docker run -p 8080:80 \
+-e SERV_HOST=http://api.example.com \
+-e SOCKET_HOST=ws://socket.example.com \
+-e KEYCLOAK_URL=http://auth.example.com \
+fvt-dashboard
+```
+
+Open:
+
+```
+http://localhost:8080/fvt/
+```
+
+---
+
+# Running with Docker Compose
+
+Start services:
+
+```bash
+docker compose up
+```
+
+Stop services:
+
+```bash
+docker compose down
+```
+
+---
+
+# Kubernetes Deployment
+
+The repository includes Kubernetes manifests inside the `k8s/` directory.
+
+Deploy the application:
+
+```bash
+kubectl apply -f k8s/
+```
+
+Check running pods:
+
+```bash
+kubectl get pods
+```
+
+Check services:
+
+```bash
+kubectl get svc
+```
+
+---
+
+# Accessing the Application
+
+If an **Ingress controller** is configured, the application will be available at:
+
+```
+https://<your-domain>/fvt/
+```
+
+For local testing you can use port forwarding:
+
+```bash
+kubectl port-forward svc/fvt 8080:80
+```
+
+Then open:
+
+```
+http://localhost:8080/fvt/
+```
+
+---
+
+# Build Process
+
+1. Builds the Angular application using Node
+2. Copies the compiled files into an Nginx container
+3. Injects runtime environment variables using `envsubst`
+4. Serves the application under `/fvt/`
+
+---
+
+# Authentication
+
+The application integrates with **Keycloak** for authentication.
+
+Configuration is provided through the following environment variable:
+
+```
+KEYCLOAK_URL
+```
+
+---
 
 ## License
 
