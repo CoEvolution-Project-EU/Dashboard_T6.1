@@ -1,0 +1,138 @@
+<div class="card">
+
+    <div class="title"> Preconfigured Views
+    </div>
+    <div class="f">
+
+        <div class="mat-elevation-z4 ripple-view g p-3" tabindex="1" (click)="selected('consumptionview')">
+            <div class="title-view">
+                Alerts Investigation
+            </div>
+            <div class="widgets g">
+                <div class="widget-title">
+                    Widgets
+                </div>
+                <div class="widgets-list">
+                    <ul>
+                        <li>Alerts Distribution Chart </li>
+                        <li>Timeline of Alerts</li>
+                        <li>Tabular Representation of Alerts</li>
+                        <li>Alerts Statistics</li>
+                        <li>CPU Usage Chart</li>
+                        <li>Memory Load Chart</li>
+                        <li>Acive Processes Chart</li>
+                        <li>Network Connections Chart</li>
+
+                    </ul>
+
+                </div>
+
+                <div class="description my-2">
+                    Description:
+                </div>
+                <div class="content-description">
+                    - </div>
+            </div>
+
+        </div>
+
+        <div class=" mat-elevation-z4 ripple-view g p-3 " tabindex="2" (click)="selected('inthreatsview')">
+            <div class="title-view">
+                Insider Threats Investigation
+            </div>
+            <div class="widgets g">
+                <div class="widget-title">
+                    Widgets
+                </div>
+                <div class="widgets-list">
+                    <ul>
+                        <li>Temporal Representation of Alerts</li>
+                        <li>Tabular Representation of Alerts</li>
+                        <li>Logged in users</li>
+                        <li>File integrity</li>
+                        <li>Failed in ssh attempts</li>
+                        <li>Disk IO </li>
+
+                    </ul>
+
+                </div>
+
+                <div class="description my-2">
+                    Description:
+                </div>
+                <div class="content-description">
+                    -
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class=" mat-elevation-z4 ripple-view g p-3 " tabindex="2" (click)="selected('netflowsview')">
+            <div class="title-view">
+                Netflows Investigation
+            </div>
+            <div class="widgets  g">
+                <div class="widget-title">
+                    Widgets
+                </div>
+                <div class="widgets-list">
+                    <ul>
+                        <li>Netflows Distribution Chart </li>
+                        <li>Netflows Graphical Representation</li>
+                        <li>Netflows Statistics</li>
+                        <li>CPU Usage Chart</li>
+                        <li>Memory Load Chart</li>
+                        <li>Acive Processes Chart</li>
+                        <li>Network Connections Chart</li>
+                    </ul>
+
+                </div>
+
+                <div class="description my-2">
+                    Description:
+                </div>
+                <div class="content-description">
+                    -
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+    <div class="f" style="width:100%; flex-direction: column;" mat-dialog-actions>
+
+        <div>
+
+            <mat-radio-group class="radioButtons" [value]="'zoomed'">
+
+                <mat-radio-button style="color:var(--header-filter-font-color);" #zoomed value="zoomed">Currently Zoomed
+                    Period : <span class="dates">{{this.zoomedPeriod[0] | date: 'medium'}} - {{this.zoomedPeriod[1] |
+                        date: 'medium'}}</span></mat-radio-button>
+                <mat-radio-button style="color:var(--header-filter-font-color);" value="default">Default Period : <span
+                        class="dates" style="margin-left: 5.3em;">{{this.period[0] | date: 'medium'}} - {{this.period[1]
+                        | date: 'medium'}}</span></mat-radio-button>
+                <!-- <span style="float: right; color: #3e546d;"  class="material-icons-outlined s-18 hintIcon "
+                        matTooltipClass="hinttooltip" matTooltip="By applying Query Filters, new request to the data sources will be executed, while the Local Filters will be applied to the existing displayed data.">
+                        info
+                    </span> -->
+            </mat-radio-group>
+
+        </div>
+        <div class="pt-3 f" style="margin-left: auto;">
+            <button (click)="proceed(zoomed.checked)" class="applyBut btn-h-m mx-2" mat-raised-button
+                mat-dialog-close>Inspect</button>
+            <button (click)="close()" class="resetBut btn-h-m " mat-raised-button>Cancel</button>
+
+        </div>
+
+    </div>
+</div>

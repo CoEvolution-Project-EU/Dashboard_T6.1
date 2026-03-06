@@ -1,0 +1,29 @@
+<!-- <div> -->
+    <!-- <div class="header"> -->
+        <!-- <div style="display: flex; align-items: center; margin-right: 1em;">
+            <img src="assets/images/height.png" alt="" style="width: 28px; margin-right: 0.2em;">
+            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button (click)="resizeW('minus')">-20%</button>
+            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button (click)="resizeW('plus')">+20%</button>
+        </div> -->
+        <!-- <mat-label>Dataset: <span class="label1">#{{config.datasetName}}</span> </mat-label> -->
+
+        <!-- <span>{{config['name']}}</span>
+        <span style="margin-left: 10px; " class="material-icons-outlined s-16 sheet-button" (click)="this.bottomSheet()"
+            matTooltipClass="hinttooltip" matTooltip="Line Charts Hints'">
+            info
+        </span> -->
+    <!-- </div> -->
+    <div class="genericInfo">
+        <!-- <mat-label> Dataset:  </mat-label> <span style="margin: 0 0.2em" class="label1"> #{{config.datasetName}} </span>  -->
+        <mat-label> Interval:  </mat-label> <span style="margin: 0 0.2em" class="label1">{{interval}}</span>
+    </div>
+    <div *ngIf="this.chartOptions">
+
+        <apx-chart #chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+            [yaxis]="chartOptions.yaxis" [grid]="chartOptions.grid"
+            [tooltip]="chartOptions.tooltip" [stroke]="chartOptions.stroke"
+            [colors]="chartOptions.colors">
+        </apx-chart>
+    </div>
+
+<!-- </div> -->

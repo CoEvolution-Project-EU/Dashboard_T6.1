@@ -1,0 +1,361 @@
+{
+    "id": "netflowsview",
+    "title": "Netflows Investigation",
+    "timewindow":"day",
+    "datasets": [
+        {
+            "name": "Elastic Netflows",
+            "id": "netflows",
+            "method": "getNetflows",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {
+                "packets":[null,null]
+            },
+            "filterParams_options": {
+                "packets_options":[null,null]
+            },
+            "localFilters": {
+            }
+        },
+        {
+            "name": "Elastic Metrics for CPU",
+            "id": "cpu",
+            "method": "getMetric",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {
+                "metricType":"system.cpu",
+                "valuePath":"host.cpu.usage"
+            },
+            "filterParams": { },
+            "filterParams_options": {
+            },
+            "localFilters": {
+            }
+        },
+        {
+            "name": "Elastic Metrics for Memory",
+            "id": "memory",
+            "method": "getMetric",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {
+                "metricType":"system.memory",
+                "valuePath":"system.memory.actual.used.pct"
+            },
+            "filterParams": { },
+            "filterParams_options": {
+            },
+            "localFilters": {
+            }
+        },
+        {
+            "name": "Elastic Metrics for Active Processes",
+            "id": "activePr",
+            "method": "getMetric",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {
+                "metricType": "system.process.summary",
+                "valuePath":"system.process.summary.total"
+
+            },
+            "filterParams": { },
+            "filterParams_options": {
+            },
+            "localFilters": {
+            }
+        },
+        {
+            "name": "Elastic Metrics for Network Connections",
+            "id": "networkConns",
+            "method": "getMetric",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {
+                "metricType": "system.socket.summary",
+                "valuePath":"system.socket.summary.all.count"
+
+            },
+            "filterParams": { },
+            "filterParams_options": {
+            },
+            "localFilters": {
+            }
+        }
+
+    ],
+    "currentWidgets": [
+        {
+            "name": "netDistrib",
+            "title": "Netflows Distribution",
+            "size": 100,
+            "order": 0,
+            "datasets": [
+                "netflows"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "default",
+                "datasetsInfo": [
+                    "Netflows"
+                ],
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "color":"#ff4081"
+            }
+        },
+        {
+            "name": "netStats",
+            "title": "Netflows Statistics",
+            "size": 100,
+            "filters": {},
+            "order": 1,
+            "datasets": [
+                "netflows"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetName":"Neflows",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "mainDashNetflows",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                },
+                "params": [
+                    {
+                        "name": "Source Ports",
+                        "chart": "",
+                        "stats": true,
+                        "numeric": false,
+                        "dataType":"raw"
+                    },
+                    {
+                        "name": "Destination Ports",
+                        "chart": "",
+                        "stats": true,
+                        "numeric": false,
+                        "dataType":"raw"
+                    },
+                    {
+                        "name": "Source IPs",
+                        "chart": "",
+                        "stats": true,
+                        "numeric": false,
+                        "dataType":"raw"
+                    },
+                    {
+                        "name": "Destination IPs",
+                        "chart": "",
+                        "stats": true,
+                        "numeric": false,
+                        "dataType":"raw"
+                    },
+                    {
+                        "name": "Top 10 Source IPs",
+                        "chart": "bar",
+                        "stats": false,
+                        "numeric": false,
+                        "dataType":"buckets"
+                    },
+                    {
+                        "name": "Top 10 Destination IPs",
+                        "chart": "bar2",
+                        "stats": false,
+                        "numeric": false,
+                        "dataType":"buckets"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "network",
+            "title": "Netflows Graph",
+            "size": 100,
+            "filters": {},
+            "order": 2,
+            "disabled":false,
+            "datasets": [
+                "netflows"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo":["Netflows"],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "mainDashNetflows",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                },
+                "edgeParams": [
+                    {
+                        "name": "Dates",
+                        "value": "dates",
+                        "weightOption": false,
+                        "dynamic": true
+                    },
+                    {
+                        "name": "Packets",
+                        "value": "packets",
+                        "weightOption": true,
+                        "dynamic": true
+                    },
+                    {
+                        "name": "Bytes",
+                        "value": "bytes",
+                        "weightOption": true,
+                        "dynamic": true
+                    }
+                ]
+            }
+        },
+        {
+            "name": "netDetails",
+            "title": "Netflows Tabular Representation",
+            "size": 100,
+            "filters": {},
+            "order": 3,
+            "datasets": [
+                "netflows"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [ "Netflows" ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns":  false,
+                "id": "mainDashNetflows",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "lineCPU",
+            "title": "CPU Usage",
+            "size": 50,
+            "filters": {},
+            "order": 5,
+            "datasets": [
+                "cpu"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetName":"",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "lineCpu",
+                "zoomSync": true,
+                "tooltipname": "CPU Load",
+                "color": "#2A9D8F",
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "yaxislabel": "%",
+                "tooltipdateformat": "dd MMM HH:mm:ss"
+            }
+        },
+        {
+            "name": "lineMemory",
+            "title": "Memory Load",
+            "size": 50,
+            "filters": {},
+            "order": 7,
+            "datasets": [
+                "memory"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "lineMemory",
+                "zoomSync": true,
+                "datasetName":"",
+                "tooltipname": "Memory Used",
+                "color": "#E76F51",
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "yaxislabel": "%",
+                "tooltipdateformat": "dd MMM HH:mm:ss"
+            }
+        },
+        {
+            "name": "lineNetwork",
+            "title": "Network Connenctions",
+            "size": 50,
+            "filters": {},
+            "order": 6,
+            "datasets": [
+                "networkConns"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "lineNetwork",
+                "zoomSync": true,
+                "datasetName":"",
+                "tooltipname": "Open Connections",
+                "color": "#005F73",
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "yaxislabel": "",
+                "tooltipdateformat": "dd MMM HH:mm:ss"
+            }
+        },
+        {
+            "name": "lineAP",
+            "title": "Active Processes",
+            "size": 50,
+            "filters": {},
+            "order": 4,
+            "datasets": [
+                "activePr"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "lineAp",
+                "zoomSync": true,
+                "datasetName":"",
+                "tooltipname": "Processes",
+                "color": "#F4A261",
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "yaxislabel": "",
+                "tooltipdateformat": "dd MMM HH:mm:ss"
+            }
+        }
+    ],
+    "availableWidgets": [
+    
+      
+    ]
+}

@@ -1,0 +1,325 @@
+{
+    "id": "insiderthreatsview",
+    "title": "Insider Threats",
+    "timewindow": "last24h",
+    "datasets": [
+        {
+            "name": "Elastic Events for Alerts",
+            "id": "alerts",
+            "method": "getAlerts",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {
+                "severities": []
+            },
+            "filterParams_options": {
+                "severities_options": [
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                ]
+            },
+            "localFilters": {
+                "alertType": []
+            }
+        },
+        {
+            "name": "USB Alerts",
+            "id": "usb",
+            "method": "getUSB",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Login Alerts",
+            "id": "login",
+            "method": "getLogin",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {
+                "userType": []
+            }
+        },
+        {
+            "name": "File Integrity Alerts",
+            "id": "fileint",
+            "method": "getFileint",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Failed SSH Attempts",
+            "id": "failedssh",
+            "method": "getFailedSSH",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "DiskIO",
+            "id": "diskio",
+            "method": "getDiskIO",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        }
+    ],
+    "currentWidgets": [
+        {
+            "name": "alertsDistrib",
+            "title": "Alerts Distribution",
+            "pdfreport": true,
+            "size": 100,
+            "order": 0,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "default",
+                "datasetsInfo": [
+                    "Alerts"
+                ],
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "color": "#ec7508",
+                "fillColor": "#ec7508",
+                "brushColor": "#219ebc"
+            }
+        },
+        {
+            "name": "timeline",
+            "title": "Alerts Temporal Representation",
+            "pdfreport": true,
+            "size": 100,
+            "filters": {
+                "annotationsActive": []
+            },
+            "order": 2,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    {
+                        "id": "alerts",
+                        "labels": [
+                            {
+                                "rule_name": ""
+                            },
+                            {
+                                "severity": ""
+                            }
+                        ],
+                        "legend": [
+                            {
+                                "low": "#B2D58C"
+                            },
+                            {
+                                "medium": "#FFC078"
+                            },
+                            {
+                                "high": "#FF8F77"
+                            },
+                            {
+                                "critical": "#EB4B4B"
+                            }
+                        ],
+                        "groups": [
+                            {
+                                "rule_name": ""
+                            }
+                        ]
+                    }
+                ],
+                "data": {
+                    "action": "",
+                    "data": [],
+                    "extra": []
+                },
+                "id": "elasticAlerts",
+                "clustering": true,
+                "zoomSync": true,
+                "doubleClick": true,
+                "grouping": true,
+                "height": "500px",
+                "colors": {
+                    "text": "initial",
+                    "gridLines": "transparent",
+                    "groupsArea": "initial",
+                    "mainBackground": "initial",
+                    "topArea": "initial",
+                    "itemsHighlight": "#f3ba00",
+                    "filterHighlighted": "blue",
+                    "itemsText": "black"
+                }
+            }
+        },
+        {
+            "name": "alertsDetails",
+            "title": "Alerts Tabular Representation",
+            "pdfreport": true,
+            "size": 50,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Alerts"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "mainDashAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "loginDetails",
+            "title": "Login Tabular Representation",
+            "pdfreport": true,
+            "size": 50,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "login"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Login"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "loginDetails",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "fileintDetails",
+            "title": "File Int Tabular Representation",
+            "pdfreport": true,
+            "size": 50,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "fileint"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Fileint"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "fileintDetails",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "failedSSHDetails",
+            "title": "Failed SSH AttemptsTabular Representation",
+            "pdfreport": true,
+            "size": 50,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "failedssh"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Failedssh"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "failedSSHDetails",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "USBActivity",
+            "title": "USB Activity Tabular Representation",
+            "pdfreport": true,
+            "size": 50,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "usb"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "USB"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "USBActivity",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        }
+    ],
+    "availableWidgets": []
+}

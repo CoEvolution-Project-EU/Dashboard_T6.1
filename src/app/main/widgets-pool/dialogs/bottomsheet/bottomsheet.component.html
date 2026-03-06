@@ -1,0 +1,85 @@
+<div class="p-2">
+
+    <div *ngIf='this.data == "timeline"' class="p-3">
+
+        <mat-label class="h3 labels"><b>Timeline:</b></mat-label>
+        <br>
+        <ul class="h4" style="margin-top:1.5em;">
+
+            <li> Click to use </li><br>
+            <li> Use mouse wheel to scroll up & down </li><br>
+            <li> Use ctrl + mouse wheel to zoom in & out </li><br>
+            <li> Pan left / right to move in time </li><br>
+            <li> Hover on any event to see additional info</li><br>
+            <li> Double click on any event to create time-based annotations in the interconnected line chart widgets
+                below</li><br>
+            <li> The available widgets are timewise synchronised </li><br>
+
+        </ul>
+
+    </div>
+
+    <div *ngIf='this.data == "details"' class="p-3">
+
+        <mat-label class="h3 --second-font-color"><b>Details Table:</b></mat-label>
+        <ul class="h4" style="margin-top:1.5em;">
+            <li> Type any text in the filter bar to search through the displayed information in the table </li><br>
+            <li> Sort accordingly by any column of the table</li><br>
+        </ul>
+
+    </div>
+
+    <div *ngIf='this.data == "line-chart"' class="p-3">
+
+        <mat-label class="h3 labels"><b>Line Chart:</b>
+        </mat-label>
+        <ul class="h4" style="margin-top:1.5em;">
+            <li> Zoom, Pan, Reset and Download the visualised data</li><br>
+            <li> The available line charts are timewise synchronised </li><br>
+        </ul>
+
+    </div>
+
+    <div *ngIf='this.data == "network"' class="p-3">
+
+        <mat-label class="h3 labels"><b>Network Graph:</b>
+        </mat-label>
+        <ul class="h4 " style="margin-top:1.5em;">
+
+            <li> Click to use </li><br>
+            <li> Use mouse wheel to zoom in & out </li><br>
+            <li> Hover on any edge or node to see additional info </li><br>
+            <li> Double click on any node to add the corresponding Speaker in the Details Widget</li><br>
+            <li> Double click on any edge to add the included conversations in the Details Widget</li>
+            <br>
+
+            <li>
+                <mat-icon>unfold_more</mat-icon> Adjust Widget size
+            </li>
+            <br>
+            <br>
+
+            <li> <span style="color: #ffc200">Yellow</span> color represents selected entities in filters</li> <br>
+            <li> <span style="color: indianred">Red</span> color represents the most / less interracted entities</li>
+
+
+        </ul>
+
+    </div>
+
+    <div *ngIf='this.data == "cloud"' class="p-3">
+
+        <mat-label class="h3 labels"><b> Cloud:</b>
+        </mat-label>
+        <ul class="h4" style="margin-top:1.5em;">
+            <li> </li><br>
+            <li> </li><br>
+        </ul>
+
+    </div>
+
+
+
+
+
+</div>

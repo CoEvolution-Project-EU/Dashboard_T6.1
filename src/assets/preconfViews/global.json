@@ -1,0 +1,323 @@
+{
+    "id": "events-analysis",
+    "timewindow": "lastmonth",
+    "datasets": [
+        {
+            "name": "Elastic Events for Alerts",
+            "id": "alerts",
+            "method": "getAlerts",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {
+                "severities": [
+                    "medium",
+                    "high",
+                    "critical"
+                ]
+            },
+            "filterParams_options": {
+                "severities_options": [
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                ]
+            },
+            "localFilters": {
+                "alertType": [],
+                "strictSearch": false
+            }
+        },
+        {
+            "name": "CPU",
+            "id": "cpudetection",
+            "method": "getCPUAlerts",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "RAM",
+            "id": "ramdetection",
+            "method": "getRAMAlerts",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        }
+    ],
+    "currentWidgets": [
+        {
+            "name": "alertsDistrib",
+            "title": "Alerts Distribution",
+            "pdfreport": true,
+            "size": 100,
+            "filters": {},
+            "order": 0,
+            "datasets": [
+                "alerts",
+                "ramdetection",
+                "cpudetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": [],
+                    "extra": []
+                },
+                "id": "default",
+                "datasetsNames": [
+                    "Alerts",
+                    "RAM",
+                    "CPU"
+                ],
+                "datasetsInfo": [
+                    {
+                        "id": "alerts"
+                    },
+                    {
+                        "id": "ramdetection"
+                    },
+                    {
+                        "id": "cpudetection"
+                    }
+                ],
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "fillColor": "#ec7508",
+                "brushColor": "#219ebc"
+            }
+        },
+        {
+            "name": "alertsStats",
+            "title": "Alerts Statistics",
+            "pdfreport": true,
+            "size": 100,
+            "filters": {},
+            "order": 1,
+            "datasets": [
+                "alerts",
+                "ramdetection",
+                "cpudetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetName": [
+                    "Alerts",
+                    "RAM",
+                    "CPU"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "globalAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                },
+                "params": [
+                    {
+                        "name": "Alerts & Severities per Host",
+                        "chart": "stacked",
+                        "stats": false,
+                        "numeric": false,
+                        "dataType": "raw"
+                    },
+                    {
+                        "name": "Severities",
+                        "chart": "pie",
+                        "stats": false,
+                        "numeric": false,
+                        "dataType": "buckets"
+                    },
+                    {
+                        "name": "Alerts per Host",
+                        "chart": "bar",
+                        "stats": false,
+                        "numeric": false,
+                        "dataType": "buckets"
+                    },
+                    {
+                        "name": "Alert Type",
+                        "chart": "",
+                        "stats": true,
+                        "numeric": false,
+                        "dataType": "raw"
+                    },
+                    {
+                        "name": "Risk Score",
+                        "chart": "",
+                        "stats": true,
+                        "numeric": false,
+                        "dataType": "raw"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "timeline",
+            "title": "Timeline Representation",
+            "pdfreport": true,
+            "size": 100,
+            "filters": {
+                "annotationsActive": []
+            },
+            "order": 3,
+            "datasets": [
+                "alerts",
+                "ramdetection",
+                "cpudetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    {
+                        "id": "alerts",
+                        "labels": [
+                            {
+                                "rule_name": ""
+                            },
+                            {
+                                "severity": ""
+                            }
+                        ],
+                        "legend": [
+                            {
+                                "low": "#B2D58C"
+                            },
+                            {
+                                "medium": "#FFC078"
+                            },
+                            {
+                                "high": "#FF8F77"
+                            },
+                            {
+                                "critical": "#EB4B4B"
+                            }
+                        ],
+                        "groups": [
+                            {
+                                "rule_name": ""
+                            }
+                        ]
+                    }
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "elasticAlerts",
+                "clustering": true,
+                "zoomSync": true,
+                "doubleClick": true,
+                "grouping": true,
+                "height": "500px",
+                "colors": {
+                    "text": "initial",
+                    "gridLines": "transparent",
+                    "groupsArea": "initial",
+                    "mainBackground": "initial",
+                    "topArea": "initial",
+                    "itemsHighlight": "#f3ba00",
+                    "filterHighlighted": "blue",
+                    "itemsText": "black"
+                }
+            }
+        },
+        {
+            "name": "alertsDetails",
+            "title": "Alerts Tabular Representation",
+            "pdfreport": true,
+            "size": 100,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsNames": [
+                    "Alerts"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "globalAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "mlcpuDetails",
+            "title": "ML CPU spike detection",
+            "pdfreport": true,
+            "size": 100,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "cpudetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsNames": [
+                    "CPU"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "cpuAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "mlramDetails",
+            "title": "ML RAM abnormal detection",
+            "pdfreport": true,
+            "size": 100,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "ramdetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsNames": [
+                    "RAM"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "ramAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        }
+    ],
+    "availableWidgets": []
+}

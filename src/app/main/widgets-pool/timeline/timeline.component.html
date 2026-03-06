@@ -1,0 +1,143 @@
+<div>
+    <div class="header">
+
+        <button (click)="removeAnno()" class="clearAnnot" mat-stroked-button>Clear Annotations</button>
+
+
+
+        <mat-checkbox style="margin-left:1em; font-size: 14px;" [(ngModel)]="showGroups" (change)="switchGrouping()">
+            Grouping:
+        </mat-checkbox>
+
+        <div *ngIf="showGroups">
+            <ng-select style="width: 150px; font-size: 14px; margin-left: 0.5em;" [closeOnSelect]="true"
+                [items]="groupsLabels" [clearable]="false" [multiple]="false" (change)="switchGroups()"
+                [(ngModel)]="this.groupsFormat" placeholder="Events Label Format">
+            </ng-select>
+        </div>
+
+        <mat-checkbox style="margin-left:1em; font-size: 14px;" [(ngModel)]="showLabels" (change)="switchLabels()">
+            Labeling:
+        </mat-checkbox>
+
+        <div *ngIf="showLabels">
+            <ng-select style="width: 150px; font-size: 14px; margin-left: 0.5em;" [closeOnSelect]="true"
+                [items]="itemLabels" [clearable]="false" [multiple]="false" (change)="switchLabels()"
+                [(ngModel)]="this.labelFormat" placeholder="Events Label Format">
+            </ng-select>
+        </div>
+
+
+
+
+        <!-- <mat-label style="margin-left:auto">Datasets: <span class="label1" *ngFor="let dataset of config.datasetsNames">#{{dataset}} </span> </mat-label> -->
+        <!-- 
+        <span style="margin-left: 10px;" class="material-icons-outlined s-18 sheet-button" (click)="this.bottomSheet()"
+            matTooltipClass="hinttooltip" matTooltip="Temporal Representation Hints">
+            info
+        </span> -->
+
+        <div class="label-group">
+
+            <div *ngFor="let dataset of config.datasetsInfo; index as i" class="f">
+
+                <mat-divider *ngIf="i > 0 && dataset.legend" class="mx-3" [vertical]="true"></mat-divider>
+
+                <div *ngFor="let legends of dataset.legend">
+                    <div *ngFor="let leg of legends | keyvalue">
+                        <div class="f div-label">
+                            <button mat-icon-button [style.background-color]="leg.value"
+                                style="width: 13px;height: 13px; cursor:default;">
+                            </button>
+                            <div class="label">
+                                {{leg.key}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- <div class="f div-label">
+                <button mat-icon-button style="background-color: #c3ecdf;width: 13px;height: 13px; cursor:default;">
+                </button>
+                <div class="label">
+                    Low
+                </div>
+            </div>
+            <div class="f div-label">
+                <button mat-icon-button style="background-color: #ffc200;width: 13px;height: 13px; cursor:default;">
+                </button>
+                <div class="label">
+                    Medium
+                </div>
+            </div>
+            <div class="f div-label">
+                <button mat-icon-button style="background-color: #ff8313;width: 13px;height: 13px; cursor:default;">
+                </button>
+                <div class="label">
+                    High
+                </div>
+            </div>
+            <div class="f div-label">
+                <button mat-icon-button style="background-color: #ff4922;width: 13px;height: 13px; cursor:default;">
+                </button>
+                <div class="label">
+                    Critical
+                </div>
+            </div>
+            <mat-divider class="mx-3" [vertical]="true"></mat-divider>
+            <div  class="f div-label">
+                <button mat-icon-button style="background-color: #c3d6ec;width: 13px;height: 13px; cursor:default;">
+                </button>
+                <div class="label">
+                    Spike 0
+                </div>
+            </div>
+            <div class="f div-label">
+                <button mat-icon-button style="background-color: #eda46c;width: 13px;height: 13px; cursor:default;">
+                </button>
+                <div class="label">
+                    Spike 1
+                </div>
+            </div>
+            <mat-divider class="mx-3" [vertical]="true"></mat-divider>
+            <div class="f div-label">
+                <button mat-icon-button style="background-color: #00a2ffd1;width: 13px;height: 13px; cursor:default;">
+                </button>
+                <div class="label">
+                    ML RAM output
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+
+    <div class="container-timeline">
+        <!-- style="--chosen:{{config.colors.filterHighlighted}}; --highlight:{{config.colors.itemsHighlight}}; --itemsText:{{config.colors.itemsText}}"> -->
+        <div #timeline class="default">
+            <!-- style="--top:{{config.colors.topArea}}; --center:{{config.colors.mainBackground}}; --gridLines:{{config.colors.gridLines}}; --text:{{config.colors.text}}; --groupsArea:{{config.colors.groupsArea}}" -->
+
+        </div>
+    </div>
+
+    <div>
+        <button mat-icon-button matTooltip="Move Left" (click)="move(0.2)">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Move Right" (click)="move(-0.2)">
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Zoom In" (click)="zoomIn()">
+            <mat-icon>zoom_in</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Zoom Out" (click)="zoomOut()">
+            <mat-icon>zoom_out</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Zoom Max Out" (click)="zoomOutMax()">
+            <mat-icon>zoom_out_map</mat-icon>
+        </button>
+    </div>
+
+</div>

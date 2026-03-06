@@ -1,0 +1,65 @@
+table {
+  width: 99%;
+  margin: auto;
+
+  .clickable{
+    color: var(--main-button-color);
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+.table-container {
+  overflow: auto;
+  min-height: 350px;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.filterCl {
+  background-color: #f1f6f6;
+  border-radius: 1em;
+  padding: 0 1em;
+}
+
+.header {
+  font-size: larger;
+  padding-bottom: 1em;
+  display: inline-flex;
+  align-items: center;
+}
+
+.sheet-button {
+  cursor: pointer;
+}
+
+.hinttooltip {
+  font-size: 14px;
+}
+
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 180px !important;
+  padding: 1em;
+}
+td:hover {
+  position: relative;
+  max-width: 180px;
+  z-index: 100;
+  background: #fff;
+  overflow: visible;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.label1{
+
+  font-size: initial;
+  color: #ec7508;
+  //display: flex;
+}
+

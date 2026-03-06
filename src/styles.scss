@@ -1,0 +1,293 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+// ** Color Palette **
+
+$yellow-orange: #f4a341ff;
+$orange-yellow-crayola: #e9c46aff;
+$blue-sapphire: #005f73ff;
+$celadon-blue: #2880a7ff;
+$persian-green: #2a9d8fff;
+$light-mint: #c3ecdf;
+$sandy-brown: #f4a261ff;
+$burnt-sienna: #ff9178;
+$deep-chestnut: #b55346ff;
+$charcoal: #264653ff;
+
+// ** Color Palette **
+
+// ** Theme **
+
+// FVT default
+
+:root {
+    --navbar-color: hsl(220 56% 20%);
+    --second-navbar-color: hsl(42 87% 92%);
+    --main-button-color: #219ebc;
+    --secondary-button-color: hsl(42 87% 55%);
+    --filter-bar-color: white;
+    --bg-color: hsl(210 30% 97%);
+    --wdg-color: #ffffff;
+    --font-color: #1c1c1c;
+    --second-font-color: hsl(213 76% 56%);
+    --light-font-color: whitesmoke;
+    --header-filter-font-color: #ec7506;
+    --selections-color: #fff;
+    --selections-border-color: #f5f5f5;
+}
+
+// HEIR theme
+[data-theme="heir"] {
+    --navbar-color: #17375e;
+    --second-navbar-color: #f3f3f3;
+
+    --main-button-color: #18385e;
+    --secondary-button-color: #87c5cc;
+
+    --filter-bar-color: #f3f3f3;
+
+    --plain-button-color: #ffffff;
+
+    --bg-color: #fafafa;
+    --wdg-color: #ffffff;
+
+    --font-color: #1c1c1c;
+    --second-font-color: #143155;
+    --header-filter-font-color: #143155;
+    --light-font-color: whitesmoke;
+
+    --selections-color: #fff;
+    --selections-border-color: #f5f5f5;
+}
+
+// ROXANNE theme
+
+[data-theme="roxanne"] {
+    --navbar-color: #7d1627; //+
+    --second-navbar-color: #f5f0f0;
+
+    --main-button-color: #7d1627;
+    --secondary-button-color: #da5984;
+
+    --filter-bar-color: white;
+
+    --bg-color: #f5f5f5;
+    --wdg-color: #ffffff;
+
+    --font-color: #1c1c1c;
+    --second-font-color: #6d2e2e; //+
+    --header-filter-font-color: #7d1627;
+    --light-font-color: whitesmoke; //+
+
+    --selections-color: #fff;
+    --selections-border-color: #f5f5f5;
+}
+
+// DARK theme
+[data-theme="dark"] {
+    --navbar-color: #1e2129;
+    --second-navbar-color: #2e323e;
+
+    --main-button-color: #607d8b;
+    --secondary-button-color: #faa732;
+
+    --filter-bar-color: #3c4252;
+
+    --bg-color: #333333;
+    --wdg-color: #424242;
+
+    --font-color: #ffffff;
+    --second-font-color: #1f2d3f;
+    --header-filter-font-color: #cbd5e0;
+    --light-font-color: whitesmoke;
+
+    --selections-color: #ffffff21;
+    --selections-border-color: #ffffff21;
+}
+
+// ** Theme **
+
+html,
+body {
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-weight: normal;
+}
+
+h1,
+.h1 {
+    font-size: 24px;
+}
+
+h2,
+.h2 {
+    font-size: 20px;
+}
+
+h3,
+.h3 {
+    font-size: 18px;
+}
+
+h4,
+.h4 {
+    font-size: 15px;
+}
+
+h5,
+.h5 {
+    font-size: 13px;
+}
+
+h6,
+.h6 {
+    font-size: 12px;
+}
+
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-size: 62.5%;
+    font-family: Muli, Helvetica Neue, Avenir, sans-serif !important;
+    line-height: 1.4 !important;
+    letter-spacing: -0.1px !important;
+    background: var(--bg-color);
+}
+
+.page-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: auto;
+    background: var(--bg-color);
+    top: 0px;
+    left: 0px;
+}
+
+.widget-container {
+    background: var(--wdg-color);
+}
+.content {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.s-16 {
+    font-size: 22px !important;
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    min-height: 22px !important;
+    line-height: 22px !important;
+}
+
+.s-18 {
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    line-height: 18px !important;
+}
+
+.s-16 {
+    font-size: 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    line-height: 16px !important;
+}
+
+.shadow {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.icon-light {
+    color: white !important;
+    cursor: pointer !important;
+}
+
+.icon-dark {
+    color: #3e536d !important;
+    cursor: pointer !important;
+}
+
+.f {
+    display: flex !important;
+}
+
+.g {
+    display: grid !important;
+}
+
+mat-card {
+    background-color: var(--wdg-color) !important;
+}
+
+table {
+    background-color: var(--wdg-color) !important;
+}
+
+// .ng-select .ng-select-container {
+//     background-color: var(--selections-color) !important;
+//     border: 1px solid var(--selections-border-color-color) !important;
+// }
+.mat-snack-bar-container.warningClass {
+    color: black !important;
+    background: rgb(255, 217, 0) !important;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12) !important;
+}
+
+.mat-snack-bar-container.successClass {
+    background-color: #3a7442 !important;
+    font-weight: 400;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12) !important;
+}
+
+.mat-snack-bar-container.errorClass {
+    color: black !important;
+    background: rgb(219, 68, 27) !important;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12) !important;
+}
+
+.mat-stroked-button{
+    line-height: 28px!important
+}
+
+.hinttooltip {
+    font-size: 14px;
+  }
+
+.hintIcon{
+    margin-left: 7px;
+     margin-top: 1px;
+      cursor:help
+}
+
+.mat-dialog-container{
+    border-radius: 1em!important;
+    max-height: none!important;
+}
+
+mat-card{
+    padding: 14px;
+}

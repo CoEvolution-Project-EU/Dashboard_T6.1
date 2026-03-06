@@ -1,0 +1,111 @@
+    <div class="genericStats">
+        <!-- <mat-label> Dataset:  </mat-label> <span style="margin: 0 0.2em" class="label1"> #{{config.datasetName}} </span>  -->
+        <mat-label> Entries Processed:  </mat-label> <span style="margin: 0 0.2em" class="label1">{{recordsCount}}</span>
+    </div>
+
+    <div #statParams class="allParamStats">
+
+
+        <div *ngIf="stringData.length > 0" style="margin-bottom:0,5em">
+            <mat-label class="label1"> <mat-icon style="margin-right:0.2em">text_snippet</mat-icon> String Parameters</mat-label>
+            <div class="paramStats">
+
+                <table matSort (matSortChange)="sortData($event,'string')">
+                    <tr>
+                    <th mat-sort-header="name">Name</th>
+                    <th mat-sort-header="mostCommon">Most Common</th>
+                    <th mat-sort-header="leastCommon">Least Common</th>
+                    <th mat-sort-header="uniqueValues">Distinct Values</th>
+                    </tr>
+                
+                    <tr style="font-size: initial;" *ngFor="let param of sortedStringData">
+                    <td>{{param.name}}</td>
+                    <td>{{param.mostCommon}}</td>
+                    <td>{{param.leastCommon}}</td>
+                    <td>{{param.uniqueValues}}</td>
+                    </tr>
+                </table>
+
+            </div>
+            
+        </div>
+
+        <div *ngIf="numericData.length > 0">
+            <mat-label class="label1"> <mat-icon style="margin-right:0.2em">query_stats</mat-icon>Numeric Parameters</mat-label>
+            <div class="paramStats">
+
+                <table matSort (matSortChange)="sortData($event,'numeric')">
+                    <tr>
+                    <th mat-sort-header="name">Name</th>
+                    <th mat-sort-header="lowestValue">Lowest</th>
+                    <th mat-sort-header="highestValue">Highest</th>
+                    <th mat-sort-header="avgValue">Average</th>
+                    </tr>
+                
+                    <tr style="font-size: initial;" *ngFor="let param of sortedNumericData">
+                    <td>{{param.name}}</td>
+                    <td>{{param.lowestValue}}</td>
+                    <td>{{param.highestValue}}</td>
+                    <td>{{param.avgValue}}</td>
+                    </tr>
+                </table>
+
+            </div>
+        
+
+        </div>
+
+
+    </div>
+
+<div style="display:flex;">
+
+    <div *ngIf="barParamIndx > -1  && chartsHeight >= 110" #barRef [ngStyle]="{'width': pieParamIndx > -1 || stackedParamIndx > -1 || barParamIndx2 > -1 ? '50%' : '100%'}">
+        <div class="chartTitles">
+            <mat-label>{{barTitle}}</mat-label>
+        </div>
+
+        <ngx-charts-bar-horizontal [showDataLabel]='true' [results]="barData.data" [view]="[barRef.offsetWidth, chartsHeight]"
+            [gradient]="true" [xAxis]="false"  [yAxis]="true"  (select)="userClickedBar($event)"
+            [legend]="false" [customColors]="barData.colors">
+        </ngx-charts-bar-horizontal>
+
+    </div>
+
+    <div *ngIf="barParamIndx2 > -1  && chartsHeight >= 110" #barRef2 [ngStyle]="{'width': pieParamIndx > -1 || stackedParamIndx > -1 || barParamIndx > -1 ? '50%' : '100%'}">
+        <div class="chartTitles">
+            <mat-label>{{barTitle2}}</mat-label>
+        </div>
+
+        <ngx-charts-bar-horizontal [showDataLabel]='true' [results]="barData2.data" [view]="[barRef2.offsetWidth, chartsHeight]"
+            [gradient]="true" [xAxis]="false"  [yAxis]="true"  (select)="userClickedBar($event)"
+            [legend]="false" [customColors]="barData2.colors">
+        </ngx-charts-bar-horizontal>
+
+    </div>
+
+    <div *ngIf="stackedParamIndx > -1  && chartsHeight >= 110" #stackRef [ngStyle]="{'width': pieParamIndx > -1 || barParamIndx > -1 || barParamIndx2 > -1 ? '50%' : '100%'}">
+        <div class="chartTitles">
+            <mat-label>{{stackedTitle}}</mat-label>
+        </div>
+
+        <ngx-charts-bar-horizontal-stacked [showDataLabel]='true' [results]="stackedData.data" [view]="[stackRef.offsetWidth, chartsHeight]"
+            [gradient]="false" [xAxis]="false"  [yAxis]="true" (select)="userClickedStacked($event)"
+            [legend]="true" [legendTitle]="false" [customColors]="stackedData.colors">
+        </ngx-charts-bar-horizontal-stacked>
+
+    </div>
+
+    <div *ngIf="pieParamIndx > -1 && chartsHeight >= 110" #pieRef [ngStyle]="{'width': barParamIndx > -1 || stackedParamIndx > -1 || barParamIndx2 > -1 ? '50%' : '100%'}">
+        <div class="chartTitles">
+            <mat-label>{{pieTitle}}</mat-label>
+        </div>
+
+        <ngx-charts-pie-chart [view]="[pieRef.offsetWidth, chartsHeight]" [legendPosition]="'right'" [labels]="true"
+            [results]="pieData.data" [legend]="false"  [customColors]="pieData.colors">
+        </ngx-charts-pie-chart>
+    </div>
+
+</div>
+
+

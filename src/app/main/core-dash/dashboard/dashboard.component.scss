@@ -1,0 +1,308 @@
+.page-container {
+    padding-top: 145px;
+}
+
+.topPanel {
+    background-color: var(--second-navbar-color);
+    width: 100%;
+    position: fixed;
+    z-index: 999;
+    height: 100px;
+    padding: 12px;
+    margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+        color: var(--second-font-color);
+        margin-left: 0.2em;
+    }
+
+    .innerNavButtons{
+        display: flex;
+        align-items: center;
+        //margin:auto
+
+        .idTitle{
+
+            margin-left: 0.2em;
+            color: var(--secondary-button-color);
+            background-color: #fef2e891;
+            padding: 0.5em;
+            font-weight: bold;
+
+        }
+
+       
+    }
+
+    .innerBtmPanel{
+        display: flex;
+        align-items: center;
+        width: 100%;
+
+        .select-filter{
+            width: 180px;
+            max-width: 180px;
+            margin: 0 0.5em;
+        }
+
+
+        .centerMenu{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            //margin-left: auto;
+        }   
+
+        .topPanelBtns{
+            font-weight: bold;
+            border-radius: 0.5em;
+            // background-color: var(--secondary-button-color);
+            // color: var(--light-font-color);
+            color: var(--secondary-button-color);
+            //border-color: var(--secondary-button-color);
+            background-color: #fef2e891;
+
+        }
+
+        .calend {
+            width: 195px;
+            font-size: 15px;
+            margin-left: 1em;
+        }
+
+        .dateTime {
+            //margin-left: 5em;
+            padding: 0 5%;
+            display: flex;
+            align-items: center;
+        }
+
+        .inspectLabel{
+            width: max-content;
+            display: flex;
+            //font-size: initial;
+        }
+
+    }
+ 
+}
+
+.dropArea {
+    min-height: 500px;
+    flex-wrap: wrap;
+}
+
+// .mat-button-toggle-group {
+//     height: 32px;
+//     align-items: center;
+//     margin-left: 0.5em;
+//   }
+
+
+
+.widgetsbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .available-wid {
+        color: var(--header-filter-font-color);
+    }
+}
+
+.dragItem {
+    //min-height: 100%;
+    transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.grabWidget {
+    cursor: grab;
+    text-align: end;
+    width: 100%;
+
+}
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+mat-drawer-container {
+    height: 100%;
+    background-color: var(--bg-color);
+}
+//  .mat-drawer-inner-container {
+//     background-color: var(--filter-bar-color);
+// }
+
+.applyBut {
+    background-color: var(--main-button-color);
+    margin-left: 1em;
+    line-height: 29px;
+    font-size: small;
+    color: var(--light-font-color);
+}
+
+.resetBut {
+    margin-left: 1em;
+    line-height: 29px;
+    font-size: small;
+    border-radius: 1em;
+}
+
+.filtersBar {
+    width: 225px;
+    padding: 0.5em 1em;
+    display: flex;
+    flex-direction: column;
+    background: var(--filter-bar-color);
+    .ng-select {
+        margin: 0.7em 0em 0.7em 0em;
+    }
+
+    .matformSmall{
+        width: 70px;
+        margin: 0 1em;
+    }
+
+    .betweenFilters{
+        margin: 0.6em 0;
+
+        .errorHint{
+            color: indianred;
+            font-style: italic;
+            font-weight: bold;
+            margin-left: 7em;
+        }
+    }
+
+    .radioButtons{
+        padding: 0.5em;
+        border: 1px solid var(--main-button-color);
+        border-radius: 0.5em;
+        margin-bottom: 1.5em;
+    }
+
+    .header-filter {
+        color: var(--header-filter-font-color);
+        display: flex;
+    }
+}
+.fixedButtns{
+    bottom: 0px;
+    display: flex;
+    position: absolute;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1em 1em 1.5em 1em;
+    background-color: #f5f5f5;
+}
+
+
+
+::ng-deep .ng-value-label {
+    //white-space: pre-line;
+    font-weight: 400;
+}
+
+::ng-deep .ng-value-container {
+    max-height: 150px;
+    overflow: auto;
+}
+
+.check {
+    font-size: small;
+    .mat-checkbox-label {
+        white-space: initial;
+    }
+}
+.filter-occurance {
+    display: grid;
+    box-shadow: 0 0 5px 1px #cdd7d9;
+    background-color: #ffffff;
+}
+
+::ng-deep .sliders {
+    max-width: 200px;
+    .ngx-slider .ngx-slider-bar {
+        background: darkgray;
+    }
+
+    .ngx-slider .ngx-slider-selection {
+        background: #3e536d;
+    }
+
+    .ngx-slider .ngx-slider-pointer {
+        width: 17px;
+        height: 17px;
+        background-color: #3e536d;
+        top: -6px;
+    }
+
+    .ngx-slider .ngx-slider-bubble {
+        color: #3e536d;
+        font-size: 13px;
+    }
+
+    .ngx-slider .ngx-slider-pointer.ngx-slider-active::after {
+        background-color: #3e536d;
+    }
+
+    .ngx-slider .ngx-slider-pointer::after {
+        width: 7px;
+        height: 7px;
+        top: 11px;
+        left: 10px;
+        display: none;
+    }
+}
+
+::ng-deep .mat-radio-outer-circle{
+    border-color: var(--main-button-color)!important;
+}
+
+::ng-deep .mat-radio-inner-circle{
+    background-color: var(--main-button-color)!important;
+}
+
+.statTitles{
+    font-size: larger;
+    width: max-content;
+    margin-left: 1em;
+    font-style: italic;
+}
+
+.resize-handle-bottom {
+    position: absolute;
+    height: 10px;
+    cursor: row-resize;
+    width: 100%;
+  }
+
+
+  mwlResizable {
+    box-sizing: border-box; // required for the enableGhostResize option to work
+  }
+
+
+  .mat-drawer-content {
+   
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+// .mat-datepicker-toggle-active.mat-warn {
+//     color: black;
+// }
+
+// .mat-datepicker-content.mat-warn .mat-calendar-body-selected {
+//     background-color: black;
+//     color: var(--light-font-color);
+// }
+
+
+// .mat-datepicker-content.mat-warn .mat-calendar-body-selected {
+//     background-color: black;
+//     color: var(--light-font-color);
+// }

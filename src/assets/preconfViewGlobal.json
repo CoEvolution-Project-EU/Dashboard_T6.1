@@ -1,0 +1,323 @@
+{
+    "id": "events-analysis",
+    "timewindow": "month",
+    "datasets": [
+        {
+            "name": "Elastic Events for Alerts",
+            "id": "alerts",
+            "method": "getAlerts",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {
+                "severities": [
+                    "medium",
+                    "high",
+                    "critical"
+                ]
+            },
+            "filterParams_options": {
+                "severities_options": [
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                ]
+            },
+            "localFilters": {
+                "alertType": []
+            }
+        },
+        {
+            "name": "CPU",
+            "id": "cpudetection",
+            "method": "getCPUAlerts",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "RAM",
+            "id": "ramdetection",
+            "method": "getRAMAlerts",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        }
+    ],
+    "currentWidgets": [
+        
+      
+        {
+            "name": "alertsStats",
+            "title": "Alerts Statistics",
+            "size": 100,
+            "filters": {},
+            "order": 1,
+            "datasets": [
+                "alerts",
+                "ramdetection",
+                "cpudetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetName": [
+                    "Alerts",
+                    "RAM",
+                    "CPU"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "globalAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                },
+                "params": [
+                    {
+                        "name": "Alerts & Severities per Host",
+                        "chart": "stacked",
+                        "stats": false,
+                        "numeric": false,
+                        "dataType": "raw"
+                    },
+                    {
+                        "name": "Severities",
+                        "chart": "pie",
+                        "stats": false,
+                        "numeric": false,
+                        "dataType": "buckets"
+                    },
+                    {
+                        "name": "Alerts per Host",
+                        "chart": "bar",
+                        "stats": false,
+                        "numeric": false,
+                        "dataType": "buckets"
+                    },
+                    {
+                        "name": "Alert Type",
+                        "chart": "",
+                        "stats": true,
+                        "numeric": false,
+                        "dataType": "raw"
+                    },
+                    {
+                        "name": "Risk Score",
+                        "chart": "",
+                        "stats": true,
+                        "numeric": false,
+                        "dataType": "raw"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "alertsDetails",
+            "title": "Alerts Tabular Representation",
+            "size": 100,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Alerts"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "globalAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        }
+      
+    ],
+    "availableWidgets": [
+        {
+            "name": "mlcpuDetails",
+            "title": "ML CPU spike detection",
+            "size": 100,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "cpudetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "CPU"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "cpuAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "mlramDetails",
+            "title": "ML RAM abnormal detection",
+            "size": 100,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "ramdetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "RAM"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "ramAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "timeline",
+            "title": "Timeline Representation",
+            "size": 100,
+            "filters": {
+                "annotationsActive": []
+            },
+            "order": 3,
+            "datasets": [
+                "alerts",
+                "ramdetection",
+                "cpudetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    {"name":"Alerts","labels":[{"default": ".signal.rule.name"},{"hostname":".host.name"}],"legend":[{"low":"#c3ecdf"},{"medium":"gold"},{"high":"#ff8313"},{"critical":"#ff4922"}]},
+                    {"name":"CPU","labels":[{"default": "Abnormal CPU Load"},{"hostname":".target_id"}],"legend":[{"spike 0":"#c3d6ec"},{"spike 1":"#eda46c"}]},
+                    {"name":"RAM","labels":[{"default": "Abnormal RAM consumption"},{"hostname":".target_id"}],"legend":[{"ml ram":"#00a2ffd1"}]}
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "elasticAlerts",
+                "clustering": true,
+                "zoomSync": true,
+                "doubleClick": true,
+                "colors":{
+                    "text":"initial",
+                    "gridLines":"transparent",
+                    "center":"initial",
+                    "top":"initial"
+                },
+                "height": "500px"
+            }
+        },
+       
+        {
+            "name": "alertsDistrib",
+            "title": "Alerts Distribution",
+            "size": 100,
+            "filters": {},
+            "order": 0,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "default",
+                "datasetsInfo": [
+                    "Alerts"
+                ],
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "fillColor": "#ec7508",
+                "brushColor": "#219ebc"
+            }
+        },
+        {
+            "name": "CPUDistrib",
+            "title": "CPU Distribution",
+            "size": 100,
+            "filters": {},
+            "order": 0,
+            "datasets": [
+                "cpudetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "default",
+                "datasetsInfo": [
+                    "CPU"
+                ],
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "fillColor": "#ec7508",
+                "brushColor": "#219ebc"            
+            }
+        },
+        {
+            "name": "RAMDistrib",
+            "title": "RAM Distribution",
+            "size": 100,
+            "filters": {},
+            "order": 0,
+            "datasets": [
+                "ramdetection"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "default",
+                "datasetsInfo": [
+                    "RAM"
+                ],
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "fillColor": "#ec7508",
+                "brushColor": "#219ebc"
+            }
+        }
+    ]
+}

@@ -1,0 +1,274 @@
+{
+    "id": "insiderthreatsview",
+    "title": "Insider Threats",
+    "timewindow": "day",
+    "datasets": [
+        {
+            "name": "Elastic Events for Alerts",
+            "id": "alerts",
+            "method": "getAlerts",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {
+                "severities": []
+            },
+            "filterParams_options": {
+                "severities_options": [
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                ]
+            },
+            "localFilters": {
+                "alertType": []
+            }
+        },
+        {
+            "name": "USB Alerts",
+            "id": "usb",
+            "method": "getUSB",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Login Alerts",
+            "id": "login",
+            "method": "getLogin",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {
+                "userType": []
+            }
+        },
+        {
+            "name": "File Integrity Alerts",
+            "id": "fileint",
+            "method": "getFileint",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Failed SSH Attempts",
+            "id": "failedssh",
+            "method": "getFailedSSH",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "DiskIO",
+            "id": "diskio",
+            "method": "getDiskIO",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        }
+    ],
+    "currentWidgets": [
+        {
+            "name": "alertsDistrib",
+            "title": "Alerts Distribution",
+            "size": 100,
+            "order": 0,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "default",
+                "datasetsInfo": [
+                    "Alerts"
+                ],
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "color": "#ec7508"
+            }
+        },
+        {
+            "name": "timeline",
+            "title": "Alerts Temporal Representation",
+            "size": 100,
+            "filters": {
+                "annotationsActive": []
+            },
+            "order": 2,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Alerts"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "elasticAlerts",
+                "clustering": true,
+                "zoomSync": true,
+                "doubleClick": true
+            }
+        },
+        {
+            "name": "alertsDetails",
+            "title": "Alerts Tabular Representation",
+            "size": 50,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Alerts"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "mainDashAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "loginDetails",
+            "title": "Login Tabular Representation",
+            "size": 50,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "login"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Login"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "loginDetails",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "fileintDetails",
+            "title": "File Int Tabular Representation",
+            "size": 50,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "fileint"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Fileint"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "fileintDetails",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "failedSSHDetails",
+            "title": "Failed SSH AttemptsTabular Representation",
+            "size": 50,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "failedssh"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Failedssh"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "failedSSHDetails",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "USBActivity",
+            "title": "USB Activity Tabular Representation",
+            "size": 50,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "usb"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "USB"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "USBActivity",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        }
+    ],
+    "availableWidgets": []
+}

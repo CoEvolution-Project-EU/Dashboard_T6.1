@@ -1,0 +1,36 @@
+apx-chart {
+  width: 100%;
+  display: block;
+  //overflow: hidden;
+}
+
+.header {
+    font-size: larger;
+    //padding-bottom: 1em;
+    display: inline-flex;
+    align-items: center;
+}
+
+.sheet-button {
+    cursor: pointer;
+}
+
+.hinttooltip {
+    font-size: 14px;
+}
+
+.label1{
+
+    font-size: initial;
+    color: #ec7508;
+    //display: flex;
+}
+
+.genericInfo{
+    display: flex;
+    justify-content: flex-end;
+    //align-items: center;
+    font-size: medium;
+    padding: 0.5em 0.5em 0;
+
+}

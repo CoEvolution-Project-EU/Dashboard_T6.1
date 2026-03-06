@@ -1,0 +1,150 @@
+<div>
+    <div class="header">
+        <!-- <div style="display: flex; align-items: center; margin-right: 1em;">
+            <img src="assets/images/height.png" alt="" style="width: 28px; margin-right: 0.2em;">
+            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button (click)="resizeW('minus')">-20%</button>
+            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button (click)="resizeW('plus')">+20%</button>
+        </div> -->
+        <!-- <span> Network Graph</span>
+        <span style="margin-left: 10px;" class="material-icons-outlined s-18 sheet-button" (click)="this.bottomSheet()"
+            matTooltipClass="hinttooltip" matTooltip=" Network Graph Hints">
+            info
+        </span> -->
+        <div class="netOptions">
+        <mat-slide-toggle [(ngModel)]="toggleOpts">Network Options</mat-slide-toggle>
+        </div>
+
+        <!-- <mat-label style="margin-left:auto">Datasets: <span class="label1" *ngFor="let dataset of config.datasetsNames">#{{dataset}} </span> </mat-label> -->
+
+        <div class="displayedPeriod">
+            
+            <mat-label>Displayed Period: 
+                <span style="margin-left:0.5em">{{startTime | date:'medium'}}</span> - 
+                <span>{{endTime | date: 'medium'}}</span>
+
+            </mat-label>
+        </div>
+    </div>
+    <!-- <div class="mb-3"
+    style="width: fit-content; background-color: aliceblue; border-radius: 1em; padding: 0.1em 0.5em; margin-bottom:1em;">
+    <mat-slide-toggle [(ngModel)]="toggleOpts">Network Options</mat-slide-toggle>
+    </div> -->
+
+    <div fxLayout="row" fxLayoutAlign="center">
+
+        <div class='viewOpts' *ngIf='toggleOpts' [ngStyle]="netResized">
+
+            <mat-label>Edges Thickness</mat-label>
+            <div>
+                <mat-form-field style="width: 100px; margin-top: 0.5em;">
+                    <mat-label>Parameter</mat-label>
+                    <mat-select [(ngModel)]='this.edgeWeightOptions_selected' (selectionChange)="switchEdgeValues()">
+                        <mat-option [value]="'autocount'">Auto Count</mat-option>
+                        <mat-option *ngFor="let param of edgeWeightOptions" [value]="param.value">
+                            {{param.name}}
+                          </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="this.config.hasDates" style="width: 80px;">
+                    <mat-label>Calculation</mat-label>
+                    <mat-select [disabled]="this.edgeWeightOptions_selected == 'autocount'" [(ngModel)]='this.edgeWeightOptions_adjective' (selectionChange)="switchEdgeValues()">
+                        <mat-option  [value]="'avg'"> Average
+                          </mat-option>
+                          <mat-option  [value]="'sum'"> Sum
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!-- <mat-form-field style="width: 180px;">
+                    <mat-label>Nodes Label Format</mat-label>
+                    <mat-select [(ngModel)]='this.labelFormat' (selectionChange)="switchLabels()">
+                        <mat-option *ngFor="let label of netLabels" [value]="label.value">
+                            {{label.name}}
+                          </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+            <!-- <div class="mb-4 mt-2" style="width: 180px;">
+                <mat-checkbox  [(ngModel)]="hiddenNodes" (change)="hideStaticNodes()">
+                    Hide Links
+                </mat-checkbox>
+            </div>
+            <div>
+
+                <button class="btn-h-s" style="color:#3e546d;" mat-raised-button>Redraw
+                    Graph</button>
+            </div> -->
+
+            <div class="mb-3 mt-4" style="width: 180px; ">
+                <mat-checkbox [(ngModel)]="isPhysics" (change)="setPhysics($event.checked)">
+                    Dynamic Graph View
+                </mat-checkbox>
+            </div>
+
+            <div>
+                <mat-card>
+                    <mat-card-subtitle>
+                        Advanced Options
+                    </mat-card-subtitle>
+
+                    <div [ngStyle]="{'color': !isPhysics ? '#00000052' : 'black'}">
+                        <mat-card-content class="margin0 g">
+                            <span class="margin0 h5">Edge Stiffness</span>
+                            <mat-slider [disabled]='!isPhysics' [max]="0.5" [min]="0" [step]="0.005"
+                                [thumbLabel]="false" [(ngModel)]="sConstant" (change)="setOpts('new')">
+                            </mat-slider>
+                            <span class="slider h5">{{sConstant}}</span>
+                        </mat-card-content>
+
+                        <mat-card-content class="margin0 g">
+                            <span class="margin0 h5">Edge Length</span>
+                            <mat-slider [disabled]='!isPhysics' [max]="1000" [min]="0" [step]="25" [thumbLabel]="false"
+                                [(ngModel)]="sLength" (change)="setOpts('new')">
+                            </mat-slider>
+                            <span class="slider h5"> {{sLength}}</span>
+
+                        </mat-card-content>
+
+                        <mat-card-content class="margin0 g">
+                            <span class="margin0 h5">Central Gravity</span>
+                            <mat-slider [disabled]='!isPhysics' [max]="10" [min]="0" [step]="0.15" [thumbLabel]="false"
+                                [(ngModel)]="cGravity" (change)="setOpts('new')">
+                            </mat-slider>
+                            <span class="slider h5">{{cGravity}}</span>
+
+                        </mat-card-content>
+
+                        <mat-card-content class="margin0 g" style="margin-bottom:1em;">
+                            <span class="margin0 h5">Nodes' Gravity</span>
+                            <mat-slider [disabled]='!isPhysics' [max]="0" [min]="-50000" [step]="-50"
+                                [thumbLabel]="false" [(ngModel)]="gConstant" (change)="setOpts('new')">
+                            </mat-slider>
+                            <span class="slider h5">{{gConstant}}</span>
+
+                        </mat-card-content>
+
+                        <button class="btn-h-s" mat-raised-button (click)="setOpts('reset')">Reset to
+                            Default</button>
+                    </div>
+                </mat-card>
+
+            </div>
+
+
+        </div>
+
+        <div class="container-network">
+
+            <div #network></div>
+
+            <button matTooltipClass="hinttooltip"
+            matTooltip="Fit graph view into widget's window" style="position:absolute; bottom: 0px; right: 12px;"
+            mat-icon-button (click)="fit()"> <img style="width: 30px;" src="assets/images/fit.png"
+                alt="fit screen view">
+        </button>
+    
+        </div>
+    </div>
+
+  
+</div>

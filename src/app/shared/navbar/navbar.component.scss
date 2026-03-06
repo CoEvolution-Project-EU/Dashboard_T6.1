@@ -1,0 +1,20 @@
+mat-toolbar {
+      // background-color: #18385e;
+      background-color: var(--navbar-color);
+      position: fixed;
+      z-index: 1000;
+      height: 45px;
+}
+
+.labels {
+      color: var(--light-font-color);
+
+      button{
+            border-color: whitesmoke;
+            margin-left: 0.5em;
+      }
+}
+
+::ng-deep .mat-menu-panel {
+      background-color: var(--navbar-color);
+}

@@ -1,0 +1,168 @@
+
+::ng-deep .contentBucket{
+    display: flex;
+    flex-direction: column;
+
+}
+
+::ng-deep .vis-custom-time-marker {
+    color: black!important;
+    font-size: 13px!important;
+}
+
+//for markers
+::ng-deep [class*="highPriority-"]{
+    width: 3px;
+    background-color: #ff7457;
+
+}
+::ng-deep [class*="mediumPriority-"]{
+    width: 3px;
+    background-color: #fda24f;
+
+}
+::ng-deep [class*="lowPriority-"]{
+    width: 3px;
+    background-color: #89d9ed;
+
+}
+
+
+::ng-deep.vis-item.vis-cluster {
+    width: fit-content !important;
+    background-color: initial;
+}
+
+::ng-deep .vis-item.vis-range .vis-item-content {
+    max-width: fit-content;
+}
+
+::ng-deep .contentClust{
+    display: flex;
+    flex-direction: column;
+}
+
+::ng-deep  .timelineTitles{
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    white-space: normal;
+    overflow: hidden;
+}
+
+::ng-deep .vis-item.vis-line{
+    display: none;
+}
+
+::ng-deep .vis-item.vis-dot{
+    display: none;
+}
+
+::ng-deep .vis-item .vis-item-content {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+::ng-deep .vis-item.vis-selected {
+    border-color: #ffc200;
+    background-color: #fff780;
+    z-index: 2;
+}
+
+mat-tooltip.hinttooltip {
+    font-size: 14px;
+}
+
+.div-label {
+    align-items: center;
+    margin-right: 0.5em;
+}
+
+.label-group {
+    display: flex;
+    cursor: default;
+    margin-left: auto;
+    font-size: initial;
+}
+.label {
+    color: #17375e;
+    margin-left: 0.3em;
+}
+
+.header {
+    font-size: larger;
+    padding-bottom: 1em;
+    display: flex;
+    align-items: center;
+}
+
+.sheet-button {
+    cursor: pointer;
+}
+
+.clearAnnot{
+    background-color: #ff98bc0f;
+    border-radius: 2em;
+    color: indianred;
+}
+
+.label1{
+
+    font-size: initial;
+    color: #ec7508;
+}
+
+
+.default{
+    ::ng-deep{
+
+        .vis-grid {
+            border-color: var(--gridLines);
+        }
+        
+        .vis-background{
+            background-color: var(--center);
+    
+        }
+
+        .vis-panel.vis-top{
+            background-color: var(--top);
+
+        }
+
+        .vis-text{
+                color:  var(--text);;
+            }
+        .vis-labelset{
+            background-color: var(--groupsArea);
+        }
+
+    }
+}
+
+::ng-deep .vis-item.chosen {
+    border: 2px solid var(--chosen);
+    color:  var(--chosen)!important;
+}
+
+::ng-deep .vis-item.vis-selected {
+    background-color: var(--highlight)!important;
+}
+
+::ng-deep .vis-item.normal {
+    border:none;
+    color: var(--itemsText)!important;
+}
+
+::ng-deep .vis-label.chosen {
+    border: 1px solid var(--chosen);
+    color: var(--chosen)!important;
+}
+
+::ng-deep .vis-label.normal {
+    border-color: none;
+    color: var(--itemsText)!important;
+}
+
+

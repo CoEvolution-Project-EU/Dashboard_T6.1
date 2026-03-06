@@ -1,0 +1,36 @@
+
+<!-- <div> -->
+    
+    <!-- <div class="header">
+      <!-- <mat-label>Datasets: <span class="label1" *ngFor="let dataset of config.datasetsNames"> #{{dataset}}  </span> </mat-label> -->
+
+        <!-- <span>Distribution Chart</span>
+        <span style="margin-left: 10px; " class="material-icons-outlined s-16 sheet-button" (click)="this.bottomSheet()"
+            matTooltipClass="hinttooltip" matTooltip="Distribution Chart Hints">
+            info
+        <!-- </span>
+    </div> -->
+
+    <div class="genericInfo">
+      <!-- <mat-label> Dataset:  </mat-label> <span style="margin: 0 0.2em" class="label1"> #{{config.datasetName}} </span>  -->
+      <mat-label> Interval:  </mat-label> <span style="margin: 0 0.2em" class="label1">{{interval}}</span>
+  </div>
+    
+    <div style="display: none;">
+      <apx-chart #ghostChart
+        [chart]="chartOptions1.chart"
+      ></apx-chart>
+    </div>
+    <div *ngIf="this.brushChartOptions">
+      <apx-chart #brushChart
+        [series]="brushChartOptions.series"
+        [chart]="brushChartOptions.chart"
+        [xaxis]="brushChartOptions.xaxis"
+        [colors]="brushChartOptions.colors"
+        [stroke]="brushChartOptions.stroke"
+      ></apx-chart>
+    </div>
+
+
+<!-- </div> -->
+
