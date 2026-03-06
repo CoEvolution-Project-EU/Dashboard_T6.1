@@ -1,31 +1,58 @@
-# FvtCore_roxanne
-
-#This project is the fvt version for the ROXANNE project
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.2.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# CoEvolution_Dashboard_T6.1
+The CoEvolution Hub Dashboard represents the main graphical entry point of the CoEvolution
+ecosystem. It provides a unified, web-based interface through which users can access AI
+models, reports, risk analysis, and orchestration information. Through modular visualization
+components, the dashboard aggregates data from backend services and pools, allowing end
+users to navigate metadata, and review results in real time.
 
 
+Run with Docker and Docker Compose.
+
+Based on the Advanced Visualisation Toolkit (AVT) developed by Aegis IT Research:
+
+* [AEGIS](https://aegisresearch.eu/)
+* [AVT](https://avt.aegisresearch.eu/?_gl=1%2A1vwo23l%2A_ga%2AMTg2MTY1OTMzOS4xNzM4NjczNjIz%2A_ga_F3BQXKXREW%2AMTczODY3MzYyMy4xLjAuMTczODY3MzYyMy4wLjAuMA..)
+
+---
+# Setup the Dashboard 
+
+## tl;dr
+
+```sh
+docker-compose up
+```
+---
+
+## Requirements
+
+### Host setup
+
+* Docker Engine version **18.06.0** or newer
+* Docker Compose version **1.28.0** or newer
+* 2 GB of RAM
+
+By default, it exposes the following port:
+
+* 4200
+
+## Usage
+
+Give it about a minute to initialize, then access the web UI by opening <http://localhost:4200/fvt> in a web
+browser.
+
+
+> [!NOTE]
+> Make sure you add */fvt/* on your url 
+
+---
+
+
+## License
+
+This project has received funding from the European Union's Horizon 2022 research and innovation programm, under Grant Agreement 101091996.
+
+For more details about the licence, see the [LICENSE](LICENSE) file.
+
+## Contributors
+
+- Stella Markopoulou (<s.markopoulou@aegisresearch.eu>)
