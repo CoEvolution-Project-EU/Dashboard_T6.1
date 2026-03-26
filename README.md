@@ -82,40 +82,6 @@ browser.
 > Make sure you add */fvt/* on your url 
 
 ---
-
-# Project Structure
-
-```
-.
-├── src/                 Angular application source code
-├── nginx/               Nginx configuration
-├── k8s/                 Kubernetes deployment manifests
-├── Dockerfile           Docker build configuration
-├── docker-compose.yaml  Local container orchestration
-├── nginx.conf           Nginx server configuration
-└── README.md
-```
-
----
-
-# Environment Variables
-
-The application reads runtime configuration from `assets/env.js`.
-
-The following variables must be defined:
-
-| Variable     | Description                    |
-| ------------ | ------------------------------ |
-| SERV_HOST    | Backend API host               |
-| SOCKET_HOST  | Websocket service host         |
-| KEYCLOAK_URL | Keycloak authentication server |
-
-These values are injected at container startup using `envsubst`.
-
----
-
-# Running the Application
-
 ## 1. Run Angular locally (development)
 
 Requirements:
@@ -164,7 +130,7 @@ fvt-dashboard
 Open:
 
 ```
-http://localhost:8080/fvt/
+http://localhost:4200/fvt/
 ```
 
 ---
