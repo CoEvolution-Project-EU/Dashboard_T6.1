@@ -1,14 +1,24 @@
-// .boxForm {
-//     padding: 0.5em 1em;
-//     box-shadow: 0 8px 10px -1px rgb(0 0 0 / 20%), 0 3px 2px 0 rgb(0 0 0 / 14%), 0 -3px 5px 0 rgb(0 0 0 / 12%);
-//     margin-bottom: 1em;
-//     display: flex;
-//     flex-direction: column;
-//   }
 
 
   .labelHeader{
     font-size: larger;
-    //color: #b62b5a;
-    //font-weight: 500;
   }
+
+
+.applyBut {
+  background-color: var(--main-button-color)!important;
+  margin-left: 1em;
+  line-height: 29px;
+  font-size: small;
+  color: var(--light-font-color);
+}
+
+.resetBut {
+  margin-left: 1em;
+  line-height: 29px;
+  font-size: small;
+  border-radius: 1em;
+  background-color: var(--reset-button-color)!important;
+  color: var(--light-font-color);
+  
+}

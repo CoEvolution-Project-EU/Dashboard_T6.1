@@ -1,5 +1,5 @@
 .page-container {
-    padding-top: 145px;
+    padding-top: 88px;
 }
 
 .topPanel {
@@ -7,9 +7,9 @@
     width: 100%;
     position: fixed;
     z-index: 999;
-    height: 100px;
+    height: 50px;
     padding: 12px;
-    margin-top: 45px;
+    margin-top: 37px;
     display: flex;
     flex-direction: column;
 
@@ -27,8 +27,8 @@
 
             margin-left: 0.2em;
             color: var(--secondary-button-color);
-            background-color: #fef2e891;
-            padding: 0.5em;
+            background-color: white;
+            padding: 0.3em;
             font-weight: bold;
 
         }
@@ -37,52 +37,58 @@
     }
 
     .innerBtmPanel{
-        display: flex;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
         align-items: center;
-        width: 100%;
+        gap: 0.5rem;
 
-        .select-filter{
-            width: 180px;
-            max-width: 180px;
-            margin: 0 0.5em;
-        }
+        
 
 
         .centerMenu{
-            width: 100%;
+            justify-self: center;
             display: flex;
             align-items: center;
-            justify-content: center;
-            //margin-left: auto;
+            gap: 0.5rem;
         }   
 
-        .topPanelBtns{
-            font-weight: bold;
-            border-radius: 0.5em;
-            // background-color: var(--secondary-button-color);
-            // color: var(--light-font-color);
-            color: var(--secondary-button-color);
-            //border-color: var(--secondary-button-color);
-            background-color: #fef2e891;
+        // .calenDate {
+        //     width: 155px;
+        //     font-size: 15px;
+        //     margin-left: 1em;
+        // }
 
-        }
+        // .calenTime {
+        //     width: 140px;
+        //     font-size: 15px;
+        //     margin-left: 1em;
+        // }
 
-        .calend {
-            width: 195px;
-            font-size: 15px;
-            margin-left: 1em;
-        }
+        // .dateTime {
+        //     display: flex;
+        //     flex-wrap: wrap;
+        //     align-items: center;
+        //     gap: 0.5rem;
+        //     max-height: 3.8rem;
+        //     overflow-y: auto;
+        //     padding-right: 0.5rem;
 
-        .dateTime {
-            //margin-left: 5em;
-            padding: 0 5%;
-            display: flex;
-            align-items: center;
-        }
+        //     .updatePeriodBtn {
+        //         display: flex; 
+        //         justify-content: center; 
+        //         align-items: center;
+
+        //         img {
+        //             width: 33px;
+        //             height: 33px;
+        //         }
+        //     }
+        // }
 
         .inspectLabel{
             width: max-content;
             display: flex;
+            margin-right: 10px;
             //font-size: initial;
         }
 
@@ -92,6 +98,7 @@
 
 .dropArea {
     min-height: 500px;
+    display: flex;
     flex-wrap: wrap;
 }
 
@@ -119,8 +126,11 @@
 
 .grabWidget {
     cursor: grab;
-    text-align: end;
+    // text-align: end;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 
 }
 .cdk-drag-animating {
@@ -136,11 +146,11 @@ mat-drawer-container {
 // }
 
 .applyBut {
-    background-color: var(--main-button-color);
+    background-color: var(--main-button-color)!important;
     margin-left: 1em;
     line-height: 29px;
     font-size: small;
-    color: var(--light-font-color);
+    color: var(--light-font-color)!important;
 }
 
 .resetBut {
@@ -148,10 +158,13 @@ mat-drawer-container {
     line-height: 29px;
     font-size: small;
     border-radius: 1em;
+    background-color: var(--reset-button-color)!important;
+    color: var(--light-font-color)!important;
+    
 }
 
 .filtersBar {
-    width: 225px;
+    width: 240px;
     padding: 0.5em 1em;
     display: flex;
     flex-direction: column;
@@ -180,14 +193,85 @@ mat-drawer-container {
         padding: 0.5em;
         border: 1px solid var(--main-button-color);
         border-radius: 0.5em;
-        margin-bottom: 1.5em;
+        margin-bottom: 1em;
     }
 
     .header-filter {
-        color: var(--header-filter-font-color);
+        color: var(--secondary-button-color);
         display: flex;
     }
+
+    .dateTimeRows {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 0.5em;
+        margin: 0.7em 0;
+        
+        .dateTimeRow {
+          display: flex;
+          gap: 0.5em;
+          justify-content: space-evenly;
+
+            .calenDate {
+              cursor: pointer;
+          
+              // This covers the whole area, including the label and input
+              ::ng-deep .mat-form-field-wrapper {
+                cursor: pointer !important;
+              }
+          
+              ::ng-deep .mat-form-field-flex {
+                cursor: pointer !important;
+              }
+          
+              ::ng-deep input.mat-input-element {
+                cursor: pointer !important;
+              }
+            }
+
+            .calenDate,
+            .calenTime {
+                min-width: 90px;
+                max-width: 90px;
+                font-size: 14px;
+                cursor: pointer!important;
+                display: flex!important;
+                align-items: center!important;
+                
+                ::ng-deep input.mat-input-element {
+                    cursor: pointer!important;
+                    color: black;
+                }
+
+                ::ng-deep.mdc-text-field {
+                    padding: 0!important
+                }
+                
+                ::ng-deep .mat-datepicker-input {
+                    cursor: pointer!important;
+                }
+            }
+        }
+      }
+
+    .updatePeriodBtn img {
+        width: 30px;
+        height: 30px;
+      }
 }
+
+::ng-deep .mat-mdc-option .mdc-list-item__primary-text {
+    font-size: 14px!important;
+}
+
+// ::ng-deep .cdk-overlay-pane {
+//     z-index: 9999!important;
+//     width: 115px!important;
+// }
+
 .fixedButtns{
     bottom: 0px;
     display: flex;
@@ -207,7 +291,7 @@ mat-drawer-container {
 
 ::ng-deep .ng-value-container {
     max-height: 150px;
-    overflow: auto;
+    overflow-y: hidden;
 }
 
 .check {
@@ -277,32 +361,197 @@ mat-drawer-container {
     height: 10px;
     cursor: row-resize;
     width: 100%;
-  }
+}
 
 
-  mwlResizable {
+mwlResizable {
     box-sizing: border-box; // required for the enableGhostResize option to work
-  }
+}
 
 
-  .mat-drawer-content {
-   
+.mat-drawer-content {
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 
-// .mat-datepicker-toggle-active.mat-warn {
-//     color: black;
-// }
+.mat-datepicker-toggle-active.mat-warn {
+    color: black;
+}
 
-// .mat-datepicker-content.mat-warn .mat-calendar-body-selected {
-//     background-color: black;
-//     color: var(--light-font-color);
-// }
+.mat-datepicker-content.mat-warn .mat-calendar-body-selected {
+    background-color: black;
+    color: var(--light-font-color);
+}
 
 
-// .mat-datepicker-content.mat-warn .mat-calendar-body-selected {
-//     background-color: black;
-//     color: var(--light-font-color);
-// }
+.mat-datepicker-content.mat-warn .mat-calendar-body-selected {
+    background-color: black;
+    color: var(--light-font-color);
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: transparent!important;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none!important;
+}
+
+mat-drawer-container {
+    display: flex;
+    height: 100%;
+}
+  
+mat-drawer {
+    width: 241px;
+    transition: width 0.3s ease;
+
+    &.collapsed {
+        width: 60px;
+    }
+}
+  
+mat-drawer-content {
+    flex: 1;
+    transition: all 0.3s ease;
+  
+    &.collapsed {
+      margin-left: 60px !important;
+    }
+}
+
+.filters-toggle-button {
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: rgba(254, 242, 232, 0.6);
+    color: var(--secondary-button-color);
+    border-radius: 8px;
+    border: 1px solid rgba(254, 242, 232, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    padding: 0;
+    height: 40px;
+  }
+
+  .filters-toggle-button.collapsed {
+    height: 100%;
+    padding: 10px 0;
+  }
+  
+  .filters-toggle-button:hover {
+    background-color: rgba(254, 242, 232, 0.8);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+    animation: pulse 1s infinite ease-in-out;
+  }
+  
+  .icon-and-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+  }
+  
+  .icon-and-label.collapsed {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+  
+  .vertical-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 15px;
+  }
+  
+  .icon-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    margin-top: 4px;
+  }
+  
+  .rotate-icon {
+    transition: transform 1.3s ease;
+  }
+  
+  .icon-and-label.collapsed .rotate-icon {
+    transform: rotate(-90deg);
+  }
+
+  .widgets-toggle-button {
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: rgba(254, 242, 232, 0.6);
+    color: var(--secondary-button-color);
+    border-radius: 8px;
+    border: 1px solid rgba(254, 242, 232, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    padding: 0;
+    height: 40px;
+  }
+
+  .widgets-toggle-button.collapsed {
+    height: 100%;
+    padding: 10px 0;
+  }
+
+  .vertical-label-widgets {
+    writing-mode: vertical-rl;
+    transform: rotate(360deg);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 15px;
+  }
+
+  .widgets-toggle-button .rotate-icon {
+    transition: transform 1.3s ease;
+  }
+  
+  .widgets-toggle-button .icon-and-label.collapsed .rotate-icon {
+    transform: rotate(-90deg);
+  }
+  
+  .widgets-toggle-button .vertical-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 15px;
+  }
+  
+  .widgets-toggle-button .icon-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    margin-top: 4px;
+  }
+
+  .filters-drawer, .widgets-drawer {
+    margin-top: 4px;
+  }
+
+  .select-filter {
+    width: 200px!important;
+    max-width: 200px!important;
+    margin: 0 0.5em;
+}

@@ -7,14 +7,15 @@ mat-toolbar {
 }
 
 .labels {
-      color: var(--light-font-color);
+      color: var(--light-font-color)!important;
 
-      button{
-            border-color: whitesmoke;
+      button {
+            color: white!important;
+            border-color: whitesmoke!important;
             margin-left: 0.5em;
       }
 }
 
-::ng-deep .mat-menu-panel {
-      background-color: var(--navbar-color);
-}
+// ::ng-deep .mat-menu-panel {
+//       background-color: var(--navbar-color);
+// }

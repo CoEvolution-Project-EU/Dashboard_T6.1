@@ -1,66 +1,28 @@
-import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthGuardData, createAuthGuard } from 'keycloak-angular';
+import { AuthDataContextService } from './auth-data-context.service';
 
-import { KeycloakAuthGuard } from 'keycloak-angular';
-import { KeycloakService } from 'keycloak-angular';
-import { AuthService } from '../guard/auth.guard.service';
-// import { environment } from '../../environments/environment';
+const isAccessAllowed = async (
+  route: ActivatedRouteSnapshot,
+  _: RouterStateSnapshot,
+  authData: AuthGuardData
+): Promise<boolean | UrlTree> => {
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard extends KeycloakAuthGuard {
+  // console.log('Dashboard route guard activated for:', route, route.params);
 
-  constructor(
-    protected readonly router: Router,
-    protected readonly keycloak: KeycloakService,
-    private _snackBar: MatSnackBar,
-    private route: ActivatedRoute,
-    private authRightsServ: AuthService,
+  const { authenticated } = authData;
 
-  ) {
+  const contextService = inject(AuthDataContextService);
+  contextService.setAuthData(authData);
 
-    super(router, keycloak);
-
+  if (authenticated) {
+    return true;
   }
 
-  async isAccessAllowed(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Promise<boolean | UrlTree> {
+  const router = inject(Router);
 
-    if (!this.authenticated) {
+  return router.parseUrl('/forbidden');
+};
 
-      let redirect = window.location.origin + state.url;
-
-      // if (environment.production) redirect = window.location.origin + '/fvt' + state.url;
-
-      await this.keycloak.login({
-
-        redirectUri: redirect,
-
-      });
-
-
-      if (route.params.id) {
-
-        if (this.authenticated && this.authRightsServ.checkReadRights(route.params.id)) return true
-        else {
-
-          this.router.navigate(['cases-overview'], { relativeTo: this.route })
-          this._snackBar.open('Access Denied. You are not allowed to access this case.', 'X', { duration: 5000, panelClass: 'errorClass', verticalPosition: 'top', horizontalPosition: 'center' })
-
-          return false
-
-        }
-
-
-      } else return this.authenticated;
-
-
-
-    }
-
-    return this.authenticated;
-  }
-}
+export const canActivateAuthRole = createAuthGuard<CanActivateFn>(isAccessAllowed);

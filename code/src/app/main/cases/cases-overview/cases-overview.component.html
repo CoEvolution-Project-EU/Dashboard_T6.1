@@ -2,34 +2,46 @@
     color="#EDAE49"></ngx-spinner>
 
 <app-navbar></app-navbar>
-<div class="menu">
 
-</div>
-<!--<div class="menu">
+<div class="menu">
 
     <div class="innerNavButtons">
         <mat-icon class="s-18 header">apps</mat-icon>
         <mat-icon class="s-16 header">keyboard_double_arrow_right</mat-icon>
-        <button style="color: var(--secondary-button-color); background-color:#ec740417;" mat-flat-button>
+        <button style="color: var(--secondary-button-color); background-color: #fef2e891; border-radius: 0.5em; border: 1px solid var(--secondary-button-color);"
+            mat-flat-button>
             Hosts
         </button>
         <span style="margin-left: 0.5em">|</span>
-         <button [routerLink]="[ 'dashboards' ,'core-dash', 'all', 'global']" routerLinkActive="router-link-active"
-            mat-flat-button>
+        <!-- #TOUCH -->
+        <button [routerLink]="[ '/dashboard' ,'all', 'global']" routerLinkActive="router-link-active" mat-flat-button>
             Alerts Analysis
-        </button> 
+        </button>
 
     </div>
 
-
-     <button class="recentSavedBtn" mat-stroked-button matTooltip="Saved Views" (click)="drawer.toggle()">
+    <!-- #TOUCH -->
+    <!-- <button class="recentSavedBtn" mat-stroked-button matTooltip="Saved Views" (click)="drawer.toggle()">
         <mat-icon *ngIf="drawer.opened else elseIcon">chevron_right</mat-icon>
         <ng-template #elseIcon> <mat-icon>chevron_left</mat-icon> </ng-template>
         Saved
         <mat-icon class="material-icons-outlined">save</mat-icon>
-    </button> 
+    </button> -->
 
-</div>-->
+    <!-- <div class="innerHeader">
+        <mat-icon class="s-18 header">apps</mat-icon>
+        <mat-icon class="s-16 header">keyboard_double_arrow_right</mat-icon>
+        <span class="header">Assets List</span>
+    </div> -->
+
+
+
+
+
+
+
+
+</div>
 
 <div class="page-container">
 
@@ -45,14 +57,14 @@
                         <mat-card class="asset-card shadow">
                             <mat-card-header class="assets-header">
                                 <mat-card-title>
-                                    {{asset}}
+                                    {{asset.hostname}}
                                 </mat-card-title>
                                 <!-- <mat-card-subtitle> Status: {{asset.status}}
                             </mat-card-subtitle> -->
                             </mat-card-header>
                             <mat-divider></mat-divider>
                             <img class="mt-2" style="width:165px; margin: auto; padding: 1em;" mat-card-image
-                                src="assets/logo/logo.png">
+                                src="assets/logo/logoz.png">
                             <mat-card-actions>
                                 <mat-divider></mat-divider>
 
@@ -88,9 +100,9 @@
                                         </span>
                                     </button> -->
 
-                                        <button class="btn-2" style=" background-color: var(--secondary-button-color);
-                                    color: var(--light-font-color);"
-                                            [routerLink]="[ 'dashboards' ,'core-dash', asset ,view.value]"
+                                        <button class="btn-2"
+                                            style="background-color: var(--secondary-button-color); color: var(--light-font-color);"
+                                            [routerLink]="[ '/dashboard', asset.hostname ,view.value ]"
                                             routerLinkActive="router-link-active" mat-raised-button>
                                             investigate
                                         </button>

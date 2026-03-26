@@ -22,6 +22,7 @@ table {
   background-color: #f1f6f6;
   border-radius: 1em;
   padding: 0 1em;
+  width: 100%;
 }
 
 .header {
@@ -62,4 +63,23 @@ td:hover {
   color: #ec7508;
   //display: flex;
 }
+
+.red-arrow {
+  color: rgb(158, 2, 2);
+}
+
+.low-consumption {
+  color: rgb(101, 158, 2);
+}
+.medium-consumption {
+  color: rgb(158, 85, 2);
+}
+.high-consumption {
+  color: rgb(158, 2, 2);
+}
+
+.green-arrow {
+  color: rgb(17, 99, 17);
+}
+
 

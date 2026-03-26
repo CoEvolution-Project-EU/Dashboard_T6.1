@@ -14,134 +14,53 @@
         </button>
         <span style="margin-right: 0.5em">|</span>
         <button style="color: var(--secondary-button-color); background-color:#ec740417;" mat-flat-button>
-            Events Analysis
+            Alerts Analysis
         </button>
 
 
     </div>
 
     <ng-template #infoTemp>
-        <div class="innerNavButtons" style="min-height: 36px">
+        <div class="innerNavButtons" style="min-height: 36px;">
             <mat-icon class="s-18 header">apps</mat-icon>
             <mat-icon class="s-16 header">keyboard_double_arrow_right</mat-icon>
             <mat-label class="idTitle"> {{this.assetId}} :</mat-label>
             <!-- <mat-icon>chevron_right</mat-icon> -->
-            <mat-label>{{preconfViewLoaded.title}}</mat-label>
+            <mat-label>{{preconfViewLoaded?.title}}</mat-label>
         </div>
     </ng-template>
 
     <div class="innerBtmPanel">
 
-        <button class="topPanelBtns" [disabled]='currentWidgets.length == 0' matTooltipClass="hinttooltip"
+        <!-- <button class="topPanelBtns" [disabled]='currentWidgets.length == 0' matTooltipClass="hinttooltip"
             mat-stroked-button matTooltip="Show/Hide Filters Bar" (click)="drawer.toggle()">
             <mat-icon>filter_list</mat-icon> Filters
-            <!-- <mat-icon *ngIf="!drawer.opened else elseIcon">chevron_right</mat-icon> -->
+            <mat-icon *ngIf="!drawer.opened else elseIcon">chevron_right</mat-icon>
             <ng-template #elseIcon> <mat-icon>chevron_left</mat-icon> </ng-template>
-        </button>
+        </button> -->
 
         <div class="centerMenu">
-            <mat-slide-toggle (toggleChange)="syncWidgets()" [checked]="syncFlag">
-                Sync Widgets
 
-            </mat-slide-toggle>
-            <span style="margin-left: 10px;" class="material-icons-outlined s-18 hintIcon" matTooltipClass="hinttooltip"
-                matTooltip="Synchronize the time-window of the rest widgets per zoom interaction">
-                info
-            </span>
+            <!-- <div class="download">
+            [disabled]="currentWidgets.length == 0" 
 
-            <!-- <div>
-                <button (click)="downloadReport1()" [disabled]="currentWidgets.length == 0" class="applyBut"
-                    mat-raised-button>Download PDF</button>
+                <button [disabled]="true" mat-button [matMenuTriggerFor]="menu" class="applyBut">Download</button>
+                <mat-menu #menu="matMenu">
+                    <button (click)="downloadReport()" mat-menu-item>Download pdf</button>
+                    <button mat-menu-item (click)="downloadJson()">Download JSON</button>
+                </mat-menu>
             </div> -->
-
-            <div class="dateTime">
-
-
-                <button (click)="updatePeriod()" matTooltip="Load currently zoomed period" matTooltipClass="hinttooltip"
-                    mat-icon-button>
-                    <img src="assets/images/period.png" style="width:30px;" alt="">
-                </button>
-
-                <mat-form-field class="calend">
-                    <input [(ngModel)]="startPeriod" matInput [ngxMatDatetimePicker]="picker"
-                        placeholder="Choose start datetime">
-                    <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-                    <ngx-mat-datetime-picker #picker [color]="'warn'">
-                    </ngx-mat-datetime-picker>
-                </mat-form-field>
-
-                <mat-form-field class="calend">
-                    <input [(ngModel)]="endPeriod" matInput [ngxMatDatetimePicker]="picker2"
-                        placeholder="Choose end datetime">
-                    <mat-datepicker-toggle matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
-                    <ngx-mat-datetime-picker #picker2 [color]="'warn'">
-                    </ngx-mat-datetime-picker>
-                </mat-form-field>
-
-                <button [disabled]="currentWidgets.length == 0" (click)="initData('reset')" class="resetBut"
-                    mat-raised-button>Reset</button>
-                <button [disabled]="currentWidgets.length == 0" (click)="initData('new')" class="applyBut"
-                    mat-raised-button>Request</button>
-
-
-            </div>
-
-            <div class="download">
-                <button [disabled]="currentWidgets.length == 0" (click)="downloadReport()" class="applyBut"
-                    mat-raised-button>Download report</button>
-
-            </div>
-            <div *ngIf="this.assetId == 'all'" class="f" style="align-items:center;">
-
-                <mat-label class="inspectLabel"> Inspect Asset
-                    <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip" matTooltip="">
-                        info
-                    </span>
-                </mat-label>
-
-                <ng-select class="select-filter" [closeOnSelect]="true" [multiple]="false" [items]="this.assets_options"
-                    [(ngModel)]="this.assets" placeholder="Select Asset" bindLabel="id" bindValue="id">
-                    <!-- 
-                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="f">
-                                <div class="ng-value f" *ngFor="let item of items | slice:0:1">
-
-                                    <span class="ng-value-label"
-                                        style="  white-space: nowrap; max-width: 70px; overflow: hidden;text-overflow: ellipsis;">
-                                        {{item.id}}</span>
-                                    <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
-                                </div>
-                                <div class="ng-value" *ngIf="items.length > 1">
-                                    <span class="ng-value-label">{{items.length - 1}}
-                                        more...</span>
-                                </div>
-                            </div>
-
-                        </ng-template> -->
-                    <ng-template let-item="item" ng-option-tmp let-search="searchTerm">
-                        <div><span>{{item}}</span></div>
-                    </ng-template>
-
-                </ng-select>
-
-                <button [disabled]="!assets" (click)="inspectAssets()" mat-icon-button>
-                    <img src="assets/images/share.png" style="width:25px;" alt="">
-                </button>
-
-
-            </div>
 
         </div>
 
 
-        <button class="topPanelBtns" style=" margin-left: auto;" mat-stroked-button matTooltip="Add/Remove Widgets"
-            (click)="drawer2.toggle()">
+        <!-- <button class="topPanelBtns" mat-stroked-button matTooltip="Add/Remove Widgets" (click)="drawer2.toggle()">
             <mat-icon *ngIf="drawer2.opened else elseIcon">chevron_right</mat-icon>
             <ng-template #elseIcon> <mat-icon>chevron_left</mat-icon> </ng-template>
             Widgets
             <mat-icon class="material-icons-outlined">widgets</mat-icon>
 
-        </button>
+        </button> -->
 
     </div>
 
@@ -157,1192 +76,1551 @@
 <!-------------------- MAIN PAGE --------------------->
 <div class="page-container">
     <div class="content">
-        <mat-drawer-container>
+        <mat-drawer-container class="main-container">
+
             <!-------------------- FILTERS BAR  --------------------->
+            <mat-drawer #drawer mode="side" [opened]="true" [class.collapsed]="isCollapsed" class="filters-drawer">
+                <!-- Collapsed Sidebar Toggle Button -->
+                <button class="filters-toggle-button" [ngClass]="{ collapsed: isCollapsed }"
+                    (click)="toggleFiltersSidebar()" matTooltip="Expand Filters Panel">
+                    <div class="icon-and-label" [ngClass]="{ collapsed: isCollapsed }">
+                        <mat-icon class="rotate-icon" [ngClass]="{ 'collapsed': isCollapsed }">filter_list</mat-icon>
+                        <span *ngIf="isCollapsed" class="vertical-label">FILTERS</span>
+                        <div *ngIf="isCollapsed" class="icon-stack">
+                            <mat-icon>tune</mat-icon>
+                            <mat-icon>event</mat-icon>
+                            <mat-icon>check_box</mat-icon>
+                        </div>
+                        <span *ngIf="!isCollapsed">Filters</span>
+                    </div>
+                </button>
 
-            <mat-drawer #drawer mode="side" [opened]="true" style="padding-bottom:65px; margin-top: 0.5em;">
+                <div *ngIf="!isCollapsed" class="filtersBar">
 
+                    <!-- <mat-radio-group class="radioButtons" [value]="'query'">
 
-                <div class="filtersBar">
+                            <mat-radio-button #local value="local">Local Filters</mat-radio-button>
+                            <mat-radio-button value="query">Query Filters</mat-radio-button>
+                            <span style="float: right; color: #3e546d;" class="material-icons-outlined s-18 hintIcon "
+                                matTooltipClass="hinttooltip"
+                                matTooltip="By applying Query Filters, new request to the data sources will be executed, while the Local Filters will be applied to the existing displayed data.">
+                                info
+                            </span>
+                        </mat-radio-group> -->
 
-                    <mat-radio-group class="radioButtons" [value]="'query'">
+                    <!-- <div class="filtersBarContent"> -->
+                    <div class="betweenFilters" style="margin-bottom: 1em;">
 
-                        <mat-radio-button #local value="local">Local Filters</mat-radio-button>
-                        <mat-radio-button value="query">Query Filters</mat-radio-button>
-                        <span style="float: right; color: #3e546d;" class="material-icons-outlined s-18 hintIcon "
-                            matTooltipClass="hinttooltip"
-                            matTooltip="By applying Query Filters, new request to the data sources will be executed, while the Local Filters will be applied to the existing displayed data.">
-                            info
-                        </span>
-                    </mat-radio-group>
-
-                    <div *ngIf="!local.checked" [@fadeInOut]>
-                        <!-- 
-                        <div *ngIf="datasetsActiveMap.has('alerts')">
-
-
-                            <div class="betweenFilters">
-                                <mat-label class="header-filter">Severity
-                                    <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
-                                        matTooltip="Clear selection to request all severity levels">
+                        <mat-label class="header-filter">Actions</mat-label>
+                        <div style="display: flex; justify-content: space-evenly;border: 1px solid #ccc;
+                                border-radius: 4px;
+                                padding: 0.5em;
+                                margin: 0.7em 0;">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                                    <mat-label>Sync Widgets</mat-label>
+                                    <span style="margin-left: 10px;" class="material-icons-outlined s-18 hintIcon"
+                                        matTooltipClass="hinttooltip"
+                                        matTooltip="Synchronize the time-window of the rest widgets per zoom interaction">
                                         info
                                     </span>
-                                </mat-label>
-                                <ng-select [closeOnSelect]="false" [items]="severities_options" [multiple]="true"
-                                    [(ngModel)]="severities" placeholder="Select Level(s)">
-                                </ng-select>
+                                </div>
+                                <mat-slide-toggle (change)="syncWidgets()" [checked]="syncFlag">
+                                </mat-slide-toggle>
                             </div>
+
+                            <mat-divider vertical style="height:50px"></mat-divider>
+
+                            <button (click)="updatePeriod()" mat-icon-button matTooltip="Load currently zoomed period"
+                                class="updatePeriodBtn">
+                                <img src="assets/images/period.png" alt="">
+                            </button>
+                        </div>
+
+                        <mat-label class="header-filter">Date & Time Picker</mat-label>
+                        <div class="dateTimeRows">
+                            <div class="dateTimeRow">
+                                <mat-form-field appearance="fill" class="calenDate">
+                                    <mat-label>Start date</mat-label>
+                                    <input matInput [matDatepicker]="picker1" [(ngModel)]="startPeriod" name="startDate"
+                                        (click)="picker1.open()" readonly>
+                                    <!-- <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle> -->
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="fill" class="calenTime">
+                                    <mat-label>Start time</mat-label>
+                                    <input matInput [matTimepicker]="timepicker1" [(ngModel)]="startPeriod"
+                                        name="startTime" (click)="timepicker1.open()" readonly>
+                                    <!-- <mat-timepicker-toggle matSuffix [for]="timepicker1"></mat-timepicker-toggle> -->
+                                    <mat-timepicker #timepicker1></mat-timepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="dateTimeRow">
+                                <mat-form-field appearance="fill" class="calenDate">
+                                    <mat-label>End date</mat-label>
+                                    <input matInput [matDatepicker]="picker2" [(ngModel)]="endPeriod" name="endDate"
+                                        (click)="picker2.open()" readonly>
+                                    <!-- <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle> -->
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="fill" class="calenTime">
+                                    <mat-label>End time</mat-label>
+                                    <input matInput [matTimepicker]="timepicker2" [(ngModel)]="endPeriod" name="endTime"
+                                        (click)="timepicker2.open()" readonly>
+                                    <!-- <mat-timepicker-toggle matSuffix [for]="timepicker2"></mat-timepicker-toggle> -->
+                                    <mat-timepicker #timepicker2></mat-timepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="datasetsActiveMap.has('alerts')">
+                        <div class="betweenFilters">
+                            <mat-label class="header-filter">Severity
+                                <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
+                                    matTooltip="Clear selection to request all severity levels">
+                                    info
+                                </span>
+                            </mat-label>
+                            <ng-select [closeOnSelect]="false" [items]="severities_options" [multiple]="true"
+                                [(ngModel)]="severities" placeholder="Select Level(s)">
+                            </ng-select>
+                        </div>
+                    </div>
+
+                    <!-- 
+
+
+                            <div *ngIf="datasetsActiveMap.has('netflows')">
+
+                                <div style="display:flex; flex-direction:column">
+
+
+
+                                    <div class="betweenFilters">
+                                        <mat-label class="header-filter">Packets
+                                            <span class="material-icons-outlined s-18  hintIcon"
+                                                matTooltipClass="hinttooltip"
+                                                matTooltip="Enter an empty value to set no limit">
+                                                info
+                                            </span>
+                                        </mat-label>
+
+                                        <div>
+
+                                            <mat-form-field class="matformSmall">
+                                                <mat-label>Min</mat-label>
+                                                <input matInput [(ngModel)]="packets[0]" type="number" min="0">
+                                            </mat-form-field>
+
+                                            <mat-form-field class="matformSmall">
+                                                <mat-label>Max</mat-label>
+                                                <input [(ngModel)]="packets[1]" matInput type="number" min="0">
+                                            </mat-form-field>
+
+
+                                        </div>
+                                        <mat-hint *ngIf="packets[0] < 0 || packets[1] < 0"
+                                            style="color:indianred; font-style: italic;"> Invalid Input</mat-hint>
+
+                                    </div>
+
+                                </div>
+                            </div> -->
+
+                    <div *ngIf="datasetsActiveMap.has('calls')">
+
+                        <div class="betweenFilters">
+                            <mat-label class="header-filter">Number of Interactions
+                                <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
+                                    matTooltip="Show pairs having a number of interactions between the selected range">
+                                    info
+                                </span>
+                            </mat-label>
+
+                            <div>
+
+                                <mat-form-field class="matformSmall">
+                                    <mat-label>Min</mat-label>
+                                    <input matInput [(ngModel)]="interactions[0]" type="number" min="1">
+                                </mat-form-field>
+
+                                <mat-form-field class="matformSmall">
+                                    <mat-label>Max</mat-label>
+                                    <input [(ngModel)]="interactions[1]" matInput type="number" min="1">
+                                </mat-form-field>
+
+
+                            </div>
+                            <mat-hint *ngIf="interactions[0] < 1 || interactions[1] < 1" class="errorHint"> Invalid
+                                Input</mat-hint>
 
                         </div>
 
-                        <div *ngIf="datasetsActiveMap.has('netflows')">
+                        <div class="betweenFilters">
+                            <mat-label class="header-filter">Total Duration
+                                <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
+                                    matTooltip="Shows pairs having calls' total duration between the selected range">
+                                    info
+                                </span>
+                            </mat-label>
 
-                            <div style="display:flex; flex-direction:column">
+                            <div>
+
+                                <mat-form-field class="matformSmall">
+                                    <mat-label>Min</mat-label>
+                                    <input matInput [(ngModel)]="duration[0]" type="number" min="0">
+                                </mat-form-field>
+
+                                <mat-form-field class="matformSmall">
+                                    <mat-label>Max</mat-label>
+                                    <input [(ngModel)]="duration[1]" matInput type="number" min="0">
+                                </mat-form-field>
+
+
+                            </div>
+                            <mat-hint *ngIf="duration[0] < 0 || duration[1] < 0" class="errorHint"> Invalid
+                                Input</mat-hint>
+
+                        </div>
+
+                        <div class="betweenFilters">
+                            <mat-label class="header-filter">Entities
+                                <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
+                                    matTooltip="Shows interactions for the selected ones">
+                                    info
+                                </span>
+                            </mat-label>
+                            <ng-select [multiple]="true" [(ngModel)]="entities" [closeOnSelect]="false"
+                                [items]="entities_options" placeholder="Select..">
+                            </ng-select>
+
+                            <mat-checkbox style="font-size: 14px; margin: 0 0.5em; " [(ngModel)]="strictSearch">
+                            </mat-checkbox>
+                            <span style="white-space: break-spaces; font-style: italic;">Interactions among
+                                seleceted only
+                                <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
+                                    matTooltip="Shows only the interactions among the selected ones">
+                                    info</span>
+                            </span>
 
 
 
-                                <div class="betweenFilters">
-                                    <mat-label class="header-filter">Packets
-                                        <span class="material-icons-outlined s-18  hintIcon"
-                                            matTooltipClass="hinttooltip"
-                                            matTooltip="Enter an empty value to set no limit">
+                            <!-- <button (click)="applyFilters('alerts')" mat-icon-button>
+                                        <img style="width:30px" src="assets/images/refresh.png" alt="">
+                                    </button> -->
+                        </div>
+
+
+                    </div>
+
+
+                    <div *ngIf="datasetsActiveMap.has('alerts')">
+
+                        <div class="betweenFilters">
+                            <mat-label class="header-filter">Alert Name
+                                <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
+                                    matTooltip="Filter by alert name">
+                                    info
+                                </span>
+                            </mat-label>
+                            <ng-select [multiple]="true" [(ngModel)]="alertName" [closeOnSelect]="false"
+                                [items]="alertName_options" placeholder="Select Name(s)">
+                            </ng-select>
+                            <!-- <button (click)="applyFilters('alerts')" mat-icon-button>
+                                <img style="width:30px" src="assets/images/refresh.png" alt="">
+                            </button> -->
+                        </div>
+
+                    </div>
+
+                    <!-- <div class="betweenFilters"> 
+                                    <mat-label class="header-filter">Alert Types
+                                        <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
+                                            matTooltip="Filter by alert type">
                                             info
                                         </span>
                                     </mat-label>
-
-                                    <div>
-
-                                        <mat-form-field class="matformSmall">
-                                            <mat-label>Min</mat-label>
-                                            <input matInput [(ngModel)]="packets[0]" type="number" min="0">
-                                        </mat-form-field>
-
-                                        <mat-form-field class="matformSmall">
-                                            <mat-label>Max</mat-label>
-                                            <input [(ngModel)]="packets[1]" matInput type="number" min="0">
-                                        </mat-form-field>
-
-
-                                    </div>
-                                    <mat-hint *ngIf="packets[0] < 0 || packets[1] < 0"
-                                        style="color:indianred; font-style: italic;"> Invalid Input</mat-hint>
-
+                                    <ng-select [multiple]="true" [(ngModel)]="alertType" [closeOnSelect]="false"
+                                        [items]="alertType_options" placeholder="Select Type(s)">
+                                    </ng-select>
+                                    <button (click)="applyFilters('alerts')" mat-icon-button>
+                                        <img style="width:30px" src="assets/images/refresh.png" alt="">
+                                    </button>
                                 </div>
 
-                            </div>
-                        </div> -->
-
-
-                    </div>
-
-                    <div *ngIf="local.checked" [@fadeInOut]>
-
-                        <div *ngIf="datasetsActiveMap.has('calls')">
-
-                            <div class="betweenFilters">
-                                <mat-label class="header-filter">Number of Interactions
-                                    <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
-                                        matTooltip="Show pairs having a number of interactions between the selected range">
-                                        info
-                                    </span>
-                                </mat-label>
-
-                                <div>
-
-                                    <mat-form-field class="matformSmall">
-                                        <mat-label>Min</mat-label>
-                                        <input matInput [(ngModel)]="interactions[0]" type="number" min="1">
-                                    </mat-form-field>
-
-                                    <mat-form-field class="matformSmall">
-                                        <mat-label>Max</mat-label>
-                                        <input [(ngModel)]="interactions[1]" matInput type="number" min="1">
-                                    </mat-form-field>
-
-
+                                <div class="betweenFilters">
+                                    <mat-label class="header-filter">User Name
+                                        <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
+                                            matTooltip="Filter by user name">
+                                            info
+                                        </span>
+                                    </mat-label>
+                                    <ng-select [multiple]="true" [(ngModel)]="userType" [closeOnSelect]="false"
+                                        [items]="userType_options" placeholder="Select User(s)">
+                                    </ng-select>
+                                    <button (click)="applyFilters('alerts')" mat-icon-button>
+                                        <img style="width:30px" src="assets/images/refresh.png" alt="">
+                                    </button>
                                 </div>
-                                <mat-hint *ngIf="interactions[0] < 1 || interactions[1] < 1" class="errorHint"> Invalid
-                                    Input</mat-hint>
+                            
+                            </div> -->
 
-                            </div>
-
-                            <div class="betweenFilters">
-                                <mat-label class="header-filter">Total Duration
-                                    <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
-                                        matTooltip="Shows pairs having calls' total duration between the selected range">
-                                        info
-                                    </span>
-                                </mat-label>
-
-                                <div>
-
-                                    <mat-form-field class="matformSmall">
-                                        <mat-label>Min</mat-label>
-                                        <input matInput [(ngModel)]="duration[0]" type="number" min="0">
-                                    </mat-form-field>
-
-                                    <mat-form-field class="matformSmall">
-                                        <mat-label>Max</mat-label>
-                                        <input [(ngModel)]="duration[1]" matInput type="number" min="0">
-                                    </mat-form-field>
-
-
-                                </div>
-                                <mat-hint *ngIf="duration[0] < 0 || duration[1] < 0" class="errorHint"> Invalid
-                                    Input</mat-hint>
-
-                            </div>
-
-                            <div class="betweenFilters">
-                                <mat-label class="header-filter">Entities
-                                    <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
-                                        matTooltip="Shows interactions for the selected ones">
-                                        info
-                                    </span>
-                                </mat-label>
-                                <ng-select [multiple]="true" [(ngModel)]="entities" [closeOnSelect]="false"
-                                    [items]="entities_options" placeholder="Select..">
-                                </ng-select>
-
-                                <mat-checkbox style="font-size: 14px; margin: 0 0.5em; " [(ngModel)]="strictSearch">
-                                </mat-checkbox>
-                                <span style="white-space: break-spaces; font-style: italic;">Interactions among
-                                    seleceted only
-                                    <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
-                                        matTooltip="Shows only the interactions among the selected ones">
-                                        info</span>
-                                </span>
-
-
-
-                                <!-- <button (click)="applyFilters('alerts')" mat-icon-button>
-                                    <img style="width:30px" src="assets/images/refresh.png" alt="">
-                                </button> -->
-                            </div>
-
-
-                        </div>
-
-
-                        <!-- <div *ngIf="datasetsActiveMap.has('alerts')">
-
-                            <div class="betweenFilters">
-                                <mat-label class="header-filter">Alert Types
-                                    <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
-                                        matTooltip="Filter by alert type">
-                                        info
-                                    </span>
-                                </mat-label>
-                                <ng-select [multiple]="true" [(ngModel)]="alertType" [closeOnSelect]="false"
-                                    [items]="alertType_options" placeholder="Select Type(s)">
-                                </ng-select>
-                                <button (click)="applyFilters('alerts')" mat-icon-button>
-                                    <img style="width:30px" src="assets/images/refresh.png" alt="">
-                                </button>
-                            </div>
-
-                            <div class="betweenFilters">
-                                <mat-label class="header-filter">User Name
-                                    <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip"
-                                        matTooltip="Filter by user name">
-                                        info
-                                    </span>
-                                </mat-label>
-                                <ng-select [multiple]="true" [(ngModel)]="userType" [closeOnSelect]="false"
-                                    [items]="userType_options" placeholder="Select User(s)">
-                                </ng-select>
-                                <button (click)="applyFilters('alerts')" mat-icon-button>
-                                    <img style="width:30px" src="assets/images/refresh.png" alt="">
-                                </button>
-                            </div>
-                        
-                        </div> -->
-                    </div>
-
+                    <!-- </div> -->
                 </div>
 
+                <!-- <div class="fixedButtns">
+                        <ng-container *ngIf="local.checked else submit"> -->
+                <!-- #TOUCH -->
+                <!-- <button (click)="applyFilters('clear-all')" class="resetBut" mat-raised-button>Clear
+                                All</button>
+                            <button [disabled]="alertName[0] < 0 || alertName[1] < 0" (click)="applyFilters('apply-all')"
+                                class="applyBut" mat-raised-button>Apply</button>
+
+                        </ng-container>
+
+                        <div class="fixedButtns">
+                        <ng-template #submit>
+                            <button (click)="initData('reset')" class="resetBut" mat-raised-button>Reset</button>
+
+                            <button (click)="initData('new')" class="applyBut" mat-raised-button>Request</button>
+                        </ng-template>
+
+                    </div> -->
+
                 <div class="fixedButtns">
-                    <ng-container *ngIf="local.checked else submit">
-                        <!-- #TOUCH -->
-                        <button [disabled]="alertType[0] < 0 || alertType[1] < 0" (click)="applyFilters('apply-all')"
-                            class="applyBut" mat-raised-button>Apply</button>
-                        <button (click)="applyFilters('clear-all')" class="resetBut" mat-raised-button>Clear
-                            All</button>
-                    </ng-container>
+                    <button (click)="initData('reset')" class="resetBut" mat-raised-button>Reset</button>
 
-                    <ng-template #submit>
-                        <button (click)="initData('new')" class="applyBut" mat-raised-button>Request</button>
-                        <button (click)="initData('reset')" class="resetBut" mat-raised-button>Reset</button>
-                    </ng-template>
-
+                    <button (click)="initData('new')" class="applyBut" mat-raised-button>Request</button>
                 </div>
 
             </mat-drawer>
-
             <!-------------------- END OF FILTERS BAR  --------------------->
+
             <!-------------------- MAIN CONTENT - WIDGETS --------------------->
+            <mat-drawer-content class="main-content" [style.marginLeft.px]="leftMargin"
+                [style.marginRight.px]="rightMargin">
 
-            <mat-drawer-content>
+                <!-- <div class="p-1"> -->
 
-                <div class="p-1">
+                <div class="dropArea " cdkDropList #currentWidgetsList="cdkDropList" id="currentWidgetsList"
+                    [cdkDropListData]="currentWidgets" [cdkDropListConnectedTo]="['availableWidgetsList']"
+                    (cdkDropListDropped)="drop($event)" [cdkDropListAutoScrollDisabled]="true">
 
-                    <div class="dropArea " cdkDropList #currentWidgetsList="cdkDropList"
-                        [cdkDropListData]="currentWidgets" [cdkDropListConnectedTo]="[availableWidgetsList]"
-                        (cdkDropListDropped)="drop($event)">
+                    <div *ngFor="let widget of currentWidgets" class="p-1" cdkDrag [style.width.%]="widget.size"
+                        mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event,widget.name)">
 
-                        <div *ngFor="let widget of currentWidgets" class="p-1" cdkDrag [fxFlex]="widget.size"
-                            mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event,widget.name)">
-                            <ng-container *ngIf="widget.name === 'alertsDistrib'">
+                        <ng-container *ngIf="widget.name === 'alertsDistrib'">
+                            <mat-card class="dragItem">
+                                <div class="f">
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
 
-                                <mat-card class="dragItem">
-                                    <div class="f">
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-
-                                            <img style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
 
                                     </div>
-                                    <div #alertsDistrib id='alertsDistrib'>
-                                        <app-distribution (loading)="getSpinner($event)" [config]="widget.config"
-                                            [syncFlag]="syncFlag">
-                                        </app-distribution>
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                        <img *ngIf="syncFlag" style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
                                     </div>
 
-
-                                </mat-card>
-
-                            </ng-container>
-                            <ng-container *ngIf="widget.name === 'callsDistrib'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f">
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-
-                                            <img style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-
-                                    </div>
-                                    <div>
-                                        <app-distribution (loading)="getSpinner($event)" [config]="widget.config"
-                                            [syncFlag]="syncFlag">
-                                        </app-distribution>
-                                    </div>
-
-
-                                </mat-card>
-
-                            </ng-container>
-                            <!-- <ng-container *ngIf="widget.name === 'RAMDistrib'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f">
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-
-                                            <img style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-
-                                    </div>
-                                    <div #alertsdist id='alertsdist'>
-                                        <app-distribution (loading)="getSpinner($event)" [config]="widget.config"
-                                            [syncFlag]="syncFlag">
-                                        </app-distribution>
-                                    </div>
-
-
-                                </mat-card>
-
-                            </ng-container>
-                            <ng-container *ngIf="widget.name === 'netDistrib'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f">
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-
-                                            <img style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-
-                                    </div>
+                                </div>
+                                <div #alertsDistrib id='alertsDistrib'>
                                     <app-distribution (loading)="getSpinner($event)" [config]="widget.config"
                                         [syncFlag]="syncFlag">
                                     </app-distribution>
+                                </div>
 
-                                </mat-card>
 
-                            </ng-container> -->
-                            <ng-container *ngIf="widget.name === 'timeline'">
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
 
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
+                        <ng-container *ngIf="widget.name === 'callsDistrib'">
+                            <mat-card class="dragItem">
+                                <div class="f">
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
 
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-                                            <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
-                                                alt="">
-                                            <img *ngIf="widget.config.zoomSync" style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
 
                                     </div>
-                                    <div #timeline id='timeline'>
-                                        <app-timeline (loading)="getSpinner($event)" [config]="widget.config"
-                                            [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
-                                        </app-timeline>
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
 
+                                        <img style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
                                     </div>
 
+                                </div>
+                                <div>
+                                    <app-distribution (loading)="getSpinner($event)" [config]="widget.config"
+                                        [syncFlag]="syncFlag">
+                                    </app-distribution>
+                                </div>
 
-                                </mat-card>
-                                <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
-                                    [resizeEdges]="{ bottom: true }"></div>
 
-                            </ng-container>
-                            <ng-container *ngIf="widget.name === 'network'">
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+                        <!-- <ng-container *ngIf="widget.name === 'RAMDistrib'">
 
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
+                                    <mat-card class="dragItem">
+                                        <div class="f">
+                                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                                <img src="assets/images/width.png" alt=""
+                                                    style="width: 28px; margin-right: 0.2em;">
 
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('50',widget.name)">50%</button>
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('100',widget.name)">100%</button>
+                                                <mat-label class="statTitles">{{widget.title}}</mat-label>
 
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
+                                            </div>
+                                            <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                                <img style="width:25px; margin-right:0.5em;"
+                                                    src="assets/images/interconnected.png" alt="">
+
+                                                <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                                    </path>
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                </svg>
+                                            </div>
 
                                         </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-                                            <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
-                                                alt="">
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
+                                        <div #alertsdist id='alertsdist'>
+                                            <app-distribution (loading)="getSpinner($event)" [config]="widget.config"
+                                                [syncFlag]="syncFlag">
+                                            </app-distribution>
                                         </div>
+
+
+                                    </mat-card>
+
+                                </ng-container>
+                                <ng-container *ngIf="widget.name === 'netDistrib'">
+
+                                    <mat-card class="dragItem">
+                                        <div class="f">
+                                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                                <img src="assets/images/width.png" alt=""
+                                                    style="width: 28px; margin-right: 0.2em;">
+
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('50',widget.name)">50%</button>
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('100',widget.name)">100%</button>
+                                                <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                            </div>
+                                            <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                                <img style="width:25px; margin-right:0.5em;"
+                                                    src="assets/images/interconnected.png" alt="">
+
+                                                <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                                    </path>
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                </svg>
+                                            </div>
+
+                                        </div>
+                                        <app-distribution (loading)="getSpinner($event)" [config]="widget.config"
+                                            [syncFlag]="syncFlag">
+                                        </app-distribution>
+
+                                    </mat-card>
+
+                                </ng-container> -->
+
+                        <ng-container *ngIf="widget.name === 'timeline'">
+
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
 
                                     </div>
-                                    <app-network-graph (loading)="getSpinner($event)" [config]="widget.config"
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
+                                        <!-- <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
+                                                    alt=""> -->
+
+                                        <div *ngIf="this.assetId == 'all'" class="f" style="align-items:center;">
+                                            <mat-label class="inspectLabel"> Inspect Asset
+                                                <!-- <span class="material-icons-outlined s-18  hintIcon" matTooltipClass="hinttooltip" matTooltip="">
+                                                            info
+                                                        </span> -->
+                                            </mat-label>
+
+                                            <ng-select class="select-filter" [closeOnSelect]="true" [multiple]="false"
+                                                [items]="this.inspect_assets" [(ngModel)]="this.assets"
+                                                placeholder="Select Asset" bindLabel="id" bindValue="id">
+                                                <!-- 
+                                                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                                <div class="f">
+                                                                    <div class="ng-value f" *ngFor="let item of items | slice:0:1">
+                                    
+                                                                        <span class="ng-value-label"
+                                                                            style="  white-space: nowrap; max-width: 70px; overflow: hidden;text-overflow: ellipsis;">
+                                                                            {{item.id}}</span>
+                                                                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                                                                    </div>
+                                                                    <div class="ng-value" *ngIf="items.length > 1">
+                                                                        <span class="ng-value-label">{{items.length - 1}}
+                                                                            more...</span>
+                                                                    </div>
+                                                                </div>
+                                    
+                                                            </ng-template> -->
+                                                <ng-template let-item="item" ng-option-tmp let-search="searchTerm">
+                                                    <div><span>{{item}}</span></div>
+                                                </ng-template>
+
+                                            </ng-select>
+
+                                            <button [disabled]="!assets" (click)="inspectAssets()" mat-icon-button>
+                                                <img src="assets/images/share.png" style="width:25px;" alt="">
+                                            </button>
+                                        </div>
+
+                                        <mat-divider vertical style="height:50px; margin: 0 20px 0 10px;"></mat-divider>
+
+                                        <img *ngIf="widget.config.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+
+                                </div>
+                                <div #timeline id='timeline'>
+                                    <app-timeline (loading)="getSpinner($event)" [config]="widget.config"
                                         [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
-                                    </app-network-graph>
+                                    </app-timeline>
 
-                                </mat-card>
-                                <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
-                                    [resizeEdges]="{ bottom: true }"></div>
-
-                            </ng-container>
+                                </div>
 
 
-                            <ng-container *ngIf="widget.name === 'alertsDetails'">
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
 
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
+                        </ng-container>
 
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
+                        <ng-container *ngIf="widget.name === 'network'">
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
 
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
 
-                                        </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
 
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
                                     </div>
-                                    <div #alertsDetails id='alertsDetails'>
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
+                                        <!-- <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
+                                                    alt=""> -->
+                                        <img *ngIf="widget.config.hasDates.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+
+                                </div>
+                                <app-network-graph (loading)="getSpinner($event)" [config]="widget.config"
+                                    [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
+                                </app-network-graph>
+
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }"></div>
+
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'alertsDetails'">
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="grabWidget" cdkDragHandle>
+                                        <img *ngIf="widget.config.hasDates.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div #alertsDetails id='alertsDetails'>
+                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                    </app-details>
+                                </div>
+
+
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'uncommonDetails'">
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="grabWidget" cdkDragHandle>
+                                        <img *ngIf="widget.config.hasDates.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div #uncommonDetails id='uncommonDetails'>
+                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                    </app-details>
+                                </div>
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'loginDetails'">
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="grabWidget" cdkDragHandle>
+                                        <img *ngIf="widget.config.hasDates.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div #loginDetails id='loginDetails'>
+
+                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                    </app-details>
+                                </div>
+
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'alertsStats'">
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                        <!-- <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
+                                                    alt=""> -->
+                                        <img *ngIf="widget.config.hasDates.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+
+                                </div>
+
+                                <div #alertsStats id='alertsStats'>
+                                    <app-statistics (loading)="getSpinner($event)" [config]="widget.config"
+                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
+                                    </app-statistics>
+                                </div>
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+
+                        <!-- <ng-container *ngIf="widget.name === 'fileintDetails'">
+
+                                    <mat-card class="dragItem">
+                                        <div class="f" style="margin-bottom:1em;">
+
+                                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                                <img src="assets/images/width.png" alt=""
+                                                    style="width: 28px; margin-right: 0.2em;">
+
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('50',widget.name)">50%</button>
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('100',widget.name)">100%</button>
+                                                <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                            </div>
+                                            <div class="grabWidget" cdkDragHandle>
+                                                <img *ngIf="widget.config.hasDates.zoomSync"
+                                                    style="width:25px; margin-right:0.5em;"
+                                                    src="assets/images/interconnected.png" alt="">
+
+                                                <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                                    </path>
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        <div #fileintDetails id='fileintDetails'>
+                                            <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                            </app-details>
+                                        </div>
+                                    </mat-card>
+
+                                </ng-container> -->
+
+
+
+                        <ng-container *ngIf="widget.name === 'processDetails'">
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="grabWidget" cdkDragHandle>
+                                        <img *ngIf="widget.config.hasDates.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div #processDetails id="processDetails">
+                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                    </app-details>
+                                </div>
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'lineAP'">
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                        <!-- <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
+                                                    alt=""> -->
+                                        <img *ngIf="widget.config.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div #lineAP id="lineAP">
+
+                                    <app-line-chart (loading)="getSpinner($event)" [config]="widget.config"
+                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
+                                    </app-line-chart>
+
+                                </div>
+
+
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'networkIn'">
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                        <!-- <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
+                                                    alt=""> -->
+                                        <img *ngIf="widget.config.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div #networkIn id="networkIn">
+
+                                    <app-line-chart (loading)="getSpinner($event)" [config]="widget.config"
+                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
+                                    </app-line-chart>
+
+                                </div>
+
+
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'networkOut'">
+
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                        <!-- <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
+                                                    alt=""> -->
+                                        <img *ngIf="widget.config.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div #networkOut id="networkOut">
+
+                                    <app-line-chart (loading)="getSpinner($event)" [config]="widget.config"
+                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
+                                    </app-line-chart>
+
+                                </div>
+
+
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'lineCPU'">
+
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                        <!-- <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
+                                                    alt=""> -->
+                                        <img *ngIf="widget.config.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div #lineCPU id="lineCPU">
+                                    <app-line-chart (loading)="getSpinner($event)" [config]="widget.config"
+                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
+                                    </app-line-chart>
+                                </div>
+
+
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'lineNetwork'">
+
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                        <!-- <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
+                                                    alt=""> -->
+                                        <img *ngIf="widget.config.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div #lineNetwork id="lineNetwork">
+
+                                    <app-line-chart (loading)="getSpinner($event)" [config]="widget.config"
+                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
+                                    </app-line-chart>
+
+                                </div>
+
+
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'lineMemory'">
+
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                        <!-- <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
+                                                    alt=""> -->
+                                        <img *ngIf="widget.config.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div #lineMemory id="lineMemory">
+
+                                    <app-line-chart (loading)="getSpinner($event)" [config]="widget.config"
+                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
+                                    </app-line-chart>
+
+                                </div>
+
+
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="widget.name === 'communicationDetails'">
+
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="grabWidget" cdkDragHandle>
+                                        <img *ngIf="widget.config.hasDates.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div #communicationDetails id="communicationDetails">
+
+                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                    </app-details>
+
+                                </div>
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <!-- expandable details -->
+                        <ng-container *ngIf="widget.name === 'expandableDetails'">
+
+                            <mat-card class="dragItem">
+                                <div class="f" style="margin-bottom:1em;">
+
+                                    <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                        <img src="assets/images/width.png" alt=""
+                                            style="width: 28px; margin-right: 0.2em;">
+
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('50',widget.name)">50%</button>
+                                        <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                            (click)="resizeW('100',widget.name)">100%</button>
+                                        <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                    </div>
+                                    <div class="grabWidget" cdkDragHandle>
+                                        <img *ngIf="widget.config.hasDates.zoomSync && syncFlag"
+                                            style="width:25px; margin-right:0.5em;"
+                                            src="assets/images/interconnected.png" alt="">
+
+                                        <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                            </path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div #expandableDetails id="expandableDetails">
+
+                                    <app-expandable-details (loading)="getSpinner($event)" [config]="widget.config">
+                                    </app-expandable-details>
+
+                                </div>
+
+
+                            </mat-card>
+                            <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                [resizeEdges]="{ bottom: true }">
+                            </div>
+                        </ng-container>
+
+                        <!-- 
+                                
+                                <ng-container *ngIf="widget.name === 'netStats'">
+
+                                    <mat-card class="dragItem">
+                                        <div class="f" style="margin-bottom:1em;">
+
+                                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                                <img src="assets/images/width.png" alt=""
+                                                    style="width: 28px; margin-right: 0.2em;">
+
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('50',widget.name)">50%</button>
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('100',widget.name)">100%</button>
+
+                                                <mat-label class="statTitles">{{widget.title}}</mat-label>
+                                            </div>
+                                            <div class="pb-2 grabWidget" cdkDragHandle>
+
+                                                <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
+                                                    alt="">
+                                                <img *ngIf="widget.config.hasDates.zoomSync"
+                                                    style="width:25px; margin-right:0.5em;"
+                                                    src="assets/images/interconnected.png" alt="">
+
+                                                <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                                    </path>
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                </svg>
+                                            </div>
+
+                                        </div>
+                                        <app-statistics (loading)="getSpinner($event)" [config]="widget.config"
+                                            [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
+                                        </app-statistics>
+
+                                    </mat-card>
+                                    <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
+                                        [resizeEdges]="{ bottom: true }"></div>
+
+                                </ng-container>
+                            
+
+                                <ng-container *ngIf="widget.name === 'diskIODetails'">
+
+                                    <mat-card class="dragItem">
+                                        <div class="f" style="margin-bottom:1em;">
+
+                                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                                <img src="assets/images/width.png" alt=""
+                                                    style="width: 28px; margin-right: 0.2em;">
+
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('50',widget.name)">50%</button>
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('100',widget.name)">100%</button>
+                                                <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                            </div>
+                                            <div class="grabWidget" cdkDragHandle>
+                                                <img *ngIf="widget.config.hasDates.zoomSync"
+                                                    style="width:25px; margin-right:0.5em;"
+                                                    src="assets/images/interconnected.png" alt="">
+
+                                                <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                                    </path>
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
                                         <app-details (loading)="getSpinner($event)" [config]="widget.config">
                                         </app-details>
-                                    </div>
 
+                                    </mat-card>
 
-                                </mat-card>
+                                </ng-container>
 
-                            </ng-container>
+                                <ng-container *ngIf="widget.name === 'failedSSHDetails'">
 
+                                    <mat-card class="dragItem">
+                                        <div class="f" style="margin-bottom:1em;">
 
-                            <!-- 
-                                <ng-container *ngIf="widget.name === 'securityDetails'">
+                                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                                <img src="assets/images/width.png" alt=""
+                                                    style="width: 28px; margin-right: 0.2em;">
 
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('50',widget.name)">50%</button>
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('100',widget.name)">100%</button>
+                                                <mat-label class="statTitles">{{widget.title}}</mat-label>
 
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
+                                            </div>
+                                            <div class="grabWidget" cdkDragHandle>
+                                                <img *ngIf="widget.config.hasDates.zoomSync"
+                                                    style="width:25px; margin-right:0.5em;"
+                                                    src="assets/images/interconnected.png" alt="">
 
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
+                                                <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                                    </path>
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                </svg>
+                                            </div>
                                         </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
+                                        <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                        </app-details>
 
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
+                                    </mat-card>
+
+                                </ng-container>
+
+                                <ng-container *ngIf="widget.name === 'USBActivity'">
+
+                                    <mat-card class="dragItem">
+                                        <div class="f" style="margin-bottom:1em;">
+
+                                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                                <img src="assets/images/width.png" alt=""
+                                                    style="width: 28px; margin-right: 0.2em;">
+
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('50',widget.name)">50%</button>
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('100',widget.name)">100%</button>
+                                                <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                            </div>
+                                            <div class="grabWidget" cdkDragHandle>
+                                                <img *ngIf="widget.config.hasDates.zoomSync"
+                                                    style="width:25px; margin-right:0.5em;"
+                                                    src="assets/images/interconnected.png" alt="">
+
+                                                <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                                    </path>
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                </svg>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
+                                        <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                        </app-details>
 
-                                </mat-card>
+                                    </mat-card>
 
-                            </ng-container>
-                            <ng-container *ngIf="widget.name === 'alertsStats'">
+                                </ng-container>
 
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
+                                
+                                
 
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
+    
 
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-
-                                            <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
-                                                alt="">
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-
-                                    </div>
-                                    <app-statistics (loading)="getSpinner($event)" [config]="widget.config"
-                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
-                                    </app-statistics>
-
-                                </mat-card>
-                                <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
-                                    [resizeEdges]="{ bottom: true }"></div>
-
-                            </ng-container>
-                            <ng-container *ngIf="widget.name === 'netStats'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-
-                                            <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
-                                                alt="">
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-
-                                    </div>
-                                    <app-statistics (loading)="getSpinner($event)" [config]="widget.config"
-                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
-                                    </app-statistics>
-
-                                </mat-card>
-                                <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
-                                    [resizeEdges]="{ bottom: true }"></div>
-
-                            </ng-container>
-                            <ng-container *ngIf="widget.name === 'lineAP'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-
-                                            <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
-                                                alt="">
-                                            <img *ngIf="widget.config.zoomSync" style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-line-chart (loading)="getSpinner($event)" [config]="widget.config"
-                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
-                                    </app-line-chart>
-
-                                </mat-card>
-                                <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
-                                    [resizeEdges]="{ bottom: true }"></div>
-
-                            </ng-container>
-                            <ng-container *ngIf="widget.name === 'lineCPU'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-
-                                            <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
-                                                alt="">
-                                            <img *ngIf="widget.config.zoomSync" style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-line-chart (loading)="getSpinner($event)" [config]="widget.config"
-                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
-                                    </app-line-chart>
-
-                                </mat-card>
-                                <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
-                                    [resizeEdges]="{ bottom: true }"></div>
-
-                            </ng-container>
-                            <ng-container *ngIf="widget.name === 'lineNetwork'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-
-                                            <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
-                                                alt="">
-                                            <img *ngIf="widget.config.zoomSync" style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-line-chart (loading)="getSpinner($event)" [config]="widget.config"
-                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
-                                    </app-line-chart>
-
-                                </mat-card>
-                                <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
-                                    [resizeEdges]="{ bottom: true }"></div>
-
-                            </ng-container>
-                            <ng-container *ngIf="widget.name === 'lineMemory'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="pb-2 grabWidget" cdkDragHandle>
-
-                                            <img style="width:30px; margin-right:0.5em;" src="assets/images/resize.png"
-                                                alt="">
-                                            <img *ngIf="widget.config.zoomSync" style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-line-chart (loading)="getSpinner($event)" [config]="widget.config"
-                                        [syncFlag]="syncFlag" [heightResized]="heightResized[widget.name]">
-                                    </app-line-chart>
-
-                                </mat-card>
-                                <div style="height: 5px;" class="resize-handle-bottom" mwlResizeHandle
-                                    [resizeEdges]="{ bottom: true }"></div>
-
-                            </ng-container>
-                           
-
-                            <ng-container *ngIf="widget.name === 'diskIODetails'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
-
-                                </mat-card>
-
-                            </ng-container>
-
-                            <ng-container *ngIf="widget.name === 'failedSSHDetails'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
-
-                                </mat-card>
-
-                            </ng-container>
-
-                            <ng-container *ngIf="widget.name === 'USBActivity'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
-
-                                </mat-card>
-
-                            </ng-container>
 
                             
-                            <ng-container *ngIf="widget.name === 'processDetails'">
 
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
+                                <ng-container *ngIf="widget.name === 'mlcpuDetails'">
 
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
+                                    <mat-card class="dragItem">
+                                        <div class="f" style="margin-bottom:1em;">
 
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
+                                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                                <img src="assets/images/width.png" alt=""
+                                                    style="width: 28px; margin-right: 0.2em;">
 
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('50',widget.name)">50%</button>
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('100',widget.name)">100%</button>
+                                                <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                            </div>
+                                            <div class="grabWidget" cdkDragHandle>
+                                                <img *ngIf="widget.config.hasDates.zoomSync"
+                                                    style="width:25px; margin-right:0.5em;"
+                                                    src="assets/images/interconnected.png" alt="">
+
+                                                <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                                    </path>
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                </svg>
+                                            </div>
                                         </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
+                                        <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                        </app-details>
 
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
+                                    </mat-card>
+
+                                </ng-container>
+
+                                <ng-container *ngIf="widget.name === 'mlramDetails'">
+
+                                    <mat-card class="dragItem">
+                                        <div class="f" style="margin-bottom:1em;">
+
+                                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                                <img src="assets/images/width.png" alt=""
+                                                    style="width: 28px; margin-right: 0.2em;">
+
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('50',widget.name)">50%</button>
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('100',widget.name)">100%</button>
+                                                <mat-label class="statTitles">{{widget.title}}</mat-label>
+
+                                            </div>
+                                            <div class="grabWidget" cdkDragHandle>
+                                                <img *ngIf="widget.config.hasDates.zoomSync"
+                                                    style="width:25px; margin-right:0.5em;"
+                                                    src="assets/images/interconnected.png" alt="">
+
+                                                <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                                    </path>
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                </svg>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
+                                        <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                        </app-details>
 
-                                </mat-card>
+                                    </mat-card>
 
-                            </ng-container>
+                                </ng-container>
+                                <ng-container *ngIf="widget.name === 'netDetails'">
 
-                            <ng-container *ngIf="widget.name === 'uncommonDetails'">
+                                    <mat-card class="dragItem">
+                                        <div class="f" style="margin-bottom:1em;">
 
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
+                                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                                <img src="assets/images/width.png" alt=""
+                                                    style="width: 28px; margin-right: 0.2em;">
 
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('50',widget.name)">50%</button>
+                                                <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
+                                                    (click)="resizeW('100',widget.name)">100%</button>
+                                                <mat-label class="statTitles">{{widget.title}}</mat-label>
 
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
+                                            </div>
+                                            <div class="grabWidget" cdkDragHandle>
+                                                <img *ngIf="widget.config.hasDates.zoomSync"
+                                                    style="width:25px; margin-right:0.5em;"
+                                                    src="assets/images/interconnected.png" alt="">
 
+                                                <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+                                                    </path>
+                                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                                </svg>
+                                            </div>
                                         </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
+                                        <app-details (loading)="getSpinner($event)" [config]="widget.config">
+                                        </app-details>
 
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
+                                    </mat-card>
 
-                                </mat-card>
-
-                            </ng-container>
-
-                            <ng-container *ngIf="widget.name === 'loginDetails'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
-
-                                </mat-card>
-
-                            </ng-container>
-
-                            <ng-container *ngIf="widget.name === 'fileintDetails'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
-
-                                </mat-card>
-
-                            </ng-container>
-
-                            <ng-container *ngIf="widget.name === 'mlcpuDetails'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
-
-                                </mat-card>
-
-                            </ng-container>
-
-                            <ng-container *ngIf="widget.name === 'mlramDetails'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
-
-                                </mat-card>
-
-                            </ng-container>
-                            <ng-container *ngIf="widget.name === 'netDetails'">
-
-                                <mat-card class="dragItem">
-                                    <div class="f" style="margin-bottom:1em;">
-
-                                        <div style="display: flex; align-items: center; justify-content: flex-end;">
-                                            <img src="assets/images/width.png" alt=""
-                                                style="width: 28px; margin-right: 0.2em;">
-
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('50',widget.name)">50%</button>
-                                            <button class="btn-h-s" style="color:#3e546d;" mat-stroked-button
-                                                (click)="resizeW('100',widget.name)">100%</button>
-                                            <mat-label class="statTitles">{{widget.title}}</mat-label>
-
-                                        </div>
-                                        <div class="grabWidget" cdkDragHandle>
-                                            <img *ngIf="widget.config.hasDates.zoomSync"
-                                                style="width:25px; margin-right:0.5em;"
-                                                src="assets/images/interconnected.png" alt="">
-
-                                            <svg width="25px" fill="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
-                                                </path>
-                                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <app-details (loading)="getSpinner($event)" [config]="widget.config">
-                                    </app-details>
-
-                                </mat-card>
-
-                            </ng-container> -->
-
-                        </div>
+                                </ng-container> -->
 
                     </div>
 
                 </div>
+
+                <!-- </div> -->
 
             </mat-drawer-content>
             <!-------------------- END OF MAIN CONTENT - WIDGETS --------------------->
 
             <!-------------------- WIDGETS BAR --------------------->
+            <mat-drawer #drawer2 position="end" mode="side" opened class="widgets-drawer"
+                [class.collapsed]="isWidgetsCollapsed">
 
-            <mat-drawer #drawer2 position="end" mode="side" style="width: 200px;">
+                <button class="widgets-toggle-button" [ngClass]="{ collapsed: isWidgetsCollapsed }"
+                    (click)="toggleWidgetsSidebar()" matTooltip="Expand Widgets Panel">
+                    <div class="icon-and-label" [ngClass]="{ collapsed: isWidgetsCollapsed }">
+                        <mat-icon class="rotate-icon">widgets</mat-icon>
+                        <ng-container *ngIf="isWidgetsCollapsed">
+                            <span class="vertical-label-widgets">WIDGETS</span>
+                            <div class="icon-stack">
+                                <mat-icon>grid_view</mat-icon>
+                                <mat-icon>bar_chart</mat-icon>
+                                <mat-icon>timeline</mat-icon>
+                            </div>
+                        </ng-container>
+                        <span *ngIf="!isWidgetsCollapsed">Widgets</span>
+                    </div>
+                </button>
 
-                <div class="widgetsbar">
+                <div *ngIf="!isWidgetsCollapsed" class="widgetsbar">
                     <mat-label style="font-weight: 500;">Available Widgets</mat-label>
-                    <mat-label class="available-wid" style="font-style: italic; ">*drag n drop</mat-label>
+                    <mat-label class="available-wid" style="font-style: italic;">*drag n drop</mat-label>
                 </div>
 
 
-                <div class="content" style="padding: 10px;">
+                <div *ngIf="!isWidgetsCollapsed" class="content" style="padding: 10px;">
 
-                    <div cdkDropList #availableWidgetsList="cdkDropList" style="height: 100%;"
-                        [cdkDropListData]="availableWidgets" [cdkDropListConnectedTo]="[currentWidgetsList]"
-                        (cdkDropListDropped)="drop($event)">
+                    <div cdkDropList #availableWidgetsList="cdkDropList" style="height: 100%;" id="availableWidgetsList"
+                        [cdkDropListData]="availableWidgets" [cdkDropListConnectedTo]="['currentWidgetsList']"
+                        (cdkDropListDropped)="drop($event)" [cdkDropListAutoScrollDisabled]="true">
 
                         <div *ngFor="let widget of availableWidgets" style="padding: 5px;"
                             [cdkDragDisabled]="widget.disabled" cdkDrag>
                             <div fxLayout="column">
                                 <h4 style="font-weight: 200;">{{ widget.title }}</h4>
-                                <img src="assets/images/{{widget.name}}.png" />
+                                <img width="190px" src="assets/images/{{widget.widget}}.png" />
                             </div>
                         </div>
 
@@ -1350,9 +1628,7 @@
 
                 </div>
             </mat-drawer>
-
             <!--------------------END OF WIDGETS BAR --------------------->
-
 
         </mat-drawer-container>
 

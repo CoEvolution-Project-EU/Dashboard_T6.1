@@ -1,13 +1,14 @@
 <div>
     <div class="p-3">
-        <mat-label class="labelHeader">Add<span style="color:var(--main-button-color); margin:0 0.3em"> <b>{{data}}</b> </span> to 'Inspect Asset' selection field</mat-label>
+        <mat-label class="labelHeader">Add<span style="color:var(--main-button-color); margin:0 0.3em"> <b>{{data}}</b>
+            </span> to 'Inspect Asset' selection field</mat-label>
 
     </div>
 
     <div style="margin-top: 1em; display: flex; justify-content: flex-end;">
-        <button (click)="_dialogRef.close()" class="btn-1-cancel" mat-raised-button>Cancel</button>
+        <button (click)="_dialogRef.close()" class="btn-1-cancel resetBut" mat-raised-button>Cancel</button>
 
         <button (click)="_dialogRef.close('proceed')" style=" margin-left: 0.5em;" mat-raised-button
-            class="btn-2">Proceed</button>
+            class="btn-2 applyBut">Proceed</button>
     </div>
 </div>

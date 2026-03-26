@@ -1,6 +1,6 @@
 {
-  "/api/*": {
-    "target": "http://localhost:8000",
+  "/api/**": {
+    "target": "http://178.63.86.245:8989",
     "secure": false,
     "pathRewrite": {
       "^/api": ""

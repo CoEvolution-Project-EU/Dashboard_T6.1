@@ -64,11 +64,11 @@
     text-overflow: ellipsis;
 }
 
-::ng-deep .vis-item.vis-selected {
-    border-color: #ffc200;
-    background-color: #fff780;
-    z-index: 2;
-}
+// ::ng-deep .vis-item.vis-selected {
+//     border-color: #ffc200;
+//     background-color: #fff780;
+//     z-index: 2;
+// }
 
 mat-tooltip.hinttooltip {
     font-size: 14px;
@@ -165,4 +165,11 @@ mat-tooltip.hinttooltip {
     color: var(--itemsText)!important;
 }
 
-
+button.small-circle-btn.mat-mdc-icon-button {
+  width: 13px !important;
+  height: 13px !important;
+  min-width: 13px !important;
+  min-height: 13px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+}

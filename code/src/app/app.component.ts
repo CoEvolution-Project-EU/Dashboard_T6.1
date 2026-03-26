@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
-// import { DOCUMENT } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
+// import { HasRolesDirective } from 'keycloak-angular';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  imports: [RouterOutlet]
 })
+
 export class AppComponent {
   title = 'fvt-core';
   constructor() {
-    document.documentElement.setAttribute('data-theme', '');
+    document.documentElement.setAttribute('data-theme', 'coevolution');
   }
 }

@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDrawer } from '@angular/material/sidenav';
 import { NgxSpinnerService } from "ngx-spinner";
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { NodejsDataService } from '../../nodejs-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -12,12 +12,93 @@ import { ResizeEvent } from 'angular-resizable-element';
 import { MatDialog } from '@angular/material/dialog';
 import { InspectDialogComponent } from '../inspect-dialog/inspect-dialog.component';
 import { Subscription } from 'rxjs';
-import { SocketioService } from '../../socketio.service';
+// import { SocketioService } from '../../socketio.service';
 import { CasesOverviewService } from '../../cases/cases-overview/cases-overview.service';
 import { ReportPdfService } from 'src/app/shared/report-pdf.service';
+import JSZip from 'jszip';
+import * as FileSaver from 'file-saver';
+
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+// Angular Material Modules
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatTimepickerModule } from '@angular/material/timepicker';
+
+// Third-Party Modules
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ResizableModule } from 'angular-resizable-element';
+
+// Custom Components
+import { NavbarComponent } from '../../../shared/navbar/navbar.component';
+import { TimelineComponent } from '../../widgets-pool/timeline/timeline.component';
+import { LineChartComponent } from '../../widgets-pool/line-chart/line-chart.component';
+import { DetailsComponent } from '../../widgets-pool/details/details.component';
+import { StatisticsComponent } from '../../widgets-pool/statistics/statistics.component';
+import { DistributionComponent } from '../../widgets-pool/distribution/distribution.component';
+import { NetworkGraphComponent } from '../../widgets-pool/network-graph/network-graph.component';
+import { ExpandableDetailsComponent } from '../../widgets-pool/expandable-details/expandable-details.component';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  providers: [
+    provideNativeDateAdapter()
+  ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxSpinnerModule,
+    NgSelectModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatTooltipModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatSlideToggleModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    NavbarComponent,
+    TimelineComponent,
+    DetailsComponent,
+    StatisticsComponent,
+    DistributionComponent,
+    LineChartComponent,
+    NetworkGraphComponent,
+    ExpandableDetailsComponent,
+    DragDropModule,
+    MatDatepickerModule,
+    MatTimepickerModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ResizableModule
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   animations: [
@@ -32,7 +113,6 @@ import { ReportPdfService } from 'src/app/shared/report-pdf.service';
     ])
   ]
 })
-
 
 export class DashboardComponent implements OnInit {
 
@@ -57,6 +137,9 @@ export class DashboardComponent implements OnInit {
   datasetsDataMap = new Map();
   datasetsFilteredDataMap = new Map();
   datasetsActiveMap = new Map();
+  asset_id;
+  inspect_assets;
+
 
   //--------URL PARAMS
   preconfViewId;
@@ -78,8 +161,8 @@ export class DashboardComponent implements OnInit {
   //--------LOCAL FILTERS - same logic as above. #TOUCH
 
 
-  alertType = []
-  alertType_options = []
+  alertName = []
+  alertName_options = []
 
   entities = []
   entities_options = []
@@ -104,25 +187,36 @@ export class DashboardComponent implements OnInit {
   heightResized = {}
 
   pdfreport_list = []
+  jsonFiles_list = []
+
+  token;
+
+  isCollapsed = false;
+  isWidgetsCollapsed = true;
+  readonly openWidth = 240;
+  readonly collapsedWidth = 60;
 
   @ViewChild('drawer', { static: true }) filterBar: MatDrawer;
   @ViewChild('network') network: ElementRef;
-
+  @ViewChild('picker') picker;
+  @ViewChild('picker2') picker2;
   // for downloading the pdf report you need to set the elementRef of the widget
   // it must be same name as the .name in the config file
   // #TOUCH 
   @ViewChild('alertsDistrib', { read: ElementRef, static: false }) alertsDistrib!: ElementRef;
   @ViewChild('timeline', { read: ElementRef, static: false }) timeline!: ElementRef;
   @ViewChild('alertsDetails', { read: ElementRef, static: false }) alertsDetails!: ElementRef;
-  // @ViewChild('alertsStats', { read: ElementRef, static: false }) alertsStats!: ElementRef;
-  // @ViewChild('lineCPU', { read: ElementRef, static: false }) lineCPU!: ElementRef;
-  // @ViewChild('lineAP', { read: ElementRef, static: false }) lineAP!: ElementRef;
-  // @ViewChild('processDetails', { read: ElementRef, static: false }) processDetails!: ElementRef;
-  // @ViewChild('uncommonDetails', { read: ElementRef, static: false }) uncommonDetails!: ElementRef;
-  // @ViewChild('securityDetails', { read: ElementRef, static: false }) securityDetails!: ElementRef;
-  // @ViewChild('loginDetails', { read: ElementRef, static: false }) loginDetails!: ElementRef;
-  // @ViewChild('lineMemory', { read: ElementRef, static: false }) lineMemory!: ElementRef;
-  // @ViewChild('lineNetwork', { read: ElementRef, static: false }) lineNetwork!: ElementRef;
+  @ViewChild('alertsStats', { read: ElementRef, static: false }) alertsStats!: ElementRef;
+  @ViewChild('uncommonDetails', { read: ElementRef, static: false }) uncommonDetails!: ElementRef;
+  @ViewChild('loginDetails', { read: ElementRef, static: false }) loginDetails!: ElementRef;
+  @ViewChild('processDetails', { read: ElementRef, static: false }) processDetails!: ElementRef;
+  // @ViewChild('communicationDetails', { read: ElementRef, static: false }) communicationDetails!: ElementRef;
+
+  @ViewChild('lineCPU', { read: ElementRef, static: false }) lineCPU!: ElementRef;
+  @ViewChild('lineAP', { read: ElementRef, static: false }) lineAP!: ElementRef;
+  @ViewChild('lineMemory', { read: ElementRef, static: false }) lineMemory!: ElementRef;
+  @ViewChild('lineNetwork', { read: ElementRef, static: false }) lineNetwork!: ElementRef;
+  @ViewChild('expandableDetails', { read: ElementRef, static: false }) expandableDetails!: ElementRef;
 
 
   constructor(
@@ -133,179 +227,190 @@ export class DashboardComponent implements OnInit {
     private dashServ: DashboardService,
     private dataSync: DataSyncService,
     public dialog: MatDialog,
-    private socketService: SocketioService,
-    private router: Router,
+    // private socketService: SocketioService,
+    // private router: Router,
     private overviewService: CasesOverviewService,
     private reportservice: ReportPdfService
 
 
   ) {
-    this.spinner.show();
 
+    this.spinner.show();
+    this.token = this.nodejsService.getToken();
+    this.getAssetDetails()
     //get any ids/params etc from the url
     this.assetId = this.actRoute.snapshot.params.id;
     this.preconfViewId = this.actRoute.snapshot.params.preconfView;
-
-
-
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    //get preconfigured view - transmitted through resolver.
-    this.actRoute.data.subscribe(resolverResp => {
+    try {
+      // Get token first
+      this.token = await this.nodejsService.getToken();
 
-
-
-      if (!(resolverResp.data.preconfView)) {
-        this.spinner.hide()
-        this._snackBar.open('An error has occured. Please try again.', null, { duration: 3500, panelClass: 'errorClass' })
-      } else {
-
-        this.preconfViewLoaded = resolverResp.data.preconfView;
-
-        //set widgets from prec view
-        this.allWidgets = this.preconfViewLoaded.currentWidgets.concat(this.preconfViewLoaded.availableWidgets);
-
-        this.allWidgets.forEach(w => {
-          //add all widgets ids to the heightResized obj, so to send dynamically resize events for the resizable ones.
-          this.heightResized[w.name] = {};
-
-          if (this.preconfViewLoaded.currentWidgets.some(wi => wi.name == w.name)) this.currentWidgets.push(w)
-          else this.availableWidgets.push(w)
-        })
+      //get preconfigured view - transmitted through resolver.
+      this.actRoute.data.subscribe(async resolverResp => {
 
 
-        this.currentWidgets.sort((a, b) => (a.order > b.order) ? 1 : -1);
 
-        //if the core-dash was loaded through 'Investigate Assets' functionality in 'Events Analysis' screen -> get the start/end Period that user chose.
-        if (Object.keys(this.actRoute.snapshot.queryParams).length > 0) {
-
-          //we assume for now, that queryParams will only contain the start & end period as timestamps.
-          this.preconfViewTimewindow = [Number(this.actRoute.snapshot.queryParams.sp), Number(this.actRoute.snapshot.queryParams.ep)]
-
-          this.startPeriod = new Date(this.preconfViewTimewindow[0])
-          this.endPeriod = new Date(this.preconfViewTimewindow[1])
-
+        if (!(resolverResp.data.preconfView)) {
+          this.spinner.hide()
+          this._snackBar.open('An error has occured. Please try again.', null, { duration: 3500, panelClass: 'errorClass' })
         } else {
 
-          //else set timewindow from prec view
-          this.preconfViewTimewindow = this.preconfViewLoaded.timewindow;
+          await this.getAssetDetails();
 
-          if (this.preconfViewTimewindow == 'last24h') {
-            this.startPeriod = new Date(Date.now() - 86400000);
-            this.endPeriod = new Date(Date.now());
-          } else if (this.preconfViewTimewindow == 'lastmonth') {
-            this.startPeriod = new Date(Date.now() - 2592000000);
-            this.endPeriod = new Date(Date.now());
-          } else {
+          this.preconfViewLoaded = resolverResp.data.preconfView;
+
+          //set widgets from prec view
+          this.allWidgets = this.preconfViewLoaded.currentWidgets.concat(this.preconfViewLoaded.availableWidgets);
+
+          this.allWidgets.forEach(w => {
+            //add all widgets ids to the heightResized obj, so to send dynamically resize events for the resizable ones.
+            this.heightResized[w.name] = {};
+
+            if (this.preconfViewLoaded.currentWidgets.some(wi => wi.name == w.name)) this.currentWidgets.push(w)
+            else this.availableWidgets.push(w)
+          })
+
+
+          this.currentWidgets.sort((a, b) => (a.order > b.order) ? 1 : -1);
+
+          //if the core-dash was loaded through 'Investigate Assets' functionality in 'Events Analysis' screen -> get the start/end Period that user chose.
+          if (Object.keys(this.actRoute.snapshot.queryParams).length > 0) {
+
+            //we assume for now, that queryParams will only contain the start & end period as timestamps.
+            this.preconfViewTimewindow = [Number(this.actRoute.snapshot.queryParams.sp), Number(this.actRoute.snapshot.queryParams.ep)]
+
             this.startPeriod = new Date(this.preconfViewTimewindow[0])
             this.endPeriod = new Date(this.preconfViewTimewindow[1])
-          }
 
-        }
+          } else {
 
+            //else set timewindow from prec view
+            this.preconfViewTimewindow = this.preconfViewLoaded.timewindow;
 
-        //for each dataset exist in pre conf - add to ActiveMap -  & apply all values from filterParams/localFilters(if any) to the local variables  - !SAME NAMES!
-        this.preconfViewLoaded.datasets.forEach(dataset => {
-
-          //pass the dataset (as is) to the Active Map with the "id" field as key in Map.
-          this.datasetsActiveMap.set(dataset.id, dataset)
-
-          //if there are filterParams -> get the filterParams key,value as pairs.
-          //pass each value of the filterParams from the preconf view to the local vars that have SAME names.
-          Object.entries(dataset.filterParams).forEach(keyvalue => {
-
-            //good2know: by using syntax like "this['someValue']" in typescript -> if for example 'someValue' == channel , typecript will search for this.channel local var. Thus, we can call dynamically loca vars.
-            this[keyvalue[0]] = JSON.parse(JSON.stringify(keyvalue[1]));
-
-            //pass the known range/options of params.
-            //note that we have named these local vars SAME as the params + '_options' suffix.
-            //good2know: this JSON.parse/JSON.stringify trick will hard copy multi-nested objs/arrays.
-
-            if (dataset.filterParams_options && dataset.filterParams_options[keyvalue[0] + '_options']) {
-              this[keyvalue[0] + '_options'] = JSON.parse(JSON.stringify(dataset.filterParams_options[keyvalue[0] + '_options']))
+            if (this.preconfViewTimewindow == 'last24h') {
+              this.startPeriod = new Date(Date.now() - 86400000);
+              this.endPeriod = new Date(Date.now());
+            } else if (this.preconfViewTimewindow == 'lastweek') {
+              this.startPeriod = new Date(Date.now() - 604800000);
+              this.endPeriod = new Date(Date.now());
+            } else if (this.preconfViewTimewindow == 'lastmonth') {
+              this.startPeriod = new Date(Date.now() - 2592000000);
+              this.endPeriod = new Date(Date.now());
+            } else {
+              this.startPeriod = new Date(this.preconfViewTimewindow[0])
+              this.endPeriod = new Date(this.preconfViewTimewindow[1])
             }
 
+          }
+
+
+          //for each dataset exist in pre conf - add to ActiveMap -  & apply all values from filterParams/localFilters(if any) to the local variables  - !SAME NAMES!
+          this.preconfViewLoaded.datasets.forEach(dataset => {
+
+            //pass the dataset (as is) to the Active Map with the "id" field as key in Map.
+            this.datasetsActiveMap.set(dataset.id, dataset)
+
+            //if there are filterParams -> get the filterParams key,value as pairs.
+            //pass each value of the filterParams from the preconf view to the local vars that have SAME names.
+            Object.entries(dataset.filterParams).forEach(keyvalue => {
+
+              //good2know: by using syntax like "this['someValue']" in typescript -> if for example 'someValue' == channel , typecript will search for this.channel local var. Thus, we can call dynamically loca vars.
+              this[keyvalue[0]] = JSON.parse(JSON.stringify(keyvalue[1]));
+
+              //pass the known range/options of params.
+              //note that we have named these local vars SAME as the params + '_options' suffix.
+              //good2know: this JSON.parse/JSON.stringify trick will hard copy multi-nested objs/arrays.
+
+              if (dataset.filterParams_options && dataset.filterParams_options[keyvalue[0] + '_options']) {
+                this[keyvalue[0] + '_options'] = JSON.parse(JSON.stringify(dataset.filterParams_options[keyvalue[0] + '_options']))
+              }
+
+
+            })
+
+            //if there are localFilters -> set to our local vars with the values from preconf view. (SAME names)
+            Object.entries(dataset.localFilters).forEach(keyvalue => {
+              this[keyvalue[0]] = JSON.parse(JSON.stringify(keyvalue[1]));
+            })
+
+
 
           })
 
-          //if there are localFilters -> set to our local vars with the values from preconf view. (SAME names)
-          Object.entries(dataset.localFilters).forEach(keyvalue => {
-            this[keyvalue[0]] = JSON.parse(JSON.stringify(keyvalue[1]));
 
-          })
-
-
-        })
-
-
-        //until here
-        //-> Widgets were set
-        //-> Start & End datetimes were set
-        //-> Query Filters active values were set
-        //-> Query Filters known/available options were set
-        //-> 'datasetsActiveMap' was set. (stored the preconf datasets + values - as is)
-        //-> if localFilters/filterParams in datasets -> active values were set.
+          //until here
+          //-> Widgets were set
+          //-> Start & End datetimes were set
+          //-> Query Filters active values were set
+          //-> Query Filters known/available options were set
+          //-> 'datasetsActiveMap' was set. (stored the preconf datasets + values - as is)
+          //-> if localFilters/filterParams in datasets -> active values were set.
 
 
-        //------------------set any front-end filter fields/options here. #TOUCH
-        // add forms + validators here based on the '_options' of each param #TODO
+          //------------------set any front-end filter fields/options here. #TOUCH
+          // add forms + validators here based on the '_options' of each param #TODO
 
 
-        // if(this.datasetsActiveMap.has('metrics')){
-        //   this.sliderCpuOpts = {
-        //     floor: this.cpuUs_options[0],
-        //     ceil: this.cpuUs_options[1],
-        //     translate: (value: number, label: LabelType): any => {
-        //       return value + '%';
-        //       // switch (value) {
-        //       //   case this.sliderCpuOpts.ceil:
-        //       //     return '45+';
-        //       //   default:
-        //       //     return value;
-        //       // }
-        //       }
-        //     };
-        //   }
+          // if(this.datasetsActiveMap.has('metrics')){
+          //   this.sliderCpuOpts = {
+          //     floor: this.cpuUs_options[0],
+          //     ceil: this.cpuUs_options[1],
+          //     translate: (value: number, label: LabelType): any => {
+          //       return value + '%';
+          //       // switch (value) {
+          //       //   case this.sliderCpuOpts.ceil:
+          //       //     return '45+';
+          //       //   default:
+          //       //     return value;
+          //       // }
+          //       }
+          //     };
+          //   }
 
-        //-----------------------------------------------------------------
+          //-----------------------------------------------------------------
 
-        this.initData('first')
-
-      }
-
-    })
+          this.initData('first')
 
 
-    if (!this.socketSubscription || this.socketSubscription.closed) {
-      this.socketSubscription = this.socketService.liveData().subscribe(res => {
-
-        if (res && this.actRoute.params['_value'].preconfView !== res) {
-
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['/assets-overview/assets-list/dashboards/core-dash/' + this.actRoute.params['_value'].id + '/' + res]);
-          });
         }
 
       })
+    } catch (error) {
+      console.error('Error initializing dashboard:', error);
+      this.spinner.hide();
+      this._snackBar.open('Authentication failed. Please log in again.', null, { duration: 3500, panelClass: 'errorClass' });
     }
+
+
+    // if (!this.socketSubscription || this.socketSubscription.closed) {
+    //   this.socketSubscription = this.socketService.liveData().subscribe(res => {
+
+    //     if (res && this.actRoute.params['_value'].preconfView !== res) {
+
+    //       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    //         this.router.navigate(['/assets-overview/assets-list/dashboards/core-dash/' + this.actRoute.params['_value'].id + '/' + res]);
+    //       });
+    //     }
+
+    //   })
+    // }
 
 
     if (!this.periodSubscription || this.periodSubscription.closed) {
 
       this.periodSubscription = this.dataSync.currentPeriod.subscribe((incomingZoom) => {
         if (incomingZoom.length == 3) {
-
           this.zoomStart = incomingZoom[0]
           this.zoomEnd = incomingZoom[1]
-
         } else {
 
           this.zoomStart = new Date(this.startPeriod).getTime()
           this.zoomEnd = new Date(this.endPeriod).getTime()
         }
-
       })
     }
 
@@ -356,34 +461,68 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  async getAssetDetails(): Promise<void> {
 
-    this.assets_options = await this.overviewService.getAssets();
+  downloadJson() {
 
-    if (this.assets_options[0] == 'http-error') {
-      this._snackBar.open('An error has occured while trying to retrieve cases. Please try again.', null, { duration: 3500, panelClass: 'errorClass' })
-    }
-    else {
-      this.recentSaved = this.assets_options.map(asset => asset.savedViews).filter(v => v);
-    }
+    this.allWidgets.forEach(widget => {
+      this.jsonFiles_list.push({ "widget": widget.title, "data": widget.config.data.data })
+    })
 
-
-
+    this.convertToJson_download(this.jsonFiles_list, this.preconfViewLoaded.title, this.assetId);
   }
+
+  convertToJson_download(myArray: any[], useCase: string, asset: string) {
+    let zip = new JSZip();
+    myArray.forEach(v => {
+      zip.file(v.widget + '.json', JSON.stringify(v.data));
+    });
+
+    zip.generateAsync({ type: "blob" })
+      .then(function (content) {
+        FileSaver.saveAs(content, asset + "_" + useCase + ".zip");
+      });
+  }
+
+
+  async getAssetDetails(): Promise<void> {
+    try {
+      // Make sure token exists before trying to use it
+      if (!this.token) {
+        this.token = await this.nodejsService.getToken();
+      }
+
+      this.assets_options = await this.overviewService.getAssets(this.token, '/assets', {
+        "start": 1695723177000,
+        "end": new Date(Date.now()).getTime()
+      });
+      if (this.assets_options[0] == 'http-error') {
+        this._snackBar.open('An error has occurred while trying to retrieve cases. Please try again.', null, { duration: 3500, panelClass: 'errorClass' });
+      } else {
+
+        if (this.assetId !== 'all')
+          this.asset_id = this.assets_options.filter(v => v.hostname == this.assetId)[0]['host_id'];
+        else {
+          this.asset_id = this.assets_options.map(v => v.host_id)
+          this.inspect_assets = this.assets_options.map(v => v.hostname)
+
+        }
+        this.recentSaved = this.assets_options.map(asset => asset.savedViews).filter(v => v);
+      }
+    } catch (error) {
+      console.error('Error getting asset details:', error);
+      this._snackBar.open('Failed to load asset details. Please refresh the page or log in again.', null, { duration: 3500, panelClass: 'errorClass' });
+    }
+  }
+
 
   //this function is getting called each time new data from the backend are being requested.
   initData(flag) {
-
-
-
     this.spinner.show();
     this.promises = [];
     //per new data request, clear zoomed period
     this.dataSync.changePeriod([])
     //clear inspection field
     this.assets = null;
-
-    this.getAssetDetails();
 
     //for each active Dataset -> build the body request.
 
@@ -392,8 +531,9 @@ export class DashboardComponent implements OnInit {
 
       //if the dataset needs dynamic id (i.e. a clicked asset) -> we add it in body as 'id' for all requests.
       //-> go to the corresponding nodejsService function and map this to the correct name for each request. (e.g an api may needs id as "cardID", so you have to take it from body.id)
-      if (value.hasDynamicID) body['id'] = this.assetId;
-
+      if (value.hasDynamicID) {
+        body['id'] = Array.isArray(this.asset_id) ? this.asset_id : [this.asset_id]
+      }
       //add to body any static params (if any) that the request requires.
       if (Object.keys(value.staticParams).length > 0) {
 
@@ -409,11 +549,14 @@ export class DashboardComponent implements OnInit {
         //On reset if dataset requires dates -> check timewindow's value that was initially loaded from prec view.
         if (value.hasDates) {
 
-          if (this.preconfViewTimewindow == 'day') {
+          if (this.preconfViewTimewindow == 'last24h') {
             this.startPeriod = new Date(Date.now() - 86400000);
             this.endPeriod = new Date(Date.now());
-          } else if (this.preconfViewTimewindow == 'month') {
+          } else if (this.preconfViewTimewindow == 'lastmonth') {
             this.startPeriod = new Date(Date.now() - 2592000000);
+            this.endPeriod = new Date(Date.now());
+          } else if (this.preconfViewTimewindow == 'lastweek') {
+            this.startPeriod = new Date(Date.now() - 604800000);
             this.endPeriod = new Date(Date.now());
           } else {
             this.startPeriod = new Date(this.preconfViewTimewindow[0])
@@ -442,8 +585,8 @@ export class DashboardComponent implements OnInit {
         //on first/new request add the current values from calendar filter/fields.
         if (value.hasDates) {
 
-          body['start'] = this.startPeriod.getTime();
-          body['end'] = this.endPeriod.getTime();
+          body['start'] = new Date(this.startPeriod).getTime();
+          body['end'] = new Date(this.endPeriod).getTime();
 
         }
 
@@ -456,8 +599,9 @@ export class DashboardComponent implements OnInit {
 
       }
 
-      this.promises.push(this.nodejsService[value.method](body))
 
+
+      if (value.path) this.promises.push(this.nodejsService[value.method](value.path, body))
     }
 
     //until here
@@ -472,19 +616,21 @@ export class DashboardComponent implements OnInit {
       //on reset/new request clear local filters #TOUCH
       //on first request, we dont clear the local filters input because the preconf may were contain values.
       if (flag !== 'first') {
-
-        this.alertType = this.alertType_options
+        // this.alertName = this.alertName_options
 
         this.entities = [];
-        //this.strictSearch = false;
+
       }
 
       let i = 0;
 
+
       //re-build the local filter range/options and store-update the new-came data for each dataset to the datasetsDataMap.
       for (let [key, value] of this.datasetsActiveMap.entries()) {
 
+
         this.datasetsDataMap.set(key, results[i])
+
 
 
         if (Object.keys(value.localFilters).length > 0) {
@@ -492,18 +638,16 @@ export class DashboardComponent implements OnInit {
           //calling a service per dataset that has localFilters, so to build the options based on the new data.
           //the service should return EXACT the same format of the localFilters_options field (in preconf).
           //good2know: Promise.all will return an array with the results of the promises in the SAME order as were pushed. Thus, we know the order.
-
+          // *EDO
           let localFilters_options = await this.dashServ['createLocalFilt_' + key](results[i]);
 
           //update the values of the '_options' vars with the new ones.
           Object.entries(localFilters_options).forEach(keyvalue => {
-            //console.log(keyvalue);
             this[keyvalue[0]] = keyvalue[1];
+
             // this[keyvalue[0]] = [...new Set(this[keyvalue[0]].push(keyvalue[1]))];
             //why?
           })
-
-          //console.log(this.duration)
 
           let localFiltersActive = {};
 
@@ -511,14 +655,16 @@ export class DashboardComponent implements OnInit {
           Object.keys(value.localFilters).forEach(name => {
 
             localFiltersActive[name] = this[name]
+
           })
 
-          //console.log(localFiltersActive)
+
 
           //call a service per dataset that has localFilters, to filter the data based on the user selection (local filters current values)
           let filteredData = await this.dashServ['filterDataset_' + key](localFiltersActive, results[i])
-          //store the filtered data to a new Map obj (datasetsFilteredDataMap), in order to not erase the original data from datasetsDataMap.
-          //in datasetsDataMap we keep the un-filtered data, as a full-daset for filtering.
+
+          //store the filtered data to a new Map obj (datasetsFilteredDataMap), in order to not erase the original data from datasetsDataMap.          //in datasetsDataMap we keep the un-filtered data, as a full-daset for filtering.          console.log(value.localFilters, localFiltersActive, filteredData);
+
           this.datasetsFilteredDataMap.set(key, filteredData)
 
 
@@ -528,7 +674,6 @@ export class DashboardComponent implements OnInit {
 
 
       }
-
 
       //until here
       //-> new-came data were stored in datasetsDataMap for each dataset.
@@ -582,7 +727,9 @@ export class DashboardComponent implements OnInit {
 
         //datasets field in every widget contain the "id" value of each datasets, so we can get the data from the Map with the "get" method since the "id" is the key of the Maps for every entry.
         widget.datasets.forEach(datName => {
+
           if (this.datasetsFilteredDataMap.has(datName)) {
+
 
             finalData.data.push(this.datasetsFilteredDataMap.get(datName))
             let localFilters = {}
@@ -595,30 +742,32 @@ export class DashboardComponent implements OnInit {
           }
           else finalData.data.push(this.datasetsDataMap.get(datName))
 
+
         })
+
 
         //udpdate the config of each widget.
         widget.config.data = finalData;
-        widget.config.start = this.startPeriod.getTime();
-        widget.config.end = this.endPeriod.getTime();
+        widget.config.start = new Date(this.startPeriod).getTime();
+        widget.config.end = new Date(this.endPeriod).getTime();
 
         //trigger change detection for objects
         widget.config = Object.assign({}, widget.config);
+
+
       })
 
-      // console.log(this.allWidgets);
+      if (flag === 'reset') {
+        await this.applyFilters('clear-all');
+      } else
+        await this.applyFilters('apply-all');
 
     })
 
+
+
   }
 
-  // trigger spinner from widgets
-  getSpinner(flag) {
-    //console.log(flag);
-
-    if (flag == 'start') this.spinner.show()
-    else this.spinner.hide()
-  }
 
 
   async applyFilters(flag) {
@@ -630,17 +779,13 @@ export class DashboardComponent implements OnInit {
 
       //on clear -> clear the local filters #TOUCH
       if (flag == 'clear-all') {
-        this.alertType = [...this.alertType_options]
+        this.alertName = [...this.alertName_options]
         this.entities = []
         //this.strictSearch = false;
       }
 
-      // console.log(this.duration_options , 'here')
-
       //find datasets that have localFilters -> get the values from the local filters & filter the data.
       for (let [key, value] of this.datasetsActiveMap.entries()) {
-        //console.log(key);
-
         if (Object.keys(value.localFilters).length > 0) {
 
           let localFiltersActive = {};
@@ -650,7 +795,6 @@ export class DashboardComponent implements OnInit {
             localFiltersActive[name] = this[name]
           })
 
-          // console.log(localFiltersActive)
 
           //get the filtered data
           let filteredData = await this.dashServ['filterDataset_' + key](localFiltersActive, this.datasetsDataMap.get(key))
@@ -731,17 +875,17 @@ export class DashboardComponent implements OnInit {
           widget.config = Object.assign({}, widget.config);
 
         }
-
       })
-
-
     }
-
-    //console.log(this.datasetsDataMap,this.datasetsFilteredDataMap);
-
-
   }
 
+
+
+  // trigger spinner from widgets
+  getSpinner(flag) {
+    if (flag == 'start') this.spinner.show()
+    else this.spinner.hide()
+  }
   //syncFlag is served as Input to the other components, -> if false, all time-wise widgets wont propagate the zoom interactions to the dataSync service.
   syncWidgets() {
     this.syncFlag = !this.syncFlag;
@@ -774,13 +918,23 @@ export class DashboardComponent implements OnInit {
   }
 
   onResizeEnd(event: ResizeEvent, wdgt): void {
-    //console.log(event.rectangle.height);
-
-    //console.log('Element was resized', event, wdgt);
     if (event.rectangle.height >= 200) this.heightResized[wdgt] = event.rectangle.height
-
   }
 
+  toggleFiltersSidebar(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  toggleWidgetsSidebar(): void {
+    this.isWidgetsCollapsed = !this.isWidgetsCollapsed;
+  }
+
+  get leftMargin(): number {
+    return this.isCollapsed ? this.collapsedWidth : this.openWidth;
+  }
+  get rightMargin(): number {
+    return this.isWidgetsCollapsed ? this.collapsedWidth : this.openWidth;
+  }
 
   ngOnDestroy() {
 
@@ -790,7 +944,7 @@ export class DashboardComponent implements OnInit {
 
     this.dataSync.changeClicked("")
 
-    this.socketService.disconSocket();
+    // this.socketService.disconSocket();
 
     // this.alldatasets.forEach(d => d.active = false);
     // this.currentWidgets = [];

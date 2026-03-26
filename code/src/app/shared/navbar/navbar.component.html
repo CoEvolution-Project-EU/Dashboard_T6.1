@@ -1,13 +1,11 @@
 <mat-toolbar>
 
     <div class="labels">
-        <span class="ml-2 " style="font-size: 17px;margin-right: 0.5em; ">CoEvolution Dashboard  &nbsp; |</span>
+        <span class="ml-2 " style="font-size: 17px;margin-right: 0.5em; ">CoEvolution Hub Dashboard &nbsp; |</span>
 
-        <!-- <button (click)="goToRoute('')"
-            [ngStyle]="{'color': params.length == 0 || params[1].path == 'all'  ? '#fcd3b6' : 'whitesmoke'}"
-            mat-stroked-button>
-            <mat-icon
-                [ngStyle]="{'color': params.length == 0 || params[1].path == 'all'  ? 'var(--secondary-button-color)' : 'whitesmoke'}">apps</mat-icon>
+
+        <!-- <button (click)="goToRoute('')" [ngStyle]="{'color':'var(--secondary-button-color)' }" mat-stroked-button>
+            <mat-icon [ngStyle]="{'color': 'var(--secondary-button-color)'}">apps</mat-icon>
             Cases Overview
         </button> -->
 
@@ -15,8 +13,8 @@
 
 
 
-    <div style="margin-left: auto; display: flex; align-items: center;">
-        <button class="h4 labels" mat-stroked-button (click)="logout()">
+    <div class="labels" style="margin-left: auto; display: flex; align-items: center; justify-content: center;">
+        <button mat-stroked-button (click)="logout()">
             <mat-icon>logout</mat-icon> Logout
         </button>
     </div>

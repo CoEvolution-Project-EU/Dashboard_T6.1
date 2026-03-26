@@ -1,0 +1,192 @@
+{
+    "id": "events-analysis",
+    "title": "Alerts View",
+    "timewindow": "lastmonth",
+    "datasets": [
+        {
+            "name": "Elastic Events for Alerts",
+            "id": "alerts",
+            "method": "getAlerts",
+            "path": "/misc",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {
+                "severities": [
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                ]
+            },
+            "filterParams_options": {
+                "severities_options": [
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                ]
+            },
+            "localFilters": {
+                "alertName": []
+            }
+        }
+    ],
+    "currentWidgets": [
+        {
+            "name": "alertsDistrib",
+            "title": "Alerts Distribution",
+            "size": 100,
+            "filters": {},
+            "order": 0,
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 2,
+                "title": "Alerts Distribution",
+                "description": "The following distribution chart refers to the alerts' detection and their distribution across time.",
+                "maxwidth": 170,
+                "name": "distrchart"
+            },
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": [],
+                    "extra": []
+                },
+                "id": "default",
+                "datasetsNames": [
+                    "Alerts"
+                ],
+                "datasetsInfo": [
+                    {
+                        "id": "alerts"
+                    }
+                ],
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "fillColor": "#ec7508",
+                "brushColor": "#219ebc",
+                "color": "#ec7508"
+            }
+        },
+        {
+            "name": "timeline",
+            "title": "Timeline",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 3,
+                "title": "Alerts Temporal View",
+                "description": "The following Timeline Analysis widget allows the user to identify groups of events that occurred close together in time compare the current situation with older events.",
+                "maxwidth": 170,
+                "name": "timeline"
+            },
+            "size": 100,
+            "filters": {
+                "annotationsActive": []
+            },
+            "order": 3,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    {
+                        "id": "alerts",
+                        "labels": [
+                            {
+                                "rule_name": ""
+                            },
+                            {
+                                "severity": ""
+                            }
+                        ],
+                        "legend": [
+                            {
+                                "low": "#B2D58C"
+                            },
+                            {
+                                "medium": "#FFC078"
+                            },
+                            {
+                                "high": "#FF8F77"
+                            },
+                            {
+                                "critical": "#EB4B4B"
+                            }
+                        ],
+                        "groups": [
+                            {
+                                "rule_name": ""
+                            }
+                        ]
+                    }
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "elasticAlerts",
+                "clustering": true,
+                "zoomSync": true,
+                "doubleClick": true,
+                "grouping": true,
+                "height": "500px",
+                "colors": {
+                    "text": "initial",
+                    "gridLines": "transparent",
+                    "groupsArea": "initial",
+                    "mainBackground": "initial",
+                    "topArea": "initial",
+                    "itemsHighlight": "#f3ba00",
+                    "filterHighlighted": "blue",
+                    "itemsText": "black"
+                }
+            }
+        },
+        {
+            "name": "alertsDetails",
+            "title": "Alerts",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 4,
+                "title": "Alerts Details",
+                "description": "The following Details widget is used to present information about detected alerts (severity, risk score, messages, timestamps).",
+                "maxwidth": 170,
+                "name": "details"
+            },
+            "size": 100,
+            "filters": {},
+            "order": 10,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsNames": [
+                    "Alerts"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "globalAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        }
+    ],
+    "availableWidgets": []
+}

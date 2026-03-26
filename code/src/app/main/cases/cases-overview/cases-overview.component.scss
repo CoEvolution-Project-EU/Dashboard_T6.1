@@ -1,6 +1,5 @@
 .page-container {
-    padding-top: 50px;
-    padding-left: 200px
+    padding-top: 104px;
 }
 
 .header {
@@ -9,27 +8,19 @@
 }
 
 .menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 270px;   /* ίδιο πλάτος με το πράσινο sidebar */
-  height: 100vh;
-  background-color: hsl(220 56% 20%); /* το πράσινο */
-  z-index: 999;
+    background-color: white;
+    width: 100%;
+    position: fixed;
+    z-index: 999;
+    height: 60px;
+    margin-top: 45px;
 
-    // background-color: white;
-    // width: 100%;
-    // position: fixed;
-    // z-index: 999;
-    // height: 20px;
-    // margin-top: 45px;
-
-    // //flex-direction: column;
-    // box-sizing: border-box;
-    // display: flex;
-    // place-content: center space-between;
-    // align-items: flex-start;
-    // padding: 12px;
+    //flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    place-content: center space-between;
+    align-items: flex-start;
+    padding: 12px;
 
     .innerNavButtons{
         display: flex;
@@ -75,7 +66,7 @@
 
 .asset-card {
     max-width: 300px;
-    width: 300px;
+    width: 280px;
     //cursor: pointer;
     margin: 1em;
     border-radius: 1em;
@@ -120,15 +111,24 @@
     margin-bottom: 0px;
     overflow: auto;
 }
+.assets-header:hover{
+    position: relative;
+    z-index: 100;
+    background: #fff;
+    overflow: visible;
+    white-space: normal;
+    overflow-wrap: break-word;
+    padding: 16px;
 
+}
 .assets-header{
+    padding: 16px;
 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: large;
     display: flex;
-    flex-direction: column;
     align-items: center;
     font-weight: 400;
 }

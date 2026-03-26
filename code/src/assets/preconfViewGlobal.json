@@ -52,8 +52,6 @@
         }
     ],
     "currentWidgets": [
-        
-      
         {
             "name": "alertsStats",
             "title": "Alerts Statistics",
@@ -123,7 +121,7 @@
         },
         {
             "name": "alertsDetails",
-            "title": "Alerts Tabular Representation",
+            "title": "Alerts",
             "size": 100,
             "filters": {},
             "order": 10,
@@ -148,7 +146,6 @@
                 }
             }
         }
-      
     ],
     "availableWidgets": [
         {
@@ -207,7 +204,7 @@
         },
         {
             "name": "timeline",
-            "title": "Timeline Representation",
+            "title": "Timeline",
             "size": 100,
             "filters": {
                 "annotationsActive": []
@@ -222,9 +219,66 @@
                 "start": "",
                 "end": "",
                 "datasetsInfo": [
-                    {"name":"Alerts","labels":[{"default": ".signal.rule.name"},{"hostname":".host.name"}],"legend":[{"low":"#c3ecdf"},{"medium":"gold"},{"high":"#ff8313"},{"critical":"#ff4922"}]},
-                    {"name":"CPU","labels":[{"default": "Abnormal CPU Load"},{"hostname":".target_id"}],"legend":[{"spike 0":"#c3d6ec"},{"spike 1":"#eda46c"}]},
-                    {"name":"RAM","labels":[{"default": "Abnormal RAM consumption"},{"hostname":".target_id"}],"legend":[{"ml ram":"#00a2ffd1"}]}
+                    {
+                        "name": "Alerts",
+                        "labels": [
+                            {
+                                "default": ".signal.rule.name"
+                            },
+                            {
+                                "hostname": ".host.name"
+                            }
+                        ],
+                        "legend": [
+                            {
+                                "low": "#c3ecdf"
+                            },
+                            {
+                                "medium": "gold"
+                            },
+                            {
+                                "high": "#ff8313"
+                            },
+                            {
+                                "critical": "#ff4922"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "CPU",
+                        "labels": [
+                            {
+                                "default": "Abnormal CPU Load"
+                            },
+                            {
+                                "hostname": ".target_id"
+                            }
+                        ],
+                        "legend": [
+                            {
+                                "spike 0": "#c3d6ec"
+                            },
+                            {
+                                "spike 1": "#eda46c"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "RAM",
+                        "labels": [
+                            {
+                                "default": "Abnormal RAM consumption"
+                            },
+                            {
+                                "hostname": ".target_id"
+                            }
+                        ],
+                        "legend": [
+                            {
+                                "ml ram": "#00a2ffd1"
+                            }
+                        ]
+                    }
                 ],
                 "data": {
                     "action": "",
@@ -234,16 +288,15 @@
                 "clustering": true,
                 "zoomSync": true,
                 "doubleClick": true,
-                "colors":{
-                    "text":"initial",
-                    "gridLines":"transparent",
-                    "center":"initial",
-                    "top":"initial"
+                "colors": {
+                    "text": "initial",
+                    "gridLines": "transparent",
+                    "center": "initial",
+                    "top": "initial"
                 },
                 "height": "500px"
             }
         },
-       
         {
             "name": "alertsDistrib",
             "title": "Alerts Distribution",
@@ -291,7 +344,7 @@
                 ],
                 "xaxisformat": "dd MMM HH:mm:ss",
                 "fillColor": "#ec7508",
-                "brushColor": "#219ebc"            
+                "brushColor": "#219ebc"
             }
         },
         {

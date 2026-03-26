@@ -4,48 +4,50 @@
 
         <div class="boxForm">
 
-            <mat-label class="labelHeader">Add Annotation <span style="color:initial; margin-left: 0.5em;">@{{clickedTime | date:'medium'}} </span></mat-label>
-    
-            <mat-form-field  appearance="fill" style="margin-top:1em;">
+            <mat-label class="labelHeader">Add Annotation <span
+                    style="color:initial; margin-left: 0.5em;">&#64;{{clickedTime | date:'medium'}} </span></mat-label>
+
+            <mat-form-field appearance="fill" style="margin-top:1em;">
                 <mat-label>Title</mat-label>
                 <input matInput #inpt maxlength="40" [(ngModel)]="message">
                 <!-- <mat-hint align="start"><strong>Don't disclose personal info</strong> </mat-hint> -->
                 <mat-hint align="end">{{inpt.value.length}} / 40</mat-hint>
             </mat-form-field>
-    
-            <mat-radio-group class="radioButtons"  [(ngModel)]="annotation">
+
+            <mat-radio-group class="radioButtons" [(ngModel)]="annotation">
                 <!-- <mat-radio-button value="none">None</mat-radio-button> -->
                 <mat-radio-button value="low">Low Priority</mat-radio-button>
                 <mat-radio-button value="medium">Medium Priority</mat-radio-button>
                 <mat-radio-button value="high">High Priority</mat-radio-button>
             </mat-radio-group>
-    
-    
+
+
         </div>
 
 
         <div style="margin-top: 1em; display: flex; justify-content: flex-end;">
-            <button (click)="_dialogRef.close()" class="btn-1-cancel" mat-raised-button>Cancel</button>
+            <button (click)="_dialogRef.close()" class="btn-1-cancel resetBut" mat-raised-button>Cancel</button>
 
             <button (click)="proceed()" style=" margin-left: 0.5em;" mat-raised-button
-                class="btn-2">Proceed</button>
+                class="btn-2 applyBut">Proceed</button>
         </div>
 
     </div>
 
     <ng-template #removeCustomTimeBar>
 
-            <div class="p-3">
-                <mat-label class="labelHeader">Remove Annotation <span style="color:initial;margin-left: 0.5em;"> @{{clickedTime | date:'medium'}} </span></mat-label>
+        <div class="p-3">
+            <mat-label class="labelHeader">Remove Annotation <span style="color:initial;margin-left: 0.5em;">
+                    &#64;{{clickedTime | date:'medium'}} </span></mat-label>
 
-            </div>
-    
-            <div style="margin-top: 1em; display: flex; justify-content: flex-end;">
-                <button (click)="_dialogRef.close()" class="btn-1-cancel" mat-raised-button>Cancel</button>
-        
-                <button (click)="_dialogRef.close('remove')" style=" margin-left: 0.5em;" mat-raised-button
-                    class="btn-2">Remove</button>
-            </div>
+        </div>
+
+        <div style="margin-top: 1em; display: flex; justify-content: flex-end;">
+            <button (click)="_dialogRef.close()" class="btn-1-cancel resetBut" mat-raised-button>Cancel</button>
+
+            <button (click)="_dialogRef.close('remove')" style=" margin-left: 0.5em;" mat-raised-button
+                class="btn-2 applyBut">Remove</button>
+        </div>
     </ng-template>
 
 

@@ -1,0 +1,96 @@
+{
+    "orders": [
+      {
+        "comments": "Order includes electronic components and cables.",
+        "customer": "ABC Corp",
+        "documentNumber": "12345",
+        "items": [
+          { "name": "EC001", "quantity": 100, "expectedDeliveryDate": "2024-07-19", "currentStateOfOrder": "On Time" },
+          { "name": "CB002", "quantity": 50, "expectedDeliveryDate": "2024-07-20", "currentStateOfOrder": "Delayed" },
+          { "name": "CB003", "quantity": 50, "expectedDeliveryDate": "2024-07-20", "currentStateOfOrder": "Delayed" }
+        ]
+      },
+      {
+        "comments": "Order includes various mechanical parts.",
+        "customer": "XYZ Inc",
+        "documentNumber": "67890",
+        "items": [
+          { "name": "MP003", "quantity": 75, "expectedDeliveryDate": "2024-08-01", "currentStateOfOrder": "On Time" },
+          { "name": "MP004", "quantity": 20, "expectedDeliveryDate": "2024-08-03", "currentStateOfOrder": "On Time" }
+        ]
+      },
+      {
+        "comments": "Order includes office supplies and furniture.",
+        "customer": "LMN Ltd",
+        "documentNumber": "54321",
+        "items": [
+          { "name": "OS005", "quantity": 200, "expectedDeliveryDate": "2024-07-25", "currentStateOfOrder": "Delayed" },
+          { "name": "FR006", "quantity": 10, "expectedDeliveryDate": "2024-07-28", "currentStateOfOrder": "On Time" }
+        ]
+      },
+      {
+        "comments": "Order includes computer accessories.",
+        "customer": "OPQ Enterprises",
+        "documentNumber": "98765",
+        "items": [
+          { "name": "CA007", "quantity": 50, "expectedDeliveryDate": "2024-07-22", "currentStateOfOrder": "On Time" },
+          { "name": "CA008", "quantity": 30, "expectedDeliveryDate": "2024-07-23", "currentStateOfOrder": "Delayed" }
+        ]
+      },
+      {
+        "comments": "Order includes safety equipment.",
+        "customer": "RST Safety",
+        "documentNumber": "11223",
+        "items": [
+          { "name": "SE009", "quantity": 100, "expectedDeliveryDate": "2024-07-21", "currentStateOfOrder": "On Time" },
+          { "name": "SE010", "quantity": 50, "expectedDeliveryDate": "2024-07-24", "currentStateOfOrder": "On Time" }
+        ]
+      },
+      {
+        "comments": "Order includes laboratory supplies.",
+        "customer": "UVW Labs",
+        "documentNumber": "44556",
+        "items": [
+          { "name": "LS011", "quantity": 150, "expectedDeliveryDate": "2024-07-18", "currentStateOfOrder": "Delayed" },
+          { "name": "LS012", "quantity": 60, "expectedDeliveryDate": "2024-07-19", "currentStateOfOrder": "On Time" }
+        ]
+      },
+      {
+        "comments": "Order includes automotive parts.",
+        "customer": "XYZ Auto",
+        "documentNumber": "77889",
+        "items": [
+          { "name": "AP013", "quantity": 80, "expectedDeliveryDate": "2024-07-27", "currentStateOfOrder": "Delayed" },
+          { "name": "AP014", "quantity": 40, "expectedDeliveryDate": "2024-07-29", "currentStateOfOrder": "On Time" }
+        ]
+      },
+      {
+        "comments": "Order includes medical supplies.",
+        "customer": "ABC Health",
+        "documentNumber": "99001",
+        "items": [
+          { "name": "MS015", "quantity": 200, "expectedDeliveryDate": "2024-07-26", "currentStateOfOrder": "On Time" },
+          { "name": "MS016", "quantity": 100, "expectedDeliveryDate": "2024-07-30", "currentStateOfOrder": "Delayed" }
+        ]
+      },
+      {
+        "comments": "Order includes gardening tools.",
+        "customer": "Garden Pros",
+        "documentNumber": "22445",
+        "items": [
+          { "name": "GT017", "quantity": 120, "expectedDeliveryDate": "2024-07-31", "currentStateOfOrder": "On Time" },
+          { "name": "GT018", "quantity": 60, "expectedDeliveryDate": "2024-08-02", "currentStateOfOrder": "Delayed" }
+        ]
+      },
+      {
+        "comments": "Order includes building materials.",
+        "customer": "Construction Hub",
+        "documentNumber": "66778",
+        "items": [
+          { "name": "BM019", "quantity": 500, "expectedDeliveryDate": "2024-08-05", "currentStateOfOrder": "On Time" },
+          { "name": "BM020", "quantity": 300, "expectedDeliveryDate": "2024-08-06", "currentStateOfOrder": "Delayed" }
+        ]
+      }
+    ]
+  }
+  

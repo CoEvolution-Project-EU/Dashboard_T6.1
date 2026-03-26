@@ -12,22 +12,31 @@ export class AuthService {
     private keycloak: KeycloakService
 
   ) {
+  }
 
-    if (this.keycloak['_userProfile'] && this.keycloak['_userProfile'].attributes.length > 0) this.casesrights = JSON.parse(this.keycloak['_userProfile'].attributes.restrictions)
+  checkCasesRights(caseId) {
+
+    let casesObject = JSON.parse(this.casesrights[0]);
+    let cases: string[] = Object.keys(casesObject);
+
+    return caseId.filter(item => cases.includes(item));
+
 
   }
 
 
   // Roxanne functions on read/create/update. [FIX] this for elk-security
-  checkReadRights(caseId) {
+  checkRights(caseId) {
 
     if (!this.casesrights[caseId]) return true;
     else {
       if (this.casesrights[caseId].some(x => x == 'read')) return false;
-      else return true
+      else return true;
     }
-
   }
+
+
+
 
   checkCreateRights(caseId) {
 
@@ -49,6 +58,12 @@ export class AuthService {
   }
 
   getRights() {
+
+    if (this.keycloak['_userProfile'] && this.keycloak['_userProfile'].hasOwnProperty('attributes')) {
+      this.casesrights = this.keycloak['_userProfile'].attributes
+    } else {
+      console.log('attributes property does not exist');
+    }
     return this.casesrights
   }
 

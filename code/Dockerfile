@@ -1,10 +1,10 @@
-FROM node:18-alpine As builder
+FROM node:18-alpine AS builder
 
 WORKDIR /usr/src/app/fvt
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . .
 

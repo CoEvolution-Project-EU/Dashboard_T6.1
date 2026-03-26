@@ -122,15 +122,15 @@ export class StatisticsService {
 
       dataset[0].forEach(v => {
 
-        if (v._source.signal.rule.severity == 'low') {
+        if (v._source['kibana.alert.rule.severity'] == 'low') {
 
           chartsData.pieData.data[0].value++
 
-        } else if (v._source.signal.rule.severity == 'medium') {
+        } else if (v._source['kibana.alert.rule.severity'] == 'medium') {
 
           chartsData.pieData.data[1].value++
 
-        } else if (v._source.signal.rule.severity == 'high') {
+        } else if (v._source['kibana.alert.rule.severity'] == 'high') {
 
           chartsData.pieData.data[2].value++
         } else {
@@ -142,11 +142,11 @@ export class StatisticsService {
       })
 
 
-      let alertTypes = [...new Set(dataset[0].flatMap(v => v._source.signal.rule.name))];
+      let alertTypes = [...new Set(dataset[0].flatMap(v => v._source['kibana.alert.rule.name']))];
 
       alertTypes.forEach((type, i) => {
 
-        let typesNum = dataset[0].filter(v => v._source.signal.rule.name == type)
+        let typesNum = dataset[0].filter(v => v._source['kibana.alert.rule.name'] == type)
 
         chartsData.barData.data.push({
           name: type,
@@ -182,8 +182,8 @@ export class StatisticsService {
 
     dataset[0].forEach(v => {
 
-      riskScores.push(v._source.signal.rule.risk_score)
-      riskScoresSum += v._source.signal.rule.risk_score
+      riskScores.push(v._source['kibana.alert.rule.risk_score'])
+      riskScoresSum += v._source['kibana.alert.rule.risk_score']
 
     })
 
@@ -269,7 +269,6 @@ export class StatisticsService {
       })
 
     }
-    //console.log(topSource,topDest);
 
 
     return chartsData
@@ -277,7 +276,6 @@ export class StatisticsService {
   }
 
   public createStats_mainDashNetflows(dataset) {
-    //console.log(data);
 
     let statsData = {
       "stringData": [],

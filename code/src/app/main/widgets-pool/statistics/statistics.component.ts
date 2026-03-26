@@ -5,9 +5,24 @@ import { Sort } from '@angular/material/sort';
 import { DataSyncService } from '../../data-sync.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectStatisticsComponent } from '../dialogs/select-statistics/select-statistics.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+// Angular Material Modules
+import { MatLabel } from '@angular/material/form-field';
+import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-statistics',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatLabel,
+    MatSortModule,
+    MatIconModule
+  ],
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss']
 })
@@ -83,11 +98,21 @@ export class StatisticsComponent implements OnInit {
 
       const promise = new Promise<void>((resolve, reject) => {
 
-        if (this.config.data.data.length > 0) {
-
-          resolve()
-
-        } else reject('no-data')
+        // Handle different config IDs and check for data accordingly
+        // First check if the config is first change and the data is empty
+        if (changes.config.firstChange && this.config.data && this.config.data.data.length == 0) {
+          reject('first');
+        // If the config is first change and the data is not empty, resolve the promise 
+        // (this happens if we manually set the data from the component's ts)
+        } else if (changes.config.firstChange && this.config.data && this.config.data.data.length > 0) {
+          resolve();
+        // If the config is not first change and the data is not empty, resolve the promise
+        } else if (this.config.data && this.config.data.data.length > 0) {
+          resolve();
+        // If the config is not first change and the data is empty, reject the promise
+        } else {
+          reject('no-data');
+        }
 
       })
 
@@ -229,7 +254,7 @@ export class StatisticsComponent implements OnInit {
 
 
       }, (error) => {
-        console.log(error);
+        if (error !== 'first') console.log(error);
         //this.loading.emit('done')
 
       })

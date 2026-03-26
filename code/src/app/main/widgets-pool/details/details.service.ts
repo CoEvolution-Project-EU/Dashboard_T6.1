@@ -10,7 +10,6 @@ export class DetailsService {
   public createData_mainDashAlerts(data) {
 
     let tableData = [];
-
     if (data[0].hits) {
 
       data[0].hits.hits.forEach((v, i) => {
@@ -312,42 +311,50 @@ export class DetailsService {
   }
 
 
-  public createData_securityDetails(data) {
+  public createData_communicationDetails(data) {
 
     let tableData = [];
 
-    if (data[0].securityDetails.hits) {
+    if (data[0]?.aggregations) {
 
-      data[0].securityDetails.hits.hits.forEach((v, i) => {
-        tableData.push({
-          client_ip: v._source['ip'],
-          beat: v._source.agent['type'],
-          destination_bytes: this.formatBytes(v._source.destination['bytes']),
-          destination_packets: v._source.destination['packets'],
-          source_bytes: this.formatBytes(v._source.source['bytes']),
-          source_packets: v._source.source['packets'],
-          timestamp: new Date(v._source['@timestamp']),
+      data[0].aggregations.source_ip.buckets.forEach((v, i) => {
+
+        let client_ip = v.key
+
+        v.destination_ip.buckets.forEach((x, i) => {
+
+          let timestamp = x.timestamps.buckets[0].key;
+
+          tableData.push({
+
+            client_ip: client_ip,
+            source_bytes: this.formatBytes(x.source_bytes.value),
+            destination_ip: x.key,
+            destination_bytes: this.formatBytes(x.destination_bytes.value),
+            timestamp: new Date(timestamp)
+
+          })
         })
-
       })
+
 
     }
 
     return tableData;
 
   }
-  public createColumns_securityDetails(data) {
+  public createColumns_communicationDetails(data) {
     let columns = []
 
     columns = [
-      // "host",
       "client_ip",
       "source_bytes",
-      "source_packets",
+      "destination_ip",
+      // "source_packets",
       "destination_bytes",
-      "destination_packets",
+      // "destination_packets",
       "timestamp",
-      "beat"
+      // "beat"
     ]
 
     return columns
@@ -356,19 +363,20 @@ export class DetailsService {
 
   public createData_processDetails(data) {
 
+
     let tableData = [];
+    let color;
+    if (data[0].aggregations) {
 
-    if (data[0].processDetails.hits) {
-
-      data[0].processDetails.hits.hits.forEach((v, i) => {
-
+      data[0].aggregations[0].buckets.forEach((v, i) => {
+        if (v[1]['value'] * 100 > 1) color = 'red'
         tableData.push({
-          user_name: v.fields['user.name'],
-          process: v.fields['process.name'],
-          // host: v.fields['host.name'],
-          action: v.fields['event.action'],
-          process_id: v.fields['process.pid'],
-          timestamp: new Date(v.fields['@timestamp']),
+          process_name: v['key'],
+          cpu_consumption: (v[1]['value'] * 100),
+          start: new Date(v[3].buckets[0]['key']),
+          end: new Date(v[3].buckets[v[3].buckets.length - 1]['key']),
+          timestamp: new Date(v[3].buckets[0]['key']),
+          color: color
         })
 
       })
@@ -382,9 +390,9 @@ export class DetailsService {
     let columns = []
 
     columns = [
-      "user_name", "process",
+      "process_name", "cpu_consumption",
       // "host", 
-      "action", "process_id", "timestamp"
+      "start", "end"
     ]
 
     return columns
@@ -393,19 +401,32 @@ export class DetailsService {
 
   public createData_uncommonDetails(data) {
 
+
     let tableData = [];
 
-    if (data[0].uncommonDetails.hits) {
 
-      data[0].uncommonDetails.hits.hits.forEach((v, i) => {
-        tableData.push({
-          user_name: v._source.user['name'],
-          process: v._source.process['name'],
-          process_args: v._source.process['command_line'],
-          // host: v._source.host['hostname'],
-          timestamp: new Date(v._source['@timestamp']),
-        })
+    if (data[0].hits) {
 
+      data[0].hits.hits.forEach((v, i) => {
+
+        let username = '-';
+        let processname = '-';
+        let process_args = '-';
+
+
+        if (v._source.user?.name) username = v._source.user['name'];
+        if (v._source.process?.name) processname = v._source.process['name'];
+        if (v._source.process?.command_line) process_args = v._source.process['command_line'];
+        if (v._source['@timestamp']) {
+
+          tableData.push({
+            user_name: username,
+            process: processname,
+            process_args: process_args,
+            // host: v._source.host['hostname'],
+            timestamp: new Date(v._source['@timestamp']),
+          })
+        }
       })
 
     }
@@ -430,17 +451,28 @@ export class DetailsService {
 
     let tableData = [];
 
-    if (data[0].loginDetails.hits) {
+    if (data[0].hits) {
 
-      data[0].loginDetails.hits.hits.forEach((v, i) => {
-        tableData.push({
-          user_name: v._source.user['name'],
-          // host: v._source.host['hostname'],
-          outcome: v._source.event['outcome'],
-          action: v._source.event['action'],
-          timestamp: new Date(v._source['@timestamp']),
-        })
+      data[0].hits.hits.forEach((v, i) => {
 
+        let username = '-';
+        let outcome = '-';
+        let action = '-';
+
+
+        if (v._source.user?.name) username = v._source.user['name'];
+        if (v._source.event?.outcome) outcome = v._source.event['outcome'];
+        if (v._source.event?.action) action = v._source.event['action'];
+        if (v._source['@timestamp']) {
+
+
+          tableData.push({
+            user_name: username,
+            outcome: outcome,
+            action: action,
+            timestamp: new Date(v._source['@timestamp']),
+          })
+        }
       })
 
     }
@@ -465,9 +497,9 @@ export class DetailsService {
 
     let tableData = [];
 
-    if (data[0].fileintDetails.hits) {
+    if (data[0].hits) {
 
-      data[0].fileintDetails.hits.hits.forEach((v, i) => {
+      data[0].hits.hits.forEach((v, i) => {
         let path = '-'
         let owner = '-'
         let type = '-'

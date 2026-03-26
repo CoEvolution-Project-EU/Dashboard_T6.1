@@ -5,7 +5,7 @@ metadata:
 data:
   SERV_HOST: "https://api.example.com"
   SOCKET_HOST: "http://localhost:80001"
-  KEYCLOAK_URL: "https://localhost:30012/auth"
+  KEYCLOAK_URL: "https://localhost:30012"
 
 ---
 apiVersion: apps/v1

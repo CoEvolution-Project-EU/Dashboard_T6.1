@@ -8,10 +8,33 @@ import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectDetailsComponent } from '../dialogs/select-details/select-details.component';
 
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+// Angular Material Modules
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatTooltipModule
+  ],
+  providers: [DetailsService],
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
@@ -61,13 +84,22 @@ export class DetailsComponent implements OnInit {
       this.dataSource.data = [];
 
       const promise = new Promise<void>((resolve, reject) => {
-        // console.log(this.config);
 
-        if (this.config.data.data.length > 0) {
-
-          resolve()
-
-        } else reject('no-data')
+        // Handle different config IDs and check for data accordingly
+        // First check if the config is first change and the data is empty
+        if (changes.config.firstChange && this.config.data && this.config.data.data.length == 0) {
+          reject('first');
+        // If the config is first change and the data is not empty, resolve the promise 
+        // (this happens if we manually set the data from the component's ts)
+        } else if (changes.config.firstChange && this.config.data && this.config.data.data.length > 0) {
+          resolve();
+        // If the config is not first change and the data is not empty, resolve the promise
+        } else if (this.config.data && this.config.data.data.length > 0) {
+          resolve();
+        // If the config is not first change and the data is empty, reject the promise
+        } else {
+          reject('no-data');
+        }
 
       })
 
@@ -75,6 +107,7 @@ export class DetailsComponent implements OnInit {
 
         //build data in tabular format
         this.tableData = await this.detailsServ['createData_' + this.config.id](this.config.data.data)
+
         //whenever new data derived, check if table exist -> if no, first load of view/dash or wgt dragged into view from avail. widgets.
         //-> in either scenario, set start,end datatimes to default values from config/dashboard. if zoomSync is enabled, details comp will subscribe to periodSubscription below and will sync with the current time-window.(if any from other time-wise synced wdgts)
 
@@ -137,7 +170,7 @@ export class DetailsComponent implements OnInit {
 
 
       }, (error) => {
-        console.log(error);
+        if (error !== 'first') console.log(error);
         //this.loading.emit('done')
 
       })
@@ -153,15 +186,16 @@ export class DetailsComponent implements OnInit {
 
     //we assume that if dataset has dates, then timestamps should be in a field called "timestamp". (data created at details service)
     if (this.config.hasDates.enabled) {
-      //console.log(this.config)
-      if (!this.config.data.data[0].hits) {
+
+      if (!this.config.data.data[0]?.hits) {
+
         this.dataSource.data = this.tableData.filter(v => (v.end.getTime() >= this.startTime && v.end.getTime() <= this.endTime) || (v.start.getTime() >= this.startTime && v.start.getTime() <= this.endTime))
-        //console.log(this.dataSource.data[0]['start'].getTime());
-      } else  this.dataSource.data = this.tableData.filter(v => v.timestamp.getTime() >= this.startTime && v.timestamp.getTime() <= this.endTime)
+
+      } else this.dataSource.data = this.tableData.filter(v => (v.timestamp.getTime() >= this.startTime && v.timestamp.getTime() <= this.endTime))
 
     } else this.dataSource.data = this.tableData
 
-
+// console.log(this.dataSource,'detailss')
   }
 
 

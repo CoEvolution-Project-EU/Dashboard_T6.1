@@ -1,5 +1,23 @@
 .labelHeader{
     font-size: larger;
-    //color: #b62b5a;
-    //font-weight: 500;
+
   }
+
+
+.applyBut {
+  background-color: var(--main-button-color)!important;
+  margin-left: 1em;
+  line-height: 29px;
+  font-size: small;
+  color: var(--light-font-color);
+}
+
+.resetBut {
+  margin-left: 1em;
+  line-height: 29px;
+  font-size: small;
+  border-radius: 1em;
+  background-color: var(--reset-button-color)!important;
+  color: var(--light-font-color);
+  
+}

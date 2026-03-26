@@ -9,9 +9,34 @@ import { MatDialog } from '@angular/material/dialog';
 import { DoubleclickTimelineComponent } from 'src/app/main/widgets-pool/dialogs/doubleclick-timeline/doubleclick-timeline.component';
 import { ActivatedRoute } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+// Angular Material Modules
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
+// Third-Party Modules
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-timeline',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatTooltipModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    NgSelectModule
+  ],
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss'],
   animations: [
@@ -51,6 +76,7 @@ export class TimelineComponent implements OnInit {
     //configure:true,
     zoomKey: 'ctrlKey',
     horizontalScroll: true,
+    verticalScroll: true,
     //preferZoom: true,
     orientation: 'top',
     //verticalScroll: true,
@@ -59,10 +85,11 @@ export class TimelineComponent implements OnInit {
     template: (a, b, g) => {
       //console.log(a, b, g)
       if (g.isCluster) {
+        // console.log(g.items);
 
-        //let iclass;
-        //console.log(g)
-        //let itemClass = g.items[0].className;
+        // let iclass;
+        // console.log(g)
+        // let itemClass = g.items[0].className;
         // iclass = itemClass;
 
         // switch (itemClass) {
@@ -80,7 +107,7 @@ export class TimelineComponent implements OnInit {
         //     break;
         // }
 
-        return this.htmlTitle(g.items.length,  g.items[0].legendMatch)
+        return this.htmlTitle(g.items.length, g.items[0].legendMatch)
 
       } else return a.content
 
@@ -88,7 +115,6 @@ export class TimelineComponent implements OnInit {
     cluster: {
       maxItems: 10,
       clusterCriteria: ((a, b) => {
-        console.log(a, b)
         if (a.legendMatch == b.legendMatch) return true
         else return false
 
@@ -119,7 +145,7 @@ export class TimelineComponent implements OnInit {
 
   groupsLabels;
   groupsFormat;
-  
+
 
   startTime;
   endTime;
@@ -156,12 +182,28 @@ export class TimelineComponent implements OnInit {
 
       const promise = new Promise<void>((resolve, reject) => {
 
-        if (this.config.data.data.length > 0 && this.config.start !== "" && this.config.end !== "") {
-          // console.log(this.config.data)
-          resolve()
+        // Handle different config IDs and check for data accordingly
+        // First check if the config is first change and the data is empty
+        if (changes.config.firstChange && this.config.data && this.config.data.data.length == 0) {
+          reject('first');
+        // If the config is first change and the data is not empty, resolve the promise 
+        // (this happens if we manually set the data from the component's ts)
+        } else if (changes.config.firstChange && this.config.data && this.config.data.data.length > 0) {
+          resolve();
+        // If the config is not first change and the data is not empty, resolve the promise
+        } else if (this.config.data && this.config.data.data.length > 0) {
+          resolve();
+        // If the config is not first change and the data is empty, reject the promise
+        } else {
+          reject('no-data');
+        }
 
-        } else if (this.config.data.data.length == 0) reject('no-data')
-        else reject('no datetime was provided')
+        // if (this.config.data.data.length > 0 && this.config.start !== "" && this.config.end !== "") {
+        //   // console.log(this.config.data)
+        //   resolve()
+
+        // } else if (this.config.data.data.length == 0) reject('no-data')
+        // else reject('no datetime was provided')
 
       })
 
@@ -170,25 +212,26 @@ export class TimelineComponent implements OnInit {
         if (this.timeline) {
 
           //build groups & items for timeline
-          if(this.showGroups) this.groups = await this.timelineServ['createGroups_' + this.config.id](this.config, this.groupsFormat);
-          this.items = await this.timelineServ['createItems_' + this.config.id](this.config);
+          if (this.showGroups) this.groups = await this.timelineServ['createGroups_' + this.config.id](this.config, this.groupsFormat);
+          this.items = await this.timelineServ['createItems_' + this.config.id](this.config, this.config.datasetsInfo);
 
-            //if data are more than 500 and clustering is enabled from the config -> enable clustering mode else disable.
-           if (!this.config.clustering || this.items.length <= 500) this.timelineOptions.cluster = false;
-           else this.timelineOptions.cluster = {
-             maxItems: 10,
-             clusterCriteria: ((a, b) => {
-               //console.log(a, b)
-               if (a.legendMatch == b.legendMatch && a.type == 'box') return true //check why type==box? #TODO
-               else return false
-   
-             }),
-             titleTemplate: "Double Click or Zoom in to see the individual events."
-           }
-   
-           //add items/groups to vis DataSet format vars.
-           this.finalItems.add(this.items)
-           if(this.showGroups) this.finalGroups.add(this.groups)
+          //if data are more than 500 and clustering is enabled from the config -> enable clustering mode else disable.
+          if (!this.config.clustering || this.items.length <= 500) this.timelineOptions.cluster = false;
+          else this.timelineOptions.cluster = {
+            maxItems: 10,
+            clusterCriteria: ((a, b) => {
+              //console.log(a, b)
+              if (a.legendMatch == b.legendMatch && a.type == 'box') return true //check why type==box? #TODO
+              else return false
+
+            }),
+            titleTemplate: "Double Click or Zoom in to see the individual events."
+          }
+
+
+          //add items/groups to vis DataSet format vars.
+          this.finalItems.add(this.items)
+          if (this.showGroups) this.finalGroups.add(this.groups)
 
           if (this.config.data.action == 'new') {
             //if timeline already exist & new data came from a new backend request -> clear annotations,set new datetimes & apply options.
@@ -236,9 +279,8 @@ export class TimelineComponent implements OnInit {
           this.showGroups = this.config.grouping;
 
           //build groups & items for timeline
-          if(this.showGroups) this.groups = await this.timelineServ['createGroups_' + this.config.id](this.config, this.groupsFormat);
-          this.items = await this.timelineServ['createItems_' + this.config.id](this.config);
-
+          if (this.showGroups) this.groups = await this.timelineServ['createGroups_' + this.config.id](this.config, this.groupsFormat);
+          this.items = await this.timelineServ['createItems_' + this.config.id](this.config, this.config.datasetsInfo);
 
           //if data are more than 500 and clustering is enabled from the config -> enable clustering mode else disable.
           if (!this.config.clustering || this.items.length <= 500) this.timelineOptions.cluster = false;
@@ -255,7 +297,7 @@ export class TimelineComponent implements OnInit {
 
           //add items/groups to vis DataSet format vars.
           this.finalItems.add(this.items)
-          if(this.showGroups) this.finalGroups.add(this.groups)
+          if (this.showGroups) this.finalGroups.add(this.groups)
 
           //if timeline doesnt exist (first load of view/dashboard or wgt dragged into view from available wdgts)
           //-> set datetimes & create timeline.
@@ -278,14 +320,14 @@ export class TimelineComponent implements OnInit {
 
       }, (error) => {
 
-        console.log(error);
+        if (error !== 'first') console.log(error);
         //this.loading.emit('done')
 
       })
 
     }
 
-    
+
     //resized event from dashboard. set a custom threshold per widget
     if (this.timeline && changes.heightResized && this.heightResized >= 0) {
 
@@ -311,18 +353,19 @@ export class TimelineComponent implements OnInit {
 
   createTimeline() {
 
-    if(typeof(this.heightResized) == 'number'){
+    if (typeof (this.heightResized) == 'number') {
 
       if (this.heightResized > 350) {
-        this.timelineOptions.height =  `${this.heightResized - 175}px`
+        this.timelineOptions.height = `${this.heightResized - 175}px`
       } else {
-        this.timelineOptions.height =  "200px"
+        this.timelineOptions.height = "200px"
       }
 
-    }else this.timelineOptions.height = this.config.height;
-    
-    if(this.showGroups) this.timeline = new Timeline(this.timelineContainer.nativeElement, this.finalItems, this.finalGroups, this.timelineOptions)
+    } else this.timelineOptions.height = this.config.height;
+
+    if (this.showGroups) this.timeline = new Timeline(this.timelineContainer.nativeElement, this.finalItems, this.finalGroups, this.timelineOptions)
     else this.timeline = new Timeline(this.timelineContainer.nativeElement, this.finalItems, this.timelineOptions)
+
 
     //to apper clusters at init (vis bug)
     if (this.timelineOptions.cluster) this.zoomOutMax();
@@ -365,7 +408,6 @@ export class TimelineComponent implements OnInit {
 
   doubleClicked(clicked) {
 
-    console.log(clicked)
 
     if (clicked.what !== 'group-label' && !clicked.isCluster) {
       this.dialog.open(DoubleclickTimelineComponent, {
@@ -416,34 +458,34 @@ export class TimelineComponent implements OnInit {
   }
 
 
-  switchLabels() {    
+  switchLabels() {
     if (!this.showLabels) this.finalItems.update(this.finalItems.map(obj => ({ ...obj, content: "" })))
     else this.finalItems.update(this.finalItems.map(obj => ({ ...obj, content: obj[this.labelFormat] })))
   }
 
-  async switchGroups() {    
-    
-   this.finalItems.update(this.finalItems.map(obj => ({ ...obj, group: obj[this.groupsFormat] })))
+  async switchGroups() {
 
-   this.finalGroups.clear()
-   this.groups = [];
+    this.finalItems.update(this.finalItems.map(obj => ({ ...obj, group: obj[this.groupsFormat] })))
 
-   this.groups = await this.timelineServ['createGroups_' + this.config.id](this.config, this.groupsFormat);
+    this.finalGroups.clear()
+    this.groups = [];
 
-   this.finalGroups.add(this.groups);
+    this.groups = await this.timelineServ['createGroups_' + this.config.id](this.config, this.groupsFormat);
+
+    this.finalGroups.add(this.groups);
 
   }
 
-  async switchGrouping(){
+  async switchGrouping() {
     // this.config.grouping = false;
-    if(this.showGroups){
+    if (this.showGroups) {
       this.finalItems.update(this.finalItems.map(obj => ({ ...obj, group: obj[this.groupsFormat] })))
 
       this.finalGroups.clear()
       this.groups = [];
-   
+
       this.groups = await this.timelineServ['createGroups_' + this.config.id](this.config, this.groupsFormat);
-   
+
       this.finalGroups.add(this.groups);
     }
     this.timeline.destroy()
@@ -509,12 +551,16 @@ export class TimelineComponent implements OnInit {
 
   htmlTitle(itemsLength, legendMatch) {
 
-  let color = this.config.datasetsInfo.map(dataset => dataset.legend.find(v => v[legendMatch])).filter(v => v)[0]?.[legendMatch]
+    let color = this.config.datasetsInfo.map(dataset => dataset.legend.find(v => v[legendMatch])).filter(v => v)[0]?.[legendMatch]
 
     const container = document.createElement("div");
     container.style.backgroundColor = color
     container.style.padding = '0.3em'
     container.innerHTML = itemsLength;
+
+
+
+
     return container;
   }
 

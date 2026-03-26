@@ -1,16 +1,16 @@
 <div>
 
     <!-- <div class="header"> -->
-        <!-- <mat-label>Datasets: <span class="label1" *ngFor="let dataset of config.datasetsNames">#{{dataset}} </span> </mat-label> -->
+    <!-- <mat-label>Datasets: <span class="label1" *ngFor="let dataset of config.datasetsNames">#{{dataset}} </span> </mat-label> -->
 
-        <!-- <span>Details Representation</span>
+    <!-- <span>Details Representation</span>
         <span style="margin-left: 10px;" class="material-icons-outlined s-18 sheet-button" (click)="this.bottomSheet()"
             matTooltipClass="hinttooltip" matTooltip="Details Representation Hints'">
             info
         </span> -->
     <!-- </div> -->
 
-    <mat-form-field class="filterCl" appearance="standard">
+    <mat-form-field class="filterCl" appearance="fill">
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="search anything..." #input>
     </mat-form-field>
@@ -20,17 +20,29 @@
             <!-- [ngStyle]="column === 'severity' && {'color': element.severity <= 4 ? '#55c5a2' : element.severity < 7 ? '#ffc200' : '#ff8f77'}" -->
             <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column | titlecase}} </th>
-                <ng-container  *ngIf="column !== 'host' else hostTemp">
-                    <td mat-cell *matCellDef="let element"> {{column === 'timestamp' || column === 'start' || column === 'end' ? element[column].toLocaleString()
-                        : element[column]}} </td>
+                <ng-container *ngIf="column !== 'host' else hostTemp">
+                    <!-- <td mat-cell *matCellDef="let element"> {{column === 'timestamp' || column === 'start' || column === 'end' ? element[column].toLocaleString()
+                        : element[column]}} </td> -->
+                    <td mat-cell *matCellDef="let element"
+                        [ngClass]="{'red-arrow': column === 'destination_bytes', 'low-consumption' : column==='cpu_consumption' && element[column]<0.55,'medium-consumption' : column==='cpu_consumption' && element[column]>=0.55&&element[column]<0.85,'high-consumption' : column==='cpu_consumption' && element[column]>=0.85 , 'green-arrow': column === 'source_bytes' }">
+                        <!-- {{ column === 'timestamp' || column === 'start' || column === 'end' ?
+                        element[column].toLocaleString() : element[column] }} -->
+                        {{
+                        (column === 'timestamp' || column === 'start' || column === 'end') ?
+                        element[column].toLocaleString() :
+                        (column === 'cpu_consumption' ? element[column].toFixed(2) + '%' : element[column])
+                        }}
+
+                    </td>
                 </ng-container>
                 <ng-template #hostTemp>
-                    <td class="clickable" (click)="assetIdClicked(element.host)" mat-cell *matCellDef="let element">  {{element.host}} </td>
+                    <td class="clickable" (click)="assetIdClicked(element.host)" mat-cell *matCellDef="let element">
+                        {{element.host}} </td>
                 </ng-template>
-               
+
             </ng-container>
 
-        
+
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -42,5 +54,5 @@
         </table>
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
     </div>
-    
+
 </div>

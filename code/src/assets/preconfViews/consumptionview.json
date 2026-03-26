@@ -1,0 +1,710 @@
+{
+    "id": "consumptionview",
+    "title": "Abnormal Resource Consumptionn",
+    "timewindow": "lastmonth",
+    "datasets": [
+        {
+            "name": "Elastic Events for Alerts",
+            "id": "alerts",
+            "method": "getAlerts",
+            "path": "/misc",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {
+                "severities": [
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                ]
+            },
+            "filterParams_options": {
+                "severities_options": [
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                ]
+            },
+            "localFilters": {
+                "alertName": []
+            }
+        },
+        {
+            "name": "Communication Details",
+            "id": "communication",
+            "method": "getCommunication",
+            "path": "/networking",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Processes",
+            "id": "process",
+            "method": "getProcesses",
+            "path": "/processes",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Uncommon Processes",
+            "id": "uncommon",
+            "method": "getUncommonProcesses",
+            "path": "/processes",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Inbound Network Bandwidth",
+            "id": "networkIn",
+            "method": "getNetworkIn",
+            "path": "/networking",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Outbound Network Bandwidth",
+            "id": "networkOut",
+            "method": "getNetworkOut",
+            "path": "/networking",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Login Alerts",
+            "id": "login",
+            "method": "getLogins",
+            "path": "/misc",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {},
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Elastic Metrics for CPU",
+            "id": "cpu",
+            "method": "getMetrics",
+            "path": "/misc",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {
+                "type": "system.cpu",
+                "valuePath": "host.cpu.usage"
+            },
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Elastic Metrics for Memory",
+            "id": "memory",
+            "method": "getMetrics",
+            "path": "/misc",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {
+                "type": "system.memory",
+                "valuePath": "system.memory.actual.used.pct"
+            },
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Elastic Metrics for Active Processes",
+            "id": "activePr",
+            "method": "getMetrics",
+            "path": "/misc",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {
+                "type": "system.process.summary",
+                "valuePath": "system.process.summary.total"
+            },
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        },
+        {
+            "name": "Elastic Metrics for Network Connections",
+            "id": "networkConns",
+            "method": "getMetrics",
+            "path": "/misc",
+            "hasDates": true,
+            "hasDynamicID": true,
+            "staticParams": {
+                "type": "system.socket.summary",
+                "valuePath": "system.socket.summary.all.count"
+            },
+            "filterParams": {},
+            "filterParams_options": {},
+            "localFilters": {}
+        }
+    ],
+    "currentWidgets": [
+        {
+            "name": "alertsDistrib",
+            "widget": "distribution",
+            "title": "Alerts Distribution",
+            "size": 100,
+            "order": 0,
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 2,
+                "title": "Alerts Distribution",
+                "description": "The following distribution chart refers to the alerts' detection and their distribution across time.",
+                "maxwidth": 170,
+                "name": "distrchart"
+            },
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": [],
+                    "extra": []
+                },
+                "id": "default",
+                "datasetsInfo": [
+                    "Alerts"
+                ],
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "color": "#ec7508",
+                "fillColor": "#ec7508",
+                "brushColor": "#219ebc"
+            }
+        },
+        {
+            "name": "timeline",
+            "widget": "timeline",
+            "title": "Alerts Temporal View",
+            "size": 100,
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 3,
+                "title": "Alerts Temporal View",
+                "description": "The following Timeline Analysis widget allows the user to identify groups of events that occurred close together in time compare the current situation with older events.",
+                "maxwidth": 170,
+                "name": "timeline"
+            },
+            "filters": {
+                "annotationsActive": []
+            },
+            "order": 1,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    {
+                        "id": "alerts",
+                        "labels": [
+                            {
+                                "rule_name": ""
+                            },
+                            {
+                                "severity": ""
+                            }
+                        ],
+                        "legend": [
+                            {
+                                "low": "#B2D58C"
+                            },
+                            {
+                                "medium": "#FFC078"
+                            },
+                            {
+                                "high": "#FF8F77"
+                            },
+                            {
+                                "critical": "#EB4B4B"
+                            }
+                        ],
+                        "groups": [
+                            {
+                                "rule_name": ""
+                            }
+                        ]
+                    }
+                ],
+                "data": {
+                    "action": "",
+                    "data": [],
+                    "extra": []
+                },
+                "id": "elasticAlerts",
+                "clustering": true,
+                "zoomSync": true,
+                "doubleClick": true,
+                "grouping": true,
+                "height": "500px",
+                "colors": {
+                    "text": "initial",
+                    "gridLines": "transparent",
+                    "groupsArea": "initial",
+                    "mainBackground": "initial",
+                    "topArea": "initial",
+                    "itemsHighlight": "#f3ba00",
+                    "filterHighlighted": "blue",
+                    "itemsText": "black"
+                }
+            }
+        },
+        {
+            "name": "alertsDetails",
+            "widget": "details",
+            "title": "Alerts",
+            "size": 100,
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 4,
+                "title": "Alerts Details",
+                "description": "The following Details widget is used to present information about detected alerts (severity, risk score, messages, timestamps).",
+                "maxwidth": 170,
+                "name": "details"
+            },
+            "filters": {},
+            "order": 2,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Alerts"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "mainDashAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "alertsStats",
+            "widget": "statistics",
+            "title": "Alerts Statistics",
+            "size": 100,
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 5,
+                "title": "Alerts Statistics",
+                "description": "The following statistics chart refers to the alerts' detection and their statistical analysis across time.",
+                "maxwidth": 170,
+                "name": "alertsStats"
+            },
+            "filters": {},
+            "order": 3,
+            "datasets": [
+                "alerts"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetName": "Alerts",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "mainDashAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                },
+                "params": [
+                    {
+                        "name": "Severities",
+                        "chart": "pie",
+                        "stats": false,
+                        "numeric": false,
+                        "dataType": "both"
+                    },
+                    {
+                        "name": "Alert Types",
+                        "chart": "bar",
+                        "stats": false,
+                        "numeric": false,
+                        "dataType": "raw"
+                    },
+                    {
+                        "name": "Risk Score",
+                        "chart": "",
+                        "stats": true,
+                        "numeric": false,
+                        "dataType": "raw"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "lineCPU",
+            "widget": "line",
+            "title": "CPU Usage",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 6,
+                "title": "CPU Usage Line Chart",
+                "description": "The following distribution chart refers to the alerts' detection and their distribution across time.",
+                "maxwidth": 170,
+                "name": "lineCPU"
+            },
+            "size": 50,
+            "filters": {},
+            "order": 4,
+            "datasets": [
+                "cpu"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetName": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "lineCpu",
+                "zoomSync": true,
+                "tooltipname": "CPU Load",
+                "color": "#2A9D8F",
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "yaxislabel": "%",
+                "tooltipdateformat": "dd MMM HH:mm:ss"
+            }
+        },
+        {
+            "name": "lineAP",
+            "widget": "line",
+            "title": "Active Processes",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 7,
+                "title": "Active Processes Line Chart",
+                "description": "The following distribution chart refers to the alerts' detection and their distribution across time.",
+                "maxwidth": 170,
+                "name": "lineAP"
+            },
+            "size": 50,
+            "filters": {},
+            "order": 5,
+            "datasets": [
+                "activePr"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "lineAp",
+                "zoomSync": true,
+                "datasetName": "",
+                "tooltipname": "Processes",
+                "color": "#F4A261",
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "yaxislabel": "",
+                "tooltipdateformat": "dd MMM HH:mm:ss"
+            }
+        },
+        {
+            "name": "processDetails",
+            "widget": "details",
+            "title": "Processes",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 8,
+                "title": "Processes",
+                "description": "The following table refers to the alerts' detection and their distribution across time.",
+                "maxwidth": 170,
+                "name": "processDetails"
+            },
+            "size": 50,
+            "filters": {},
+            "order": 6,
+            "datasets": [
+                "process"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Process"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "processDetails",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "uncommonDetails",
+            "widget": "details",
+            "title": "Uncommon Processes",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 6,
+                "title": "Uncommon Processes",
+                "description": "The following tabular representation refers to the uncommon processes' detection and their information across time.",
+                "maxwidth": 170,
+                "name": "uncommonDetails"
+            },
+            "size": 50,
+            "filters": {},
+            "order": 7,
+            "datasets": [
+                "uncommon"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Uncommon"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "uncommonDetails",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "communicationDetails",
+            "widget": "details",
+            "title": "Communication",
+            "size": 50,
+            "filters": {},
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 6,
+                "title": "Communication",
+                "description": "The following chart refers to the alerts' detection and their distribution across time.",
+                "maxwidth": 170,
+                "name": "communicationDetails"
+            },
+            "order": 8,
+            "datasets": [
+                "communication"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    {
+                        "id": "Communication"
+                    }
+                ],
+                "data": {
+                    "action": "",
+                    "data": [],
+                    "extra": []
+                },
+                "columns": false,
+                "id": "communicationDetails",
+                "hasDates": {
+                    "enabled": false,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "loginDetails",
+            "widget": "details",
+            "title": "Login",
+            "size": 50,
+            "filters": {},
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 7,
+                "title": "Login",
+                "description": "The following tabular representation refers to the login' detection and their information across time.",
+                "maxwidth": 170,
+                "name": "loginDetails"
+            },
+            "order": 9,
+            "datasets": [
+                "login"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Login"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "loginDetails",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "lineMemory",
+            "widget": "line",
+            "title": "Memory Load",
+            "size": 50,
+            "filters": {},
+            "pdfreport": {
+                "info": true,
+                "pagenum": 10,
+                "page": true,
+                "title": "Memory Load Line Chart",
+                "description": "The following distribution chart refers to the alerts' detection and their distribution across time.",
+                "maxwidth": 170,
+                "name": "lineMemory"
+            },
+            "order": 10,
+            "datasets": [
+                "memory"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "lineMemory",
+                "zoomSync": true,
+                "datasetName": "",
+                "tooltipname": "Memory Used",
+                "color": "#E76F51",
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "yaxislabel": "%",
+                "tooltipdateformat": "dd MMM HH:mm:ss"
+            }
+        },
+        {
+            "name": "networkIn",
+            "widget": "line",
+            "title": "Inbound Network Bandwidth",
+            "size": 50,
+            "filters": {},
+            "pdfreport": {
+                "info": true,
+                "pagenum": 10,
+                "page": true,
+                "title": "Inbound Network Bandwidth Chart",
+                "description": "tbd",
+                "maxwidth": 170,
+                "name": "networkIn"
+            },
+            "order": 10,
+            "datasets": [
+                "networkIn"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "networkIn",
+                "zoomSync": true,
+                "datasetName": "",
+                "tooltipname": "Inbound network",
+                "color": "#BC440A",
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "yaxislabel": "bytes",
+                "tooltipdateformat": "dd MMM HH:mm:ss"
+            }
+        },
+        {
+            "name": "networkOut",
+            "widget": "line",
+            "title": "Outbound Network Bandwidth",
+            "size": 50,
+            "filters": {},
+            "pdfreport": {
+                "info": true,
+                "pagenum": 10,
+                "page": true,
+                "title": "Outbound Network Bandwidth Chart",
+                "description": "tbd",
+                "maxwidth": 170,
+                "name": "networkOut"
+            },
+            "order": 10,
+            "datasets": [
+                "networkOut"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "id": "networkOut",
+                "zoomSync": true,
+                "datasetName": "",
+                "tooltipname": "Outbound network",
+                "color": "#09637C",
+                "xaxisformat": "dd MMM HH:mm:ss",
+                "yaxislabel": "bytes",
+                "tooltipdateformat": "dd MMM HH:mm:ss"
+            }
+        }
+    ],
+    "availableWidgets": []
+}

@@ -1,0 +1,60 @@
+<div>
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+        <!-- Loop through columns -->
+        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+            <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element[column] }} </td>
+        </ng-container>
+
+        <!-- Expand/Collapse button column -->
+        <ng-container matColumnDef="expand">
+            <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button aria-label="expand row"
+                    (click)="expandedElement = expandedElement === element ? null : element; $event.stopPropagation()">
+                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <!-- Expanded Content Column -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                <div class="example-element-detail" 
+                  [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                  <table mat-table [dataSource]="element.composedby" class="mat-elevation-z8 nested-table">
+                    <ng-container *ngFor="let column of nestedDisplayedColumns" [matColumnDef]="column">
+                        <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
+                        <td mat-cell *matCellDef="let item" 
+                        [ngClass]="{'circle-container': item[column] == 'Delayed' || item[column] == 'On Time'}"> 
+                            <span *ngIf="item[column] == 'Delayed'" class="red-circle"></span>
+                            <span *ngIf="item[column] == 'On Time'" class="green-circle"></span>
+                            <span *ngIf="item[column] != 'Delayed' && item[column] != 'On Time'">{{ item[column] }}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Nested Table Header Row -->
+                    <tr mat-header-row *matHeaderRowDef="nestedDisplayedColumns"></tr>
+                    <!-- Nested Table Data Rows -->
+                    <tr mat-row *matRowDef="let row; columns: nestedDisplayedColumns;"></tr>
+                </table>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- Header Row -->
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+
+        <!-- Data Rows -->
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"
+            [class.example-expanded-row]="expandedElement === element"
+            (click)="expandedElement = expandedElement === element ? null : element">
+        </tr>
+
+        <!-- Expanded Detail Row -->
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

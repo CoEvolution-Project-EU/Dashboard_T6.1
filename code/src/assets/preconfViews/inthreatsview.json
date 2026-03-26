@@ -1,12 +1,13 @@
 {
     "id": "insiderthreatsview",
     "title": "Insider Threats",
-    "timewindow": "last24h",
+    "timewindow": "lastmonth",
     "datasets": [
         {
             "name": "Elastic Events for Alerts",
             "id": "alerts",
             "method": "getAlerts",
+            "path": "/misc",
             "hasDates": true,
             "hasDynamicID": true,
             "staticParams": {},
@@ -22,24 +23,14 @@
                 ]
             },
             "localFilters": {
-                "alertType": []
+                "alertName": []
             }
-        },
-        {
-            "name": "USB Alerts",
-            "id": "usb",
-            "method": "getUSB",
-            "hasDates": true,
-            "hasDynamicID": true,
-            "staticParams": {},
-            "filterParams": {},
-            "filterParams_options": {},
-            "localFilters": {}
         },
         {
             "name": "Login Alerts",
             "id": "login",
-            "method": "getLogin",
+            "method": "getLogins",
+            "path": "/misc",
             "hasDates": true,
             "hasDynamicID": true,
             "staticParams": {},
@@ -52,7 +43,8 @@
         {
             "name": "File Integrity Alerts",
             "id": "fileint",
-            "method": "getFileint",
+            "method": "getFileIntegrity",
+            "path": "/disk",
             "hasDates": true,
             "hasDynamicID": true,
             "staticParams": {},
@@ -61,33 +53,34 @@
             "localFilters": {}
         },
         {
-            "name": "Failed SSH Attempts",
-            "id": "failedssh",
-            "method": "getFailedSSH",
+            "name": "Processes",
+            "id": "process",
+            "method": "getProcesses",
+            "path": "/processes",
             "hasDates": true,
             "hasDynamicID": true,
             "staticParams": {},
             "filterParams": {},
             "filterParams_options": {},
-            "localFilters": {}
-        },
-        {
-            "name": "DiskIO",
-            "id": "diskio",
-            "method": "getDiskIO",
-            "hasDates": true,
-            "hasDynamicID": true,
-            "staticParams": {},
-            "filterParams": {},
-            "filterParams_options": {},
-            "localFilters": {}
+            "localFilters": {
+                "userType": []
+            }
         }
     ],
     "currentWidgets": [
         {
             "name": "alertsDistrib",
+            "widget": "distribution",
             "title": "Alerts Distribution",
-            "pdfreport": true,
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 2,
+                "title": "Alerts Distribution",
+                "description": "The following distribution chart refers to the alerts' detection and their distribution across time.",
+                "maxwidth": 170,
+                "name": "distrchart"
+            },
             "size": 100,
             "order": 0,
             "datasets": [
@@ -112,8 +105,17 @@
         },
         {
             "name": "timeline",
-            "title": "Alerts Temporal Representation",
-            "pdfreport": true,
+            "widget": "timeline",
+            "title": "Alerts Temporal View",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 3,
+                "title": "Alerts Temporal View",
+                "description": "The following Timeline Analysis widget allows the user to identify groups of events that occurred close together in time compare the current situation with older events.",
+                "maxwidth": 170,
+                "name": "timeline"
+            },
             "size": 100,
             "filters": {
                 "annotationsActive": []
@@ -182,11 +184,20 @@
         },
         {
             "name": "alertsDetails",
-            "title": "Alerts Tabular Representation",
-            "pdfreport": true,
-            "size": 50,
+            "widget": "details",
+            "title": "Alerts",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 4,
+                "title": "Alerts Details",
+                "description": "The following Details widget is used to present information about detected alerts (severity, risk score, messages, timestamps).",
+                "maxwidth": 170,
+                "name": "details"
+            },
+            "size": 100,
             "filters": {},
-            "order": 10,
+            "order": 3,
             "datasets": [
                 "alerts"
             ],
@@ -210,11 +221,20 @@
         },
         {
             "name": "loginDetails",
-            "title": "Login Tabular Representation",
-            "pdfreport": true,
+            "widget": "details",
+            "title": "Login",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 5,
+                "title": "Login Details",
+                "description": "The following Details widget is used to present information about detected alerts (severity, risk score, messages, timestamps).",
+                "maxwidth": 170,
+                "name": "logindetails"
+            },
             "size": 50,
             "filters": {},
-            "order": 10,
+            "order": 4,
             "datasets": [
                 "login"
             ],
@@ -238,8 +258,17 @@
         },
         {
             "name": "fileintDetails",
-            "title": "File Int Tabular Representation",
-            "pdfreport": true,
+            "widget": "details",
+            "title": "File Int",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 6,
+                "title": "File Integrity Details",
+                "description": "The following Details widget is used to present information about detected alerts (severity, risk score, messages, timestamps).",
+                "maxwidth": 170,
+                "name": "fileintdetails"
+            },
             "size": 50,
             "filters": {},
             "order": 10,
@@ -266,8 +295,17 @@
         },
         {
             "name": "failedSSHDetails",
-            "title": "Failed SSH AttemptsTabular Representation",
-            "pdfreport": true,
+            "widget": "details",
+            "title": "Failed SSH Attempts",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 7,
+                "title": "Failed SSH Details",
+                "description": "The following Details widget is used to present information about detected alerts (severity, risk score, messages, timestamps).",
+                "maxwidth": 170,
+                "name": "failedsshdetails"
+            },
             "size": 50,
             "filters": {},
             "order": 10,
@@ -294,8 +332,17 @@
         },
         {
             "name": "USBActivity",
-            "title": "USB Activity Tabular Representation",
-            "pdfreport": true,
+            "widget": "details",
+            "title": "USB Activity",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 8,
+                "title": "USB Activity Details",
+                "description": "The following Details widget is used to present information about detected alerts (severity, risk score, messages, timestamps).",
+                "maxwidth": 170,
+                "name": "usbdetails"
+            },
             "size": 50,
             "filters": {},
             "order": 10,
@@ -314,6 +361,43 @@
                 },
                 "columns": false,
                 "id": "USBActivity",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        },
+        {
+            "name": "processDetails",
+            "widget": "details",
+            "title": "Processes",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 6,
+                "title": "Processes",
+                "description": "The following table refers to the alerts' detection and their distribution across time.",
+                "maxwidth": 170,
+                "name": "processDetails"
+            },
+            "size": 50,
+            "filters": {},
+            "order": 5,
+            "datasets": [
+                "process"
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                    "Process"
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "processDetails",
                 "hasDates": {
                     "enabled": true,
                     "zoomSync": true
