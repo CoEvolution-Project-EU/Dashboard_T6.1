@@ -44,6 +44,10 @@ Register a Model
 
 The user is presented with a form to input model details and upload a file.
 
+![Register Model Screen](register_model_dash.png)
+
+*Figure 1: Model registration form where users upload requirements and define metadata.*
+
 ---
 
 #### Step 2: Upload Requirements File
@@ -81,7 +85,6 @@ Optional:
 
 Click:
 
-
 Register Model
 
 
@@ -90,6 +93,14 @@ System actions:
 - Sends request to backend
 - Stores uploaded file
 - Generates a unique Model ID
+
+
+### Registration Success Screen
+
+![Registration Success](register_model_success_dash.png)
+
+*Figure 2: Confirmation screen displaying the generated Model ID and submitted metadata.*
+
 
 ---
 
