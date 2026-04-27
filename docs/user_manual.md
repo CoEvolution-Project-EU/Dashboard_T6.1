@@ -1,5 +1,7 @@
 # CoEvolution Hub Dashboard
 
+---
+
 ## Overview
 
 The **CoEvolution Hub Dashboard** is the main user interface of the platform, providing access to core functionalities for managing AI models and interacting with the CoEvolution ecosystem.
@@ -19,10 +21,13 @@ Other functionalities are included as placeholders and will be documented as the
   - [Register a Model](#register-a-model)
 - [User Flow](#user-flow)
 - [Placeholders for Future Functionalities](#placeholders-for-future-functionalities)
+- [Summary](#summary)
 
 ---
 
 ## Current Functionality
+
+---
 
 ### Register a Model
 
@@ -34,13 +39,11 @@ This is the **entry point of the model lifecycle**, enabling further processes s
 
 ---
 
-#### Step 1: Access the Registration Screen
+### Step 1 — Access the Registration Screen
 
 From the sidebar, select:
 
-
-Register a Model
-
+> **Register a Model**
 
 The user is presented with a form to input model details and upload a file.
 
@@ -50,101 +53,89 @@ The user is presented with a form to input model details and upload a file.
 
 ---
 
-#### Step 2: Upload Requirements File
+### Step 2 — Upload Requirements File
 
-- Upload a `.zip` file containing:
-  - Model dependencies
-  - Configuration files
-  - Environment setup (e.g., requirements.txt)
+Upload a `.zip` file containing:
+
+- Model dependencies  
+- Configuration files  
+- Environment setup (e.g., `requirements.txt`)  
 
 Supported interaction:
-- Drag & drop
-- File browser selection
+
+- Drag & drop  
+- File browser selection  
 
 ---
 
-#### Step 3: Fill in Model Metadata
+### Step 3 — Fill in Model Metadata
 
-The following fields are required:
+**Required fields:**
 
-| Field | Description |
-|------|------------|
-| Model Name | Name of the model |
-| Model Type | Select from available options |
-| Version | Model version (e.g., v1.0) |
+| Field        | Description                     |
+|--------------|---------------------------------|
+| Model Name   | Name of the model              |
+| Model Type   | Select from available options  |
+| Version      | Model version (e.g., `v1.0`)   |
 
-Optional:
+**Optional fields:**
 
-| Field | Description |
-|------|------------|
-| Description | Short explanation of the model |
+| Field        | Description                     |
+|--------------|---------------------------------|
+| Description  | Short explanation of the model |
 
 ---
 
-#### Step 4: Submit the Model
+### Step 4 — Submit the Model
 
 Click:
 
-Register Model
-
+> **Register Model**
 
 System actions:
 
-- Sends request to backend
-- Stores uploaded file
-- Generates a unique Model ID
+- Sends request to backend  
+- Stores uploaded file  
+- Generates a unique Model ID  
 
+---
 
-### Registration Success Screen
+### Step 5 — Registration Confirmation
 
 ![Registration Success](register_model_success_dash.png)
 
 *Figure 2: Confirmation screen displaying the generated Model ID and submitted metadata.*
 
-
----
-
-#### Step 5: Registration Confirmation
-
 Upon successful registration, a confirmation screen is displayed.
 
-Displayed information:
+**Displayed information:**
 
-- **Model ID (UUID)** → unique identifier
-- Model Name
-- Model Type
-- Version
-- Uploaded file name
+- Model ID (UUID) → unique identifier  
+- Model Name  
+- Model Type  
+- Version  
+- Uploaded file name  
 
-User actions:
+**User actions:**
 
-- Copy Model ID
-- Register another model
+- Copy Model ID  
+- Register another model  
 
 ---
 
 ## User Flow
 
-
-Open Dashboard
-
-&emsp; &emsp; ↓
-
-Register a Model
-
-&emsp; &emsp; ↓
-
+```text
+       Open Dashboard
+             ↓
+       Register a Model
+             ↓
 Upload file + fill metadata
-
-&emsp; &emsp; ↓
-
-Submit
-
-&emsp; &emsp; ↓
-
-Receive Model ID
-
-
+             ↓
+          Submit
+             ↓
+      Receive Model ID
+```
 
 ---
 
@@ -152,17 +143,17 @@ Receive Model ID
 
 The following sections are reserved for upcoming features:
 
-### Upload Report
-*(To be implemented)*
+### Upload Report  
+(To be implemented)
 
-### Model Monitoring
-*(To be implemented)*
+### Model Monitoring  
+(To be implemented)
 
-### Risk Assessment & Recommendations
-*(To be implemented)*
+### Risk Assessment & Recommendations  
+(To be implemented)
 
-### AIMBOM Management
-*(To be implemented)*
+### AIMBOM Management  
+(To be implemented)
 
 ---
 
@@ -170,8 +161,8 @@ The following sections are reserved for upcoming features:
 
 The Model Registration functionality provides a simple and structured way to:
 
-- Onboard AI models
-- Assign unique identifiers
-- Prepare models for integration into the CoEvolution pipeline
+- Onboard AI models  
+- Assign unique identifiers  
+- Prepare models for integration into the CoEvolution pipeline  
 
 This serves as the foundation for all subsequent operations within the platform.
