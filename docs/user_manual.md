@@ -139,7 +139,7 @@ Upload file + fill metadata
 
 ---
 
-## Placeholders for Future Functionalities
+## *TO DO* Placeholders for Future Functionalities
 
 The following sections are reserved for upcoming features:
 
@@ -159,10 +159,10 @@ The following sections are reserved for upcoming features:
 
 ## Summary
 
-The Model Registration functionality provides a simple and structured way to:
+This serves as the foundation for all subsequent operations of Dashboard within the platform.
 
-- Onboard AI models  
-- Assign unique identifiers  
-- Prepare models for integration into the CoEvolution pipeline  
 
-This serves as the foundation for all subsequent operations within the platform.
+## Contributors
+
+- Stella Markopoulou (<s.markopoulou@aegisresearch.eu>)
+
