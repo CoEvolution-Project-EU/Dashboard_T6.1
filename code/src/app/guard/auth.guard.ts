@@ -9,7 +9,6 @@ const isAccessAllowed = async (
   authData: AuthGuardData
 ): Promise<boolean | UrlTree> => {
 
-  // console.log('Dashboard route guard activated for:', route, route.params);
 
   const { authenticated } = authData;
 

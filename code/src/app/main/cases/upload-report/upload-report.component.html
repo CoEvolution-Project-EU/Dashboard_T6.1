@@ -1,0 +1,230 @@
+<div class="shared-page-section">
+  <div class="shared-content-card" *ngIf="!batchComplete; else successTemplate">
+    <h1 class="shared-page-title">Upload Reports</h1>
+    <p class="shared-page-subtitle">
+      Upload one or more reports. All files in this batch share the same model and report type.
+    </p>
+
+    <form [formGroup]="uploadForm" (ngSubmit)="submit()">
+
+      <div class="form-row two-columns">
+        <div class="form-group">
+          <label>Model ID <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <input matInput
+                   formControlName="modelId"
+                   placeholder="e.g. 4ff2dab7-bffe-414d">
+            <mat-error *ngIf="modelId?.invalid && modelId?.touched">
+              Model ID is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <label>Model Version <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <input matInput
+                   formControlName="version"
+                   placeholder="e.g. v1.0">
+            <mat-error *ngIf="version?.invalid && version?.touched">
+              Version is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Report Type <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="reportType" placeholder="Select report type">
+              <mat-option *ngFor="let type of reportTypes" [value]="type">
+                {{ type }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="reportType?.invalid && reportType?.touched">
+              Report type is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Multi-file upload area -->
+      <div class="shared-upload-box"
+           [class.upload-box--filled]="selectedFiles.length > 0">
+        <mat-icon class="shared-upload-icon">
+          {{ selectedFiles.length > 0 ? 'check_circle' : 'upload_file' }}
+        </mat-icon>
+        <div class="shared-upload-title">
+          {{ selectedFiles.length === 0
+              ? 'Upload report files'
+              : selectedFiles.length + ' file' + (selectedFiles.length === 1 ? '' : 's') + ' ready to upload' }}
+        </div>
+        <div class="shared-upload-subtitle">
+          {{ selectedFiles.length === 0
+              ? 'Pick one or more files (PDF, JSON, XML)'
+              : 'Add more files or remove from the list below' }}
+          <span *ngIf="selectedFiles.length === 0" class="required"> *</span>
+        </div>
+
+        <label class="file-label">
+          <input
+            type="file"
+            accept=".pdf,.json,.xml"
+            multiple
+            (change)="onFileSelected($event)"
+            hidden
+            #fileInput>
+          <button type="button" class="btn-secondary" (click)="fileInput.click()">
+            <mat-icon>{{ selectedFiles.length > 0 ? 'add' : 'attach_file' }}</mat-icon>
+            <span>{{ selectedFiles.length > 0 ? 'Add more files' : 'Choose files' }}</span>
+          </button>
+          <button *ngIf="selectedFiles.length > 0"
+                  type="button"
+                  class="btn-cancel"
+                  (click)="clearFiles()">
+            <mat-icon>delete_sweep</mat-icon>
+            <span>Clear all</span>
+          </button>
+        </label>
+      </div>
+
+      <!-- Selected file list (pre-submit + during upload) -->
+      <div *ngIf="selectedFiles.length > 0 && !isSubmitting && uploadStates.length === 0"
+           class="file-list">
+        <div class="file-list-header">Selected files ({{ selectedFiles.length }})</div>
+        <div class="file-row" *ngFor="let f of selectedFiles; let i = index">
+          <mat-icon class="file-icon">description</mat-icon>
+          <div class="file-meta">
+            <div class="file-name" [matTooltip]="f.name">{{ f.name }}</div>
+            <div class="file-sub">{{ formatSize(f.size) }}</div>
+          </div>
+          <button type="button"
+                  class="btn-icon-table file-remove"
+                  (click)="removeFile(i)"
+                  matTooltip="Remove from batch">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Per-file upload progress -->
+      <div *ngIf="uploadStates.length > 0" class="file-list">
+        <div class="file-list-header">
+          Uploading {{ uploadStates.length }} file{{ uploadStates.length === 1 ? '' : 's' }}…
+        </div>
+        <div class="file-row" *ngFor="let s of uploadStates; let i = index; trackBy: trackByFileKey">
+          <mat-icon class="file-icon"
+                    [class.icon-success]="s.status === 'success'"
+                    [class.icon-error]="s.status === 'error'">
+            {{ s.status === 'success' ? 'check_circle' : s.status === 'error' ? 'error' : 'description' }}
+          </mat-icon>
+
+          <div class="file-meta">
+            <div class="file-name" [matTooltip]="s.file.name">{{ s.file.name }}</div>
+            <div class="file-sub">
+              {{ formatSize(s.file.size) }}
+              <span *ngIf="s.status === 'pending'"> · queued</span>
+              <span *ngIf="s.status === 'uploading'"> · uploading…</span>
+              <span *ngIf="s.status === 'success'"> · uploaded</span>
+              <span *ngIf="s.status === 'error'" class="error-inline"> · {{ s.errorMessage }}</span>
+            </div>
+          </div>
+
+          <mat-spinner *ngIf="s.status === 'uploading'" diameter="18"></mat-spinner>
+
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Notes (optional)</label>
+          <mat-form-field appearance="outline">
+            <textarea matInput
+                      rows="4"
+                      formControlName="notes"
+                      placeholder="Any additional notes about this batch of reports…">
+            </textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="global-error">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+        <mat-icon *ngIf="!isSubmitting">cloud_upload</mat-icon>
+        <mat-spinner *ngIf="isSubmitting" diameter="18"></mat-spinner>
+        <span>{{ isSubmitting
+            ? 'Uploading…'
+            : (selectedFiles.length > 1
+                ? 'Upload ' + selectedFiles.length + ' Reports'
+                : 'Upload Report') }}</span>
+      </button>
+    </form>
+  </div>
+
+  <ng-template #successTemplate>
+    <div class="shared-content-card shared-content-card--wide success-card">
+      <div class="shared-success-header shared-success-header--center">
+        <span class="shared-success-icon shared-success-icon--blue-outline">✓</span>
+        <h1 class="shared-page-title shared-page-title--dark">
+          Reports
+          <ng-container *ngIf="failureCount === 0">Uploaded</ng-container>
+          <ng-container *ngIf="failureCount > 0">Upload Finished</ng-container>
+        </h1>
+      </div>
+
+      <div class="batch-summary">
+        <div class="batch-counts">
+          <span class="count count-success">{{ successCount }} succeeded</span>
+          <span *ngIf="failureCount > 0" class="count count-error">{{ failureCount }} failed</span>
+        </div>
+        <div class="batch-meta">
+          <span><strong>Model ID:</strong> {{ uploadForm.value.modelId }}</span>
+          <span><strong>Version:</strong> {{ uploadForm.value.version }}</span>
+          <!-- <span><strong>Type:</strong> {{ uploadForm.value.reportType }}</span> -->
+        </div>
+      </div>
+
+      <div class="result-list">
+        <div class="result-row" *ngFor="let s of uploadStates; let i = index; trackBy: trackByFileKey">
+          <mat-icon class="file-icon"
+                    [class.icon-success]="s.status === 'success'"
+                    [class.icon-error]="s.status === 'error'">
+            {{ s.status === 'success' ? 'check_circle' : 'error' }}
+          </mat-icon>
+
+          <div class="file-meta">
+            <div class="file-name" [matTooltip]="s.file.name">{{ s.file.name }}</div>
+            <div class="file-sub">
+              <span *ngIf="s.status === 'success'">
+                Report ID: {{ s.reportId }} · {{ s.uploadedAt | date:'short' }}
+              </span>
+              <span *ngIf="s.status === 'error'" class="error-inline">
+                {{ s.errorMessage }}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row-actions" style="gap: 12px; flex-wrap: wrap;">
+        <button *ngIf="failureCount > 0"
+                type="button"
+                class="btn-secondary"
+                [disabled]="isSubmitting"
+                (click)="retryBatch()">
+          <mat-icon>refresh</mat-icon>
+          <span>{{ isSubmitting ? 'Retrying…' : 'Retry Upload' }}</span>
+        </button>
+        <button class="btn-primary" type="button" (click)="uploadAnother()">
+          <mat-icon>add</mat-icon>
+          <span>Upload More Reports</span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>

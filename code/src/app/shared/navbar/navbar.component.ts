@@ -53,6 +53,7 @@ export class NavbarComponent implements OnInit {
     // else this.router.navigate(['assets-overview' , 'dashboards' , id]);
 
   }
+  
 
   logout() {
     sessionStorage.removeItem('auth_token');

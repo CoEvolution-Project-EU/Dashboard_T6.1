@@ -1,0 +1,62 @@
+.nv-dialog {
+  padding: 15px;
+  min-width: 380px;
+  max-width: 500px;
+}
+
+.nv-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.nv-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--navbar-color);
+}
+
+.nv-subtitle {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.nv-body {
+  margin-bottom: 12px;
+}
+
+.field-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-block label {
+  font-weight: 600;
+  color: var(--navbar-color);
+  margin-bottom: 8px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.error {
+  color: #b42318;
+  margin-top: 4px;
+  font-size: 0.85rem;
+}
+
+.required {
+  color: #b42318;
+}
+
+.nv-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}

@@ -1,0 +1,87 @@
+<div class="shared-page-section">
+
+  <!-- ── FORM ──────────────────────────────────────────────────────────────── -->
+  <div class="shared-content-card" *ngIf="!uploadDone">
+    <h1 class="shared-page-title">Data Upload</h1>
+    <p class="shared-page-subtitle">
+      Upload a data file to the trusted data storage.
+    </p>
+
+    <form [formGroup]="uploadForm" (ngSubmit)="submit()">
+
+      <!-- Name -->
+      <div class="field-block full-width">
+        <label>Data Name <span class="required">*</span></label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="name" placeholder="e.g. synthetic-batch-01">
+          <mat-error *ngIf="name?.invalid && name?.touched">Required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Upload box -->
+      <div class="shared-upload-box"
+           [class.upload-box--filled]="selectedFile"
+           (drop)="onDrop($event)"
+           (dragover)="onDragOver($event)">
+        <mat-icon class="shared-upload-icon">{{ selectedFile ? 'check_circle' : 'upload_file' }}</mat-icon>
+        <div class="shared-upload-title">
+          {{ selectedFile ? selectedFile.name : 'Upload a data file' }}
+        </div>
+        <div class="shared-upload-subtitle">
+          {{ selectedFile ? formatSize(selectedFile.size) : 'Drag & drop a file, or click to browse' }}
+          <span *ngIf="!selectedFile" class="required"> *</span>
+        </div>
+
+        <label class="file-label">
+          <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
+          <button type="button" class="btn-secondary" (click)="fileInput.click()">
+            <mat-icon>{{ selectedFile ? 'sync' : 'attach_file' }}</mat-icon>
+            <span>{{ selectedFile ? 'Change file' : 'Choose file' }}</span>
+          </button>
+          <button *ngIf="selectedFile" type="button" class="btn-cancel" (click)="removeFile()">
+            <mat-icon>close</mat-icon>
+            <span>Remove</span>
+          </button>
+        </label>
+      </div>
+
+      <!-- Stored-name preview -->
+      <div class="stored-preview" *ngIf="previewStoredName">
+        <mat-icon>sell</mat-icon>
+        <span>Will be stored as <strong>{{ previewStoredName }}</strong></span>
+      </div>
+
+      <div *ngIf="errorMessage" class="global-error">{{ errorMessage }}</div>
+
+      <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+        <mat-icon *ngIf="!isSubmitting">cloud_upload</mat-icon>
+        <mat-spinner *ngIf="isSubmitting" diameter="18"></mat-spinner>
+        <span>{{ isSubmitting ? 'Uploading…' : 'Upload Data' }}</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- ── SUCCESS ───────────────────────────────────────────────────────────── -->
+  <div class="shared-content-card" *ngIf="uploadDone">
+    <div class="shared-success-header shared-success-header--top">
+      <mat-icon class="shared-success-icon shared-success-icon--green">check_circle</mat-icon>
+      <div>
+        <h1 class="shared-page-title">Data Uploaded</h1>
+        <p class="shared-page-subtitle">Your file has been stored in the trusted data store.</p>
+      </div>
+    </div>
+
+    <div class="model-id-box">
+      <div class="shared-small-label">Stored file</div>
+      <div class="model-id-row">
+        <span class="stored-file-name">{{ storedName }}</span>
+      </div>
+    </div>
+
+    <button class="btn-primary" type="button" (click)="uploadAnother()">
+      <mat-icon>add_circle_outline</mat-icon>
+      <span>Upload Another File</span>
+    </button>
+  </div>
+
+</div>

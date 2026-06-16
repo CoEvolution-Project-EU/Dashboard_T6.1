@@ -1,20 +1,18 @@
 <mat-toolbar>
 
     <div class="labels">
+       <div class="brand-block collapsed-brand">
+            <img src="assets/logo/CoEv_logo.jpg" alt="logo" class="brand-logo small" />
+          </div>
+
         <span class="ml-2 " style="font-size: 17px;margin-right: 0.5em; ">CoEvolution Hub Dashboard &nbsp; |</span>
-
-
-        <!-- <button (click)="goToRoute('')" [ngStyle]="{'color':'var(--secondary-button-color)' }" mat-stroked-button>
-            <mat-icon [ngStyle]="{'color': 'var(--secondary-button-color)'}">apps</mat-icon>
-            Cases Overview
-        </button> -->
 
     </div>
 
 
 
     <div class="labels" style="margin-left: auto; display: flex; align-items: center; justify-content: center;">
-        <button mat-stroked-button (click)="logout()">
+        <button mat-flat-button (click)="logout()">
             <mat-icon>logout</mat-icon> Logout
         </button>
     </div>

@@ -1,153 +1,61 @@
-<ngx-spinner [name]='"assets"' [fullScreen]="true" bdColor="#f5f5f583" size="medium" type="ball-fussion"
-    color="#EDAE49"></ngx-spinner>
+<ngx-spinner [name]="'assets'" [fullScreen]="true" bdColor="#f5f5f583" size="medium" type="ball-fussion"
+  color="#EDAE49"></ngx-spinner>
 
 <app-navbar></app-navbar>
 
 <div class="menu">
-
-    <div class="innerNavButtons">
-        <mat-icon class="s-18 header">apps</mat-icon>
-        <mat-icon class="s-16 header">keyboard_double_arrow_right</mat-icon>
-        <button style="color: var(--secondary-button-color); background-color: #fef2e891; border-radius: 0.5em; border: 1px solid var(--secondary-button-color);"
-            mat-flat-button>
-            Hosts
-        </button>
-        <span style="margin-left: 0.5em">|</span>
-        <!-- #TOUCH -->
-        <button [routerLink]="[ '/dashboard' ,'all', 'global']" routerLinkActive="router-link-active" mat-flat-button>
-            Alerts Analysis
-        </button>
-
-    </div>
-
-    <!-- #TOUCH -->
-    <!-- <button class="recentSavedBtn" mat-stroked-button matTooltip="Saved Views" (click)="drawer.toggle()">
-        <mat-icon *ngIf="drawer.opened else elseIcon">chevron_right</mat-icon>
-        <ng-template #elseIcon> <mat-icon>chevron_left</mat-icon> </ng-template>
-        Saved
-        <mat-icon class="material-icons-outlined">save</mat-icon>
-    </button> -->
-
-    <!-- <div class="innerHeader">
-        <mat-icon class="s-18 header">apps</mat-icon>
-        <mat-icon class="s-16 header">keyboard_double_arrow_right</mat-icon>
-        <span class="header">Assets List</span>
-    </div> -->
-
-
-
-
-
-
-
-
+  <div class="innerNavButtons">
+<div class="content-header">
+          <button mat-icon-button class="toggle-btn" (click)="toggleSidebar()">
+            <mat-icon class="s-18 header"> menu {{ isSidebarOpen ? 'left_panel_close' : 'left_panel_open' }}</mat-icon>
+          </button>
+          <h1 class="page-title">Configuration Monitoring &amp; Visualisations</h1>
+        </div>
+  </div>
 </div>
 
 <div class="page-container">
+  <div class="content">
+    <mat-drawer-container class="layout-container">
 
-    <div class="content">
-        <mat-drawer-container>
+      <mat-drawer
+        #drawer
+        [opened]="true"
+        mode="side"
+        position="start"
+        class="side-menu-drawer"
+        [class.collapsed]="!isSidebarOpen">
 
-            <mat-drawer-content>
+        <div class="drawer-top">
+   
+          <div class="side-menu-list">
+            <button
+              *ngFor="let item of menu"
+              mat-button
+              class="menu-item"
+              [routerLink]="[ '/register-model']"
+              routerLinkActive="router-link-active"
+              [matTooltip]="!isSidebarOpen ? item.name : ''"
+              matTooltipPosition="right">
 
+              <mat-icon style="color: var(--light-font-color)">{{ item.icon }}</mat-icon>
+              <span class="menu-label" *ngIf="isSidebarOpen">{{ item.name }}</span>
+            </button>
+          </div>
+        </div>
 
-                <div class="assets" fxLayout="row wrap" fxLayoutAlign="center center">
+      </mat-drawer>
 
-                    <div *ngFor="let asset of assets">
-                        <mat-card class="asset-card shadow">
-                            <mat-card-header class="assets-header">
-                                <mat-card-title>
-                                    {{asset.hostname}}
-                                </mat-card-title>
-                                <!-- <mat-card-subtitle> Status: {{asset.status}}
-                            </mat-card-subtitle> -->
-                            </mat-card-header>
-                            <mat-divider></mat-divider>
-                            <img class="mt-2" style="width:165px; margin: auto; padding: 1em;" mat-card-image
-                                src="assets/logo/logoz.png">
-                            <mat-card-actions>
-                                <mat-divider></mat-divider>
+      <mat-drawer-content>
+        
 
-                                <div style="margin:0.5em 0;" class="g">
-
-                                    <mat-form-field appearance="fill" style="width: 100%;">
-                                        <mat-label>Choose View </mat-label>
-                                        <mat-select #view [value]="'consumptionview'">
-                                            <!-- <mat-option value="alertsview">Alerts Investigation</mat-option>
-                                            <mat-option value="netflowsview">Netflows Investigation</mat-option> -->
-                                            <mat-option value="consumptionview">Abnormal resource
-                                                consumption</mat-option>
-                                            <mat-option value="inthreatsview">Insider Threats</mat-option>
-
-
-                                            <mat-option *ngFor="let view of asset.savedViews"
-                                                [value]="view.id">{{view.title}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+        <div class="assets" fxLayout="row wrap" fxLayoutAlign="center center">
+         
 
 
-                                    <div class="f" style="justify-content: space-around;">
+        </div>
 
-                                        <!-- <button matTooltip="Add files" style="border-radius:50%;" class="btn-1" mat-icon-button>
-                                        <span class="material-icons-round">
-                                            add
-                                        </span>
-                                    </button> -->
-
-                                        <!-- <button matTooltip="Edit" class="btn-1"  mat-raised-button>
-                                        <span class="material-icons-round">
-                                            tune
-                                        </span>
-                                    </button> -->
-
-                                        <button class="btn-2"
-                                            style="background-color: var(--secondary-button-color); color: var(--light-font-color);"
-                                            [routerLink]="[ '/dashboard', asset.hostname ,view.value ]"
-                                            routerLinkActive="router-link-active" mat-raised-button>
-                                            investigate
-                                        </button>
-                                    </div>
-                                </div>
-                            </mat-card-actions>
-                        </mat-card>
-
-
-                    </div>
-                </div>
-
-            </mat-drawer-content>
-
-            <mat-drawer #drawer [opened]="false" position="end" mode="side" style="width: 350px; margin-top: 0.5em;">
-                <div *ngFor="let recent of recentSaved">
-                    <mat-card class="saved-card shadow">
-                        <mat-card-header class="saved-header">
-                            <mat-card-title>
-                                {{recent.title}}
-                            </mat-card-title>
-                            <mat-card-subtitle>
-                                <mat-label>Created: <span>{{recent.created}}</span></mat-label>
-                            </mat-card-subtitle>
-                            <div class="info">
-                                <mat-label>Asset ID: <span>{{recent.assetId}}</span></mat-label>
-                                <mat-label>Description:</mat-label>
-                            </div>
-                        </mat-card-header>
-                        <mat-card-content>
-                            <p>{{recent.descriptions}}</p>
-                        </mat-card-content>
-                        <mat-card-actions style="text-align:center; padding: 0">
-                            <button [routerLink]="[ 'dashboards' ,'core-dash', recent.assetId ,recent.id]"
-                                routerLinkActive="router-link-active" mat-icon-button>
-                                <img src="assets/images/share.png" style="width:30px;" alt="">
-                            </button>
-                        </mat-card-actions>
-                    </mat-card>
-
-
-                </div>
-            </mat-drawer>
-
-        </mat-drawer-container>
-    </div>
-
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </div>
 </div>

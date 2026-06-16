@@ -1,0 +1,70 @@
+<div class="utm-dialog">
+  <div class="utm-header">
+    <div>
+      <h2 class="utm-title">Upload Trusted Model</h2>
+      
+    </div>
+    <button type="button" class="btn-icon-table" (click)="cancel()" matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="utm-body">
+
+    <div class="field-block">
+      <label>Model UUID <span class="required">*</span></label>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="modelUuid"
+               placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000">
+        <mat-error *ngIf="form.get('modelUuid')?.hasError('required')">Required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="field-block">
+      <label>Version <span class="required">*</span></label>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="version" placeholder="e.g. v1.0">
+        <mat-error *ngIf="form.get('version')?.hasError('required')">Required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="shared-upload-box" [class.upload-box--filled]="selectedFile">
+      <mat-icon class="shared-upload-icon">{{ selectedFile ? 'check_circle' : 'upload_file' }}</mat-icon>
+      <div class="shared-upload-title">
+        {{ selectedFile ? selectedFile.name : 'Upload trusted-model file' }}
+      </div>
+      <div class="shared-upload-subtitle">
+        {{ selectedFile ? formatSize(selectedFile.size) : 'Click to browse' }}
+        <span *ngIf="!selectedFile" class="required"> *</span>
+      </div>
+
+      <label class="file-label">
+        <input type="file" (change)="onFileSelected($event)" hidden #fileInput>
+        <button type="button" class="btn-secondary" (click)="fileInput.click()">
+          <mat-icon>{{ selectedFile ? 'sync' : 'attach_file' }}</mat-icon>
+          <span>{{ selectedFile ? 'Change file' : 'Choose file' }}</span>
+        </button>
+        <button *ngIf="selectedFile" type="button" class="btn-cancel" (click)="removeFile()">
+          <mat-icon>close</mat-icon>
+          <span>Remove</span>
+        </button>
+      </label>
+    </div>
+
+    <div *ngIf="errorMessage" class="global-error">{{ errorMessage }}</div>
+  </form>
+
+  <div class="utm-actions">
+    <!-- <button type="button" class="btn-secondary" (click)="cancel()" [disabled]="isSubmitting">
+      <mat-icon>close</mat-icon>
+      <span>Cancel</span>
+    </button> -->
+    <button type="button" class="btn-primary"
+            [disabled]="isSubmitting || form.invalid || !selectedFile"
+            (click)="submit()">
+      <mat-icon *ngIf="!isSubmitting">cloud_upload</mat-icon>
+      <mat-spinner *ngIf="isSubmitting" diameter="18"></mat-spinner>
+      <span>{{ isSubmitting ? 'Uploading…' : 'Upload' }}</span>
+    </button>
+  </div>
+</div>

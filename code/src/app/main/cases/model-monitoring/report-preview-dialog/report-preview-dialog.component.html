@@ -1,0 +1,60 @@
+<div class="dialog-header">
+  <div class="title-block">
+    <mat-icon class="header-icon">description</mat-icon>
+    <div>
+      <div class="title">{{ filename }}</div>
+      <div class="meta">
+        <span *ngIf="contentType">{{ contentType }}</span>
+        <span *ngIf="size && size !== '—'">· {{ size }}</span>
+        <span *ngIf="uploadedAt">· {{ uploadedAt | date:'mediumDate' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <button mat-stroked-button type="button" (click)="download()" class="action-2-btn">
+      <mat-icon>download</mat-icon>
+      <span>Download</span>
+    </button>
+    <button mat-icon-button type="button" (click)="close()" aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="dialog-body">
+
+  <ng-container [ngSwitch]="kind">
+
+    <!-- PDF preview -->
+    <iframe *ngSwitchCase="'pdf'"
+            class="preview-frame"
+            [src]="safeUrl"
+            title="PDF preview"></iframe>
+
+    <!-- Image preview -->
+    <div *ngSwitchCase="'image'" class="image-wrap">
+      <img [src]="blobUrl" [alt]="filename" />
+    </div>
+
+    <!-- Text / JSON preview -->
+    <div *ngSwitchCase="'text'" class="text-wrap">
+      <div *ngIf="textLoading" class="text-loading">
+        <mat-spinner diameter="24"></mat-spinner>
+        <span>Loading content…</span>
+      </div>
+      <pre *ngIf="!textLoading">{{ textContent }}</pre>
+    </div>
+
+    <!-- Unsupported -->
+    <div *ngSwitchDefault class="unsupported">
+      <mat-icon>visibility_off</mat-icon>
+      <div class="unsupported-title">Preview not available</div>
+      <div class="unsupported-sub">
+        This file type cannot be previewed in the browser. You can still download it.
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

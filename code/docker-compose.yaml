@@ -15,6 +15,6 @@ services:
         environment:
             - SERV_HOST=https://services.modapto.atc.gr 
             - SOCKET_HOST=http://localhost:4200 #server base IP for Socket.io; adjust the IP url according your host environment. Server runs under nginx proxy pass(thats why port is 4200)- we have configured in Angular to request Socket under /server subdomain.
-            - KEYCLOAK_URL=https://localhost:30012
+            - KEYCLOAK_URL=https://aegis.coevolution-project.eu/api/v1
         volumes:
             - ./nginx/eds/nginx.conf:/etc/nginx/conf.d/default.conf #nginx config for eds running at /eds subfolder + refresh page settings

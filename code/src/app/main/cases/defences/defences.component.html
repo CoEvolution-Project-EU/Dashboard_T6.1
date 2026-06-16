@@ -1,0 +1,178 @@
+<div class="shared-page-section">
+  <div class="shared-content-card shared-content-card--wide">
+
+    <div class="page-header">
+      <div>
+        <h1 class="shared-page-title">Defences</h1>
+        <p class="shared-page-subtitle">
+          Browse the defences catalog and download a defence to your device.
+        </p>
+      </div>
+
+      <button class="btn-refresh" type="button"
+              (click)="refresh()" [disabled]="isLoading"
+              matTooltip="Reload defences">
+        <mat-icon>refresh</mat-icon>
+        <span>Refresh</span>
+      </button>
+    </div>
+
+    <div class="filters">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search by Tool ID, type, uploader, tag</mat-label>
+        <input matInput
+               [value]="searchTerm"
+               (input)="onSearchChange(($any($event.target)).value)">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="type-field">
+        <mat-label>Type</mat-label>
+        <mat-select [value]="categoryFilter" (selectionChange)="onCategoryChange($event.value)">
+          <mat-option [value]="''">All types</mat-option>
+          <mat-option *ngFor="let c of categories" [value]="c">{{ c }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="isLoading" class="state-row">
+      <mat-spinner diameter="28"></mat-spinner>
+      <span>Loading defences…</span>
+    </div>
+
+    <div *ngIf="errorMessage && !isLoading" class="global-error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage && filtered.length === 0" class="empty-state">
+      <mat-icon>shield</mat-icon>
+      <div class="empty-title">No defences found</div>
+      <div class="empty-subtitle">
+        {{ defences.length === 0 ? 'No defences are available yet.' : 'Try adjusting your filters.' }}
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage && filtered.length > 0" class="table-wrapper">
+      <table mat-table [dataSource]="filtered" [trackBy]="trackById" class="models-table">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Tool ID</th>
+          <td mat-cell *matCellDef="let d">
+            <button type="button"
+                    class="uuid-copy"
+                    (click)="copy(d.id, 'Tool ID')"
+                    [matTooltip]="d.id + ' — click to copy'">
+              <span class="uuid">{{ d.id }}</span>
+              <mat-icon class="copy-icon">content_copy</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="toolName">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let d">
+            <div class="cell-name">{{ d.name || '—' }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let d">
+            <button *ngIf="d.description; else noDesc"
+                    type="button"
+                    class="cell-desc-btn"
+                    (click)="showDescription(d)"
+                    matTooltip="Click to read full description">
+              <span class="cell-desc">{{ d.description }}</span>
+              <mat-icon class="more-icon">unfold_more</mat-icon>
+            </button>
+            <ng-template #noDesc>—</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="attacks">
+          <th mat-header-cell *matHeaderCellDef>Attacks / Vulnerabilities</th>
+          <td mat-cell *matCellDef="let d">
+            <button *ngIf="d.attacksVulnerabilities; else noAttacks"
+                    type="button"
+                    class="cell-desc-btn"
+                    (click)="showAttacks(d)"
+                    matTooltip="Click to read the full attacks & vulnerabilities">
+              <span class="cell-desc">{{ d.attacksVulnerabilities }}</span>
+              <mat-icon class="more-icon">unfold_more</mat-icon>
+            </button>
+            <ng-template #noAttacks>—</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let d">
+            <span class="badge badge-type">{{ d.category }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="defenceFlows">
+          <th mat-header-cell *matHeaderCellDef>Defence Flows</th>
+          <td mat-cell *matCellDef="let d">
+            <ng-container *ngIf="d.defenceFlows && d.defenceFlows.length; else noFlows">
+              <button *ngFor="let f of d.defenceFlows"
+                      type="button"
+                      class="tag-chip flow-chip flow-chip-btn"
+                      (click)="showDefenceFlow(f)"
+                      matTooltip="Click to read the defence flow description">
+                {{ f }}
+              </button>
+            </ng-container>
+            <ng-template #noFlows>—</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tags">
+          <th mat-header-cell *matHeaderCellDef>Tags</th>
+          <td mat-cell *matCellDef="let d">
+            <ng-container *ngIf="d.tags && d.tags.length; else noTags">
+              <span class="tag-chip" *ngFor="let tag of d.tags">{{ tag }}</span>
+            </ng-container>
+            <ng-template #noTags>—</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="author">
+          <th mat-header-cell *matHeaderCellDef>Uploaded by</th>
+          <td mat-cell *matCellDef="let d">{{ d.author || '—' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="repo">
+          <th mat-header-cell *matHeaderCellDef>Repository</th>
+          <td mat-cell *matCellDef="let d">
+            <a *ngIf="d.repoUrl; else noRepo"
+               class="btn-table repo-link"
+               [href]="d.repoUrl"
+               target="_blank"
+               rel="noopener noreferrer"
+               (click)="onRepoClick()"
+               [matTooltip]="d.repoUrl + ' — opens in a new tab'">
+              <mat-icon>{{ repoIcon(d.repoUrl) }}</mat-icon>
+              <span class="repo-label">{{ repoLabel(d.repoUrl) }}</span>
+              <mat-icon class="external-icon">open_in_new</mat-icon>
+            </a>
+            <ng-template #noRepo>—</ng-template>
+          </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef>Created</th>
+          <td mat-cell *matCellDef="let d">
+            {{ d.createdAt ? (d.createdAt | date:'mediumDate') : '—' }}
+          </td>
+        </ng-container> -->
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+  </div>
+</div>

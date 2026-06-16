@@ -25,7 +25,6 @@ export class AuthService {
   }
 
 
-  // Roxanne functions on read/create/update. [FIX] this for elk-security
   checkRights(caseId) {
 
     if (!this.casesrights[caseId]) return true;

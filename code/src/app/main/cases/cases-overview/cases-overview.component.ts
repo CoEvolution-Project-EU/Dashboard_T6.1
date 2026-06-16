@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { CasesOverviewService } from './cases-overview.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { NodejsDataService } from '../../nodejs-data.service';
 
 import { CommonModule } from '@angular/common';
@@ -52,49 +50,37 @@ export class CasesOverviewComponent implements OnInit {
   // **Keycloak
   keycloak_id;
   constructor(
-    private overviewService: CasesOverviewService,
     private spinner: NgxSpinnerService,
     public dialog: MatDialog,
-    private _snackBar: MatSnackBar,
     private nodejsService: NodejsDataService
 
   ) {
 
     this.spinner.show('assets');
     this.token = this.nodejsService.getToken();
-    // **Keycloak
     this.keycloak_id = this.nodejsService.getKeycloakId();
-    // #TOUCH
-    this.getAssetsDetails(this.token, '/assets');
+    this.spinner.hide('assets');
+
 
   }
 
 
   ngOnInit(): void { }
 
+  isSidebarOpen = true;
 
-  async getAssetsDetails(token, path): Promise<void> {
+  menu = [
+    { name: 'Register a Model', icon: 'app_registration', route: ['/register_model'] },
+    { name: 'Model Registry', icon: 'list', route: ['/model-registry'] },
+    { name: 'Model Assessment', icon: 'shield', route: ['/model-assessment'] },
+    { name: 'Risk Assessment', icon: 'warning', route: ['/risk-assessment'] },
+    { name: 'Upload Reports', icon: 'upload', route: ['/upload-reports'] },
+    { name: 'See Reports', icon: 'bar_chart', route: ['/see-reports'] }
+  ]; 
 
-    //get the assets/cases or w/e (differates per project).
-
-    // #TOUCH
-    this.assets = await this.overviewService.getAssets(token, path, { "start": 1693603731000, "end": new Date(Date.now()).getTime() });
-
-    if (this.assets == 'http-error') {
-      this._snackBar.open('An error has occured while trying to retrieve cases. Please try again.', null, { duration: 3500, panelClass: 'errorClass' })
-    } else {
-      // console.log(this.assets);
-
-      this.recentSaved = this.assets.flatMap(asset => asset.savedViews).filter(v => v);
-      // this.assets = this.authRightsServ.checkCasesRights(this.assets);
-    }
-
-    this.spinner.hide('assets');
-
-
-
+    toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
   }
-
 
 
 }

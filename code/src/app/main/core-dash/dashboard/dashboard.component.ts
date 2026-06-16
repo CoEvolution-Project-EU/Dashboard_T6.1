@@ -12,12 +12,10 @@ import { ResizeEvent } from 'angular-resizable-element';
 import { MatDialog } from '@angular/material/dialog';
 import { InspectDialogComponent } from '../inspect-dialog/inspect-dialog.component';
 import { Subscription } from 'rxjs';
-// import { SocketioService } from '../../socketio.service';
 import { CasesOverviewService } from '../../cases/cases-overview/cases-overview.service';
 import { ReportPdfService } from 'src/app/shared/report-pdf.service';
 import JSZip from 'jszip';
 import * as FileSaver from 'file-saver';
-
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -141,26 +139,13 @@ export class DashboardComponent implements OnInit {
   inspect_assets;
 
 
-  //--------URL PARAMS
   preconfViewId;
   assetId;
-  //--------
-
-  //--------datasets QUERY FILTERS - use EXACT the same names as for the query api calls - REQUIRED. #TOUCH
-  //these should have the filter values exposed in the front-end for the corresponding query params.
+  
   severities;
 
-  //---------
-
-  //#TOUCH
-  //--------create variables with the same name + "_options" suffic for range & validation needs. (e.g sverity filter needs a dropdown with 1 - 10 available options, cpu valid range is 0-100 etc.)
   severities_options = []
-
-  //---------
-
   //--------LOCAL FILTERS - same logic as above. #TOUCH
-
-
   alertName = []
   alertName_options = []
 
@@ -171,15 +156,6 @@ export class DashboardComponent implements OnInit {
 
   recentSaved;
 
-  // channels
-  // channels_options
-  // servers
-  // servers_options
-  // responses
-  // responses_options
-  //---------
-
-  //sliderCpuOpts: Options;
   periodSubscription: Subscription;
   clickedSubscription: Subscription;
   socketSubscription: Subscription;
@@ -236,8 +212,8 @@ export class DashboardComponent implements OnInit {
   ) {
 
     this.spinner.show();
-    this.token = this.nodejsService.getToken();
-    this.getAssetDetails()
+    // this.token = this.nodejsService.getToken();
+    // this.getAssetDetails()
     //get any ids/params etc from the url
     this.assetId = this.actRoute.snapshot.params.id;
     this.preconfViewId = this.actRoute.snapshot.params.preconfView;
@@ -253,13 +229,12 @@ export class DashboardComponent implements OnInit {
       this.actRoute.data.subscribe(async resolverResp => {
 
 
-
         if (!(resolverResp.data.preconfView)) {
           this.spinner.hide()
           this._snackBar.open('An error has occured. Please try again.', null, { duration: 3500, panelClass: 'errorClass' })
         } else {
 
-          await this.getAssetDetails();
+          // await this.getAssetDetails();
 
           this.preconfViewLoaded = resolverResp.data.preconfView;
 

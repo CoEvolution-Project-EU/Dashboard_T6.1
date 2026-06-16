@@ -1,0 +1,39 @@
+<div class="nv-dialog">
+  <div class="nv-header">
+    <div>
+      <h2 class="nv-title">New Version</h2>
+      <p class="nv-subtitle">
+        Create a new version for <strong>{{ data.modelName || data.modelUuid }}</strong>.
+      </p>
+    </div>
+    <button type="button" class="btn-icon-table" (click)="cancel()" matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="save()" class="nv-body">
+    <div class="field-block">
+      <label>Version <span class="required">*</span></label>
+      <mat-form-field appearance="outline">
+        <input matInput formControlName="version" placeholder="e.g. v2.0" autofocus>
+        <mat-error *ngIf="form.get('version')?.hasError('required')">Required</mat-error>
+      </mat-form-field>
+      <small class="error" *ngIf="duplicate">
+        This version already exists for this model.
+      </small>
+    </div>
+  </form>
+
+  <div class="nv-actions">
+    <button type="button" class="btn-secondary" (click)="cancel()">
+      <mat-icon>close</mat-icon>
+      <span>Cancel</span>
+    </button>
+    <button type="button" class="btn-primary"
+            [disabled]="form.invalid || duplicate"
+            (click)="save()">
+      <mat-icon>add</mat-icon>
+      <span>Create Version</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+{
+    "title": "register_model",
+    "timewindow": [],
+    "datasets": [
+],
+    "currentWidgets": [
+        {
+            "name": "registermodel",
+            "widget": "details",
+            "title": "Alerts",
+            "pdfreport": {
+                "info": true,
+                "page": true,
+                "pagenum": 4,
+                "title": "Alerts Details",
+                "description": "The following Details widget is used to present information about detected alerts (severity, risk score, messages, timestamps).",
+                "maxwidth": 170,
+                "name": "details"
+            },
+            "size": 100,
+            "filters": {},
+            "order": 3,
+            "datasets": [
+            ],
+            "config": {
+                "start": "",
+                "end": "",
+                "datasetsInfo": [
+                ],
+                "data": {
+                    "action": "",
+                    "data": []
+                },
+                "columns": false,
+                "id": "mainDashAlerts",
+                "hasDates": {
+                    "enabled": true,
+                    "zoomSync": true
+                }
+            }
+        }
+    ],
+    "availableWidgets": []
+}

@@ -1,0 +1,223 @@
+.form-row {
+  margin-bottom: 24px;
+}
+
+.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+/* Material form fields stretch to the column width. */
+.form-group mat-form-field {
+  width: 100%;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.upload-box input[type='file'] {
+  max-width: 320px;
+}
+
+.selected-file {
+  margin-top: 16px;
+  color: #344054;
+}
+
+.form-group label{
+ font-weight: 600;
+  color: var(--navbar-color);
+  margin-bottom: 8px;
+}
+
+.report-summary {
+  border: 1px solid #d0d5dd;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 24px;
+  background: #f9fafb;
+}
+
+.file-block {
+  margin-bottom: 20px;
+}
+
+.file-block .file-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #101828;
+}
+
+.file-block .file-status {
+  color: #667085;
+  margin-top: 4px;
+}
+
+.error,
+.global-error {
+  color: #b42318;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+/* ── Multi-file: pre-submit + during-upload + success list ───────────── */
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  .clear-files-btn {
+    border-radius: 12px;
+    color: #b42318;
+  }
+}
+
+.file-list {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.file-list-header {
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #1f2937;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid #f1f5f9;
+
+  &:first-of-type { border-top: 0; }
+}
+
+.file-icon {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.file-icon.icon-success { color: #15803d; }
+.file-icon.icon-error   { color: #b42318; }
+
+.file-meta {
+  flex: 1;
+  min-width: 0;
+
+  .file-name {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .file-sub {
+    color: #6b7280;
+    font-size: 0.82rem;
+    margin-top: 2px;
+  }
+
+  .error-inline { color: #b42318; }
+}
+
+.file-remove {
+  color: #6b7280;
+}
+
+.file-retry {
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ── Success card list ─────────────────────────────────────────────── */
+.batch-summary {
+  margin: 8px 0 20px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: #f6f7fb;
+  border: 1px solid #dde2eb;
+}
+
+.batch-counts {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+
+  .count {
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .count-success {
+    background: #dcfce7;
+    color: #15803d;
+  }
+
+  .count-error {
+    background: #fee4e2;
+    color: #b42318;
+  }
+}
+
+.batch-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: #344054;
+  font-size: 0.92rem;
+
+  strong { color: #111827; }
+}
+
+.result-list {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.result-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid #f1f5f9;
+
+  &:first-of-type { border-top: 0; }
+}
+
+@media (max-width: 768px) {
+  .two-columns {
+    grid-template-columns: 1fr;
+  }
+}

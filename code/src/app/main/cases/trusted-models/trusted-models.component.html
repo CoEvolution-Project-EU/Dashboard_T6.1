@@ -1,0 +1,146 @@
+<div class="shared-page-section">
+  <div class="shared-content-card shared-content-card--wide">
+
+    <div class="page-header">
+      <div>
+        <h1 class="shared-page-title">Trusted Models</h1>
+        <p class="shared-page-subtitle">
+          Browse trusted-model artefacts. Each entry comes from
+          <strong>/models/reports?type=trusted-model</strong> and links back to its registered model.
+        </p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-secondary" type="button"
+                (click)="openUploadTrustedModel()"
+                matTooltip="Upload a trusted model to TRP / trusted-models">
+          <mat-icon>upload_file</mat-icon>
+          <span>Upload Trusted Model</span>
+        </button>
+        <button class="btn-refresh" type="button"
+                (click)="refresh()" [disabled]="isLoading"
+                matTooltip="Reload trusted models">
+          <mat-icon>refresh</mat-icon>
+          <span>Refresh</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="filters">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search by file name, model name, UUID, version, uploader</mat-label>
+        <input matInput
+               [value]="searchTerm"
+               (input)="onSearchChange(($any($event.target)).value)">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="isLoading" class="state-row">
+      <mat-spinner diameter="28"></mat-spinner>
+      <span>Loading trusted models…</span>
+    </div>
+
+    <div *ngIf="errorMessage && !isLoading" class="global-error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage && filtered.length === 0" class="empty-state">
+      <mat-icon>verified</mat-icon>
+      <div class="empty-title">No trusted models found</div>
+      <div class="empty-subtitle">
+        {{ rows.length === 0 ? 'No trusted-model files have been registered yet.' : 'Try adjusting your search.' }}
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage && filtered.length > 0" class="table-wrapper">
+      <table mat-table [dataSource]="filtered" [trackBy]="trackByRow" class="models-table">
+
+        <ng-container matColumnDef="filename">
+          <th mat-header-cell *matHeaderCellDef>File</th>
+          <td mat-cell *matCellDef="let r">
+            <div class="cell-name" [matTooltip]="r.file.filename">
+              <mat-icon class="file-icon">model_training</mat-icon>
+              <span>{{ r.file.filename }}</span>
+            </div>
+            <div class="cell-sub">
+              {{ formatSize(r.file.size) }}
+              <span *ngIf="r.file.contentType"> · {{ r.file.contentType }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="modelName">
+          <th mat-header-cell *matHeaderCellDef>Model</th>
+          <td mat-cell *matCellDef="let r">
+            <div class="cell-name">{{ r.modelName || '—' }}</div>
+            <div class="cell-sub" *ngIf="r.owner">Owner: {{ r.owner }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="modelUuid">
+          <th mat-header-cell *matHeaderCellDef>Model UUID</th>
+          <td mat-cell *matCellDef="let r">
+            <button *ngIf="r.modelUuid; else noUuid"
+                    type="button"
+                    class="uuid-copy"
+                    (click)="copy(r.modelUuid, 'Model UUID')"
+                    [matTooltip]="r.modelUuid + ' — click to copy'">
+              <span class="uuid">{{ r.modelUuid }}</span>
+              <mat-icon class="copy-icon">content_copy</mat-icon>
+            </button>
+            <ng-template #noUuid>—</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="version">
+          <th mat-header-cell *matHeaderCellDef>Version</th>
+          <td mat-cell *matCellDef="let r">
+            <span class="version-label">{{ r.version || '—' }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="uploadedBy">
+          <th mat-header-cell *matHeaderCellDef>Uploaded by</th>
+          <td mat-cell *matCellDef="let r">{{ r.file.uploadedBy || '—' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef>Uploaded</th>
+          <td mat-cell *matCellDef="let r">
+            {{ r.file.createdAt ? (r.file.createdAt | date:'medium') : '—' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let r">
+            <div class="row-actions">
+              <button type="button" class="btn-icon-table"
+                      (click)="downloadTrustedModel(r)"
+                      [disabled]="busyFileId === (r.file._id || r.file.filename)"
+                      matTooltip="Download the trusted model file from MinIO">
+                <mat-icon>download</mat-icon>
+              </button>
+              <button type="button" class="btn-icon-table"
+                      (click)="uploadReport(r)"
+                      matTooltip="Upload a report for this (model, version)">
+                <mat-icon>upload_file</mat-icon>
+              </button>
+              <button type="button" class="btn-icon-table"
+                      (click)="createNewVersion(r)"
+                      [disabled]="newVersionBusyUuid === r.modelUuid"
+                      matTooltip="Create a new version on the linked registered model">
+                <mat-icon>playlist_add</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+  </div>
+</div>

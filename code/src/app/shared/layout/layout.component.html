@@ -1,0 +1,80 @@
+<ngx-spinner
+  [name]="'assets'"
+  [fullScreen]="true"
+  bdColor="#f5f5f583"
+  size="medium"
+  type="ball-fussion"
+  color="#EDAE49">
+</ngx-spinner>
+ 
+<app-navbar></app-navbar>
+
+<div class="menu">
+  <div class="innerNavButtons">
+    <div class="content-header">
+      <button mat-icon-button class="toggle-btn" (click)="toggleSidebar()">
+  <mat-icon>{{ isSidebarOpen ? 'chevron_left' : 'menu' }}</mat-icon>
+</button>
+
+      <h1 class="page-title">{{ pageTitle }}</h1>
+    </div>
+  </div>
+</div>
+
+<div class="page-container">
+  <div class="content">
+    <mat-drawer-container class="layout-container" autosize>
+      <mat-drawer
+        [opened]="true"
+        mode="side"
+        position="start"
+        class="side-menu-drawer"
+        [class.collapsed]="!isSidebarOpen">
+
+
+        
+        <div class="drawer-top">
+          <div class="side-menu-list">
+            <ng-container *ngFor="let item of menu">
+              <!-- External link items (open in a new tab) -->
+              <a *ngIf="item.externalUrl; else internalItem"
+                 mat-button
+                 class="menu-item menu-item-external"
+                 [href]="item.externalUrl"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 [matTooltip]="!isSidebarOpen ? item.name : ''"
+                 matTooltipPosition="right">
+                <mat-icon style="color: var(--light-font-color)">{{ item.icon }}</mat-icon>
+                <span class="menu-label" *ngIf="isSidebarOpen">{{ item.name }}</span>
+                <mat-icon *ngIf="isSidebarOpen" class="external-arrow">open_in_new</mat-icon>
+              </a>
+
+              <!-- Internal routerLink items (default) -->
+              <ng-template #internalItem>
+                <button
+                  mat-button
+                  class="menu-item"
+                  [class.menu-item-disabled]="item.disabled"
+                  [routerLink]="item.disabled ? null : item.route"
+                  [disabled]="item.disabled"
+                  routerLinkActive="router-link-active"
+                  [matTooltip]="item.disabled ? (item.name + ' (coming soon)') : (!isSidebarOpen ? item.name : '')"
+                  matTooltipPosition="right">
+                  <mat-icon style="color: var(--light-font-color)">{{ item.icon }}</mat-icon>
+                  <span class="menu-label" *ngIf="isSidebarOpen">{{ item.name }}</span>
+                </button>
+              </ng-template>
+            </ng-container>
+          </div>
+        </div>
+      </mat-drawer>
+
+      <mat-drawer-content>
+        <div class="page-wrapper">
+          <router-outlet></router-outlet>
+        </div>
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </div>
+</div>

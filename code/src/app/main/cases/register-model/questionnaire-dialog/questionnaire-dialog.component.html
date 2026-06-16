@@ -1,0 +1,68 @@
+<div class="q-dialog">
+  <div class="q-header">
+    <div>
+      <h2 class="q-title">Ethics &amp; Data Questionnaire</h2>
+      <p class="q-subtitle">
+        Optional for now — the questions will become required in a future release.
+      </p>
+    </div>
+    <button type="button" class="btn-icon-table" (click)="cancel()" matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="form" class="q-body">
+    <ng-container *ngFor="let q of questions">
+
+      <!-- Section header (only when defined on this question) -->
+      <div class="q-section" *ngIf="q.section">
+        <span class="q-section-tag">{{ q.section }}</span>
+      </div>
+
+      <div class="q-item">
+        <label class="q-label">{{ q.label }}</label>
+
+        <!-- Radio -->
+        <mat-radio-group *ngIf="q.type === 'radio'" [formControlName]="q.key" class="q-radio-group">
+          <mat-radio-button *ngFor="let opt of q.options" [value]="opt">{{ opt }}</mat-radio-button>
+        </mat-radio-group>
+
+        <!-- Free text -->
+        <mat-form-field *ngIf="q.type === 'text'" appearance="outline" class="q-text">
+          <textarea matInput rows="3" [formControlName]="q.key"
+                    placeholder="Type your answer…"></textarea>
+        </mat-form-field>
+
+        <!-- Multi-checkbox: list of items + optional "None" -->
+        <div *ngIf="q.type === 'multi-checkbox'" class="q-multi-group" [formGroupName]="q.key">
+          <div class="q-multi-list">
+            <mat-checkbox *ngFor="let item of q.items; let i = index"
+                          [formControlName]="'item_' + i">
+              {{ item }}
+            </mat-checkbox>
+          </div>
+          <mat-checkbox *ngIf="q.noneOption" formControlName="__none" class="q-multi-none">
+            {{ q.noneOption }}
+          </mat-checkbox>
+        </div>
+
+        <!-- Conditional guidance -->
+        <div class="q-guidance" *ngIf="shouldShowGuidance(q)">
+          <mat-icon class="q-guidance-icon">info</mat-icon>
+          <span>{{ q.guidance?.text }}</span>
+        </div>
+      </div>
+    </ng-container>
+  </form>
+
+  <div class="q-actions">
+    <button type="button" class="btn-secondary" (click)="cancel()">
+      <mat-icon>close</mat-icon>
+      <span>Cancel</span>
+    </button>
+    <button type="button" class="btn-primary" (click)="save()">
+      <mat-icon>save</mat-icon>
+      <span>Save Answers</span>
+    </button>
+  </div>
+</div>

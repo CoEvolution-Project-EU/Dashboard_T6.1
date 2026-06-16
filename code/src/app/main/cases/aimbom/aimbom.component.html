@@ -1,0 +1,142 @@
+<div class="shared-page-section">
+  <div class="shared-content-card shared-content-card--wide">
+
+    <div class="page-header">
+      <div>
+        <h1 class="shared-page-title">AIMBOM</h1>
+        <p class="shared-page-subtitle">
+          Browse all generated AIMBOMs (SAP pool / ai-mbom bucket). Preview or download each one.
+        </p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-secondary" type="button"
+                (click)="openUploadTrustedModel()"
+                matTooltip="Upload a trusted model to TRP / trusted-models">
+          <mat-icon>upload_file</mat-icon>
+          <span>Upload Trusted Model</span>
+        </button>
+        <button class="btn-refresh" type="button"
+                (click)="refresh()" [disabled]="isLoading"
+                matTooltip="Reload AIMBOMs">
+          <mat-icon>refresh</mat-icon>
+          <span>Refresh</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="filters">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search by file name, model UUID, version</mat-label>
+        <input matInput
+               [value]="searchTerm"
+               (input)="onSearchChange(($any($event.target)).value)">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="isLoading" class="state-row">
+      <mat-spinner diameter="28"></mat-spinner>
+      <span>Loading AIMBOMs…</span>
+    </div>
+
+    <div *ngIf="errorMessage && !isLoading" class="global-error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage && filtered.length === 0" class="empty-state">
+      <mat-icon>receipt_long</mat-icon>
+      <div class="empty-title">No AIMBOMs found</div>
+      <div class="empty-subtitle">
+        {{ aimboms.length === 0 ? 'No AIMBOMs have been generated yet.' : 'Try adjusting your search.' }}
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && !errorMessage && filtered.length > 0" class="table-wrapper">
+      <table mat-table [dataSource]="filtered" [trackBy]="trackByFile" class="models-table">
+
+        <ng-container matColumnDef="filename">
+          <th mat-header-cell *matHeaderCellDef>AIMBOM</th>
+          <td mat-cell *matCellDef="let f">
+            <div class="cell-name" [matTooltip]="f.filename">
+              <mat-icon class="file-icon">receipt_long</mat-icon>
+              <span>{{ f.filename }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="modelName">
+          <th mat-header-cell *matHeaderCellDef>Model Name</th>
+          <td mat-cell *matCellDef="let f">
+            <span *ngIf="modelNameOf(f); else noName" class="cell-name">{{ modelNameOf(f) }}</span>
+            <ng-template #noName>—</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="model_uuid">
+          <th mat-header-cell *matHeaderCellDef>Model UUID</th>
+          <td mat-cell *matCellDef="let f">
+            <button *ngIf="f.model_uuid; else noUuid"
+                    type="button"
+                    class="uuid-copy"
+                    (click)="copy(f.model_uuid, 'Model UUID')"
+                    [matTooltip]="f.model_uuid + ' — click to copy'">
+              <span class="uuid">{{ f.model_uuid }}</span>
+              <mat-icon class="copy-icon">content_copy</mat-icon>
+            </button>
+            <ng-template #noUuid>—</ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="version">
+          <th mat-header-cell *matHeaderCellDef>Version</th>
+          <td mat-cell *matCellDef="let f">
+            <span class="version-label">{{ f.version || '—' }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="size">
+          <th mat-header-cell *matHeaderCellDef>Size</th>
+          <td mat-cell *matCellDef="let f">{{ formatSize(f.size) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef>Created</th>
+          <td mat-cell *matCellDef="let f">
+            {{ f.createdAt ? (f.createdAt | date:'medium') : '—' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let f">
+            <div class="row-actions">
+              <button type="button" class="btn-table"
+                      (click)="preview(f)"
+                      [disabled]="busyFileKey === fileKey(f)"
+                      matTooltip="Preview in popup">
+                <mat-icon>visibility</mat-icon>
+                <span>{{ busyFileKey === fileKey(f) ? 'Loading…' : 'Preview' }}</span>
+              </button>
+              <button type="button" class="btn-icon-table"
+                      (click)="download(f)"
+                      [disabled]="busyFileKey === fileKey(f)"
+                      matTooltip="Download to device">
+                <mat-icon>download</mat-icon>
+              </button>
+              <button type="button" class="btn-icon-table"
+                      (click)="uploadFor(f)"
+                      matTooltip="Upload a trusted model for this entry">
+                <mat-icon>cloud_upload</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="home-section">
+
+  <!-- Hero -->
+  <div class="hero-card">
+    <div class="hero-content">
+      <span class="hero-eyebrow">CoEvolution Hub</span>
+      <h1 class="hero-title">Welcome to the CoEvolution Hub Dashboard</h1>
+      <p class="hero-subtitle">
+        A unified workspace for registering AI models, monitoring their lifecycle, and
+        managing trusted artefacts, reports, and AIMBOMs across the CoEvolution platform.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn-primary" [href]="websiteUrl" target="_blank" rel="noopener noreferrer">
+          <mat-icon>language</mat-icon>
+          <span>Visit coevolution-project.eu</span>
+          <mat-icon class="ext-icon">open_in_new</mat-icon>
+        </a>
+        <button type="button" class="btn-secondary" (click)="go('/register-model')">
+          <!-- <mat-icon>app_registration</mat-icon> -->
+          <span>Start working</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-decor" aria-hidden="true">
+      <mat-icon class="decor-icon decor-1">hub</mat-icon>
+      <mat-icon class="decor-icon decor-2">model_training</mat-icon>
+      <mat-icon class="decor-icon decor-3">verified</mat-icon>
+      <mat-icon class="decor-icon decor-4">shield</mat-icon>
+    </div>
+  </div>
+
+  <!-- Quick links -->
+  <div class="quick-grid">
+    <button type="button" class="quick-card" *ngFor="let q of quickLinks" (click)="go(q.route)">
+      <div class="quick-icon">
+        <mat-icon>{{ q.icon }}</mat-icon>
+      </div>
+      <div class="quick-text">
+        <div class="quick-title">{{ q.title }}</div>
+        <div class="quick-desc">{{ q.description }}</div>
+      </div>
+      <mat-icon class="quick-chevron">chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <!-- About strip -->
+  <div class="about-card">
+    <!-- <mat-icon class="about-icon">info</mat-icon> -->
+    <div>
+      <h2 class="about-title">About CoEvolution</h2>
+      <p class="about-body">
+        CoEvolution is an EU-funded initiative advancing trustworthy AI for safety-critical
+        applications. Use this hub to keep your models compliant, traceable and auditable.  
+        This project has received funding from the European Union’s Horizon Europe research and innovation programme under Grant Agreement No 101168560. The website reflects only the view of the author(s) and the Commission is not responsible for any use that may be made of the information it contains.
+        Learn more at
+        <a [href]="websiteUrl" target="_blank" rel="noopener noreferrer">coevolution-project.eu</a>.
+      </p>
+    </div>
+  </div>
+
+</div>

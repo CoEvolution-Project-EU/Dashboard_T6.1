@@ -1,6 +1,23 @@
+$navy-deep:     #152d58;
+$navy-mid:      #1a3d72;
+$navy-light:    #1e6bb5;
+$blue-accent:   #4baee8;
+$blue-soft:     #deeeff;
+$blue-pale:     #f3f8ff;
+$border-blue:   #d0dcea;
+$text-dark:     #1a2b4a;
+$text-muted:    #6b7897;
+$page-bg:       #f0f5fb;
+
+
 mat-toolbar {
-      // background-color: #18385e;
-      background-color: var(--navbar-color);
+  background: linear-gradient(90deg, $navy-deep 0%, $navy-mid 60%, #1e4f8c 100%);
+  border-right: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 2px 0 12px rgba(15,30,70,0.15);
+  transition: width 0.2s ease;
+  overflow: hidden;
+
+  &.collapsed { width: 64px; }
       position: fixed;
       z-index: 1000;
       height: 45px;
@@ -8,14 +25,24 @@ mat-toolbar {
 
 .labels {
       color: var(--light-font-color)!important;
-
+      display: flex;
       button {
-            color: white!important;
-            border-color: whitesmoke!important;
+            color: whitesmoke!important;
             margin-left: 0.5em;
+            background-color: transparent!important;
       }
 }
-
-// ::ng-deep .mat-menu-panel {
-//       background-color: var(--navbar-color);
-// }
+.brand-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fff;
+  padding: 4px;
+margin-right: 1em;
+  &.small {
+    width: 36px;
+    height: 36px;
+    padding: 3px;
+  }
+}

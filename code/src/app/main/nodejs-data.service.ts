@@ -12,8 +12,9 @@ import { AuthDataContextService } from '../guard/auth-data-context.service';
 export class NodejsDataService {
 
   myhttpHeaders;
+   private API = environment.apiUrl;
 
-  constructor(private http_: HttpClient,
+   constructor(private http_: HttpClient,
     // **Keycloak
     private authContext: AuthDataContextService
 
@@ -35,8 +36,6 @@ export class NodejsDataService {
       throw error;
     }
   }
-
-
 
   // // * TB Discarded
   // public async getToken1(): Promise<string> {
@@ -107,171 +106,32 @@ export class NodejsDataService {
     }
   }
 
-  public async getUSB(path, body): Promise<any> {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getUSB', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      // Customize your error handling here
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
+
+  // COEVOLUTION //
+
+  register(name: string, type: string, version: string, description: string, token: string) {
+    return this.http_.post(`${this.API}/models/register`,
+      { name, type, versioning: [{ version, description }] },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
   }
 
-  public async getAlerts(path, body) {
-    try {
+   uploadRequirements(uuid: string, version: string, file: File, token: string) {
+  
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http_.post(
+      `${this.API}/models/${uuid}/versions/${version}/requirements`,
+      formData,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
 
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getAlerts', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
+  getAll(token: string) {
+    return this.http_.get(`${this.API}/models`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
   }
 
 
-  public async getMetrics(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getMetrics', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
-  }
-
-  public async getCommunication(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getCommunication', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
-  }
-
-  public async getProcesses(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getProcesses', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
-  }
-
-  public async getUncommonProcesses(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getUncommonProcesses', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
-  }
-
-  public async getLogins(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getLogins', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
-  }
-
-  public async getFileIntegrity(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getFileIntegrity', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
-  }
-
-  public async getFailedSSH(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getFailedSSH', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
-  }
-
-  public async getDiskIO(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getDiskIO', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
-  }
-
-  public async getNetflows(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getNetflows', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  public async getNetworkIn(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getNetworkIn', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
-  }
-
-  public async getNetworkOut(path, body) {
-    try {
-      const response = await firstValueFrom(
-        this.http_.post(environment.host + path + '/getNetworkOut', body, { headers: this.myhttpHeaders })
-      );
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data' };
-      return customError;
-    }
-  }
-
-  public async getOrders(path) {
-    try {
-      const response = await firstValueFrom(this.http_.get(path));
-      return response;
-    } catch (error) {
-      const customError = { message: 'An error occurred while fetching data', error };
-      return customError;
-    }
-  }
 }

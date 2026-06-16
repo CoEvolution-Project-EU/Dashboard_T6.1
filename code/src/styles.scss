@@ -1,14 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.min.css";
-
-// @use '@angular/material' as mat;
-
-// @include mat.core();
-// @include mat.legacy-core();
-
-// @include mat.all-component-themes($app-theme);
-// @include mat.all-legacy-component-themes($app-theme);
-// ** Color Palette **
 
 $yellow-orange: #f4a341ff;
 $orange-yellow-crayola: #e9c46aff;
@@ -24,8 +14,6 @@ $charcoal: #264653ff;
 // ** Color Palette **
 
 // ** Theme **
-
-// FVT default
 
 :root {
     --navbar-color: white;
@@ -73,7 +61,7 @@ $charcoal: #264653ff;
 [data-theme="coevolution"]{
     --navbar-color: hsl(220 56% 20%);
     --second-navbar-color: hsl(42 87% 92%);
-    --main-button-color: #219ebc;
+    --main-button-color: hsl(220 56% 20%);
     --secondary-button-color: hsl(42 87% 55%);
     --filter-bar-color: white;
     --bg-color: hsl(210 30% 97%);
@@ -87,7 +75,17 @@ $charcoal: #264653ff;
     --reset-button-color: #25678C;
     --checkbox: #24688c;
     --checkbox-trans: rgb(35 105 140 / 52%);
- }
+    --navy-deep:     #152d58;
+    --navy-mid:      #1a3d72;
+    --navy-light:    #1e6bb5;
+    --blue-accent:   #4baee8;
+    --blue-soft:     #deeeff;
+    --blue-pale:     #f3f8ff;
+    --border-blue:   #d0dcea;
+    --text-dark:     #1a2b4a;
+    --text-muted:    #6b7897;
+    --page-bg:       #f0f5fb; 
+}
 
 // DARK theme
 [data-theme="dark"] {
@@ -954,4 +952,469 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 [dir='rtl'] .mat-calendar-body-label {
     text-align: right;
+}
+
+
+
+
+/* ===== Shared page/card structure ===== */
+
+.shared-page-section {
+  min-height: 100%;
+//   background: #f3f4f7;
+  padding: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ===== Unified button system =====
+   Use these classes across every page for visual consistency.
+
+   .btn-primary     — main filled call-to-action (Submit / Register / Upload)
+   .btn-secondary   — outlined alternate action
+   .btn-refresh     — small pill, header refresh/reload
+   .btn-cancel      — outlined red, destructive actions (Clear / Remove all)
+   .btn-table       — small text-with-icon button used inside table cells
+   .btn-icon-table  — square icon-only button used inside table cells
+   :disabled        — gracefully styled across all variants
+*/
+
+%btn-base {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.2px !important;
+  line-height: 1 !important;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease,
+    transform 0.05s ease;
+
+  &:active:not(:disabled) { transform: translateY(1px); }
+
+  &[disabled],
+  &:disabled,
+  &.is-disabled {
+    opacity: 0.55 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+}
+
+/* Primary — main action button. */
+.btn-primary {
+  @extend %btn-base;
+  height: 42px !important;
+  min-width: 150px !important;
+  padding: 0 22px !important;
+  background: var(--main-button-color) !important;
+  color: var(--light-font-color) !important;
+  border: 1px solid var(--main-button-color) !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.10);
+
+  &:hover:not(:disabled) {
+    background: var(--navy-mid, var(--main-button-color)) !important;
+    border-color: var(--navy-mid, var(--main-button-color)) !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+  }
+}
+
+/* Secondary — outlined navy. Pair with .btn-primary for two-button rows. */
+.btn-secondary {
+  @extend %btn-base;
+  height: 42px !important;
+  min-width: 130px !important;
+  padding: 0 18px !important;
+  background: #ffffff !important;
+  color: var(--navy-light, #1e6bb5) !important;
+  border: 1px solid var(--navy-light, #1e6bb5) !important;
+
+  &:hover:not(:disabled) {
+    background: var(--blue-pale, #f3f8ff) !important;
+  }
+}
+
+/* Refresh / header chip — small, neutral. */
+.btn-refresh {
+  @extend %btn-base;
+  height: 36px !important;
+  padding: 0 12px !important;
+  font-size: 0.82rem !important;
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #d0dcea !important;
+
+  &:hover:not(:disabled) {
+    background: var(--blue-pale, #f3f8ff) !important;
+    color: var(--navy-light, #1e6bb5) !important;
+    border-color: var(--navy-light, #1e6bb5) !important;
+  }
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
+}
+
+/* Cancel / destructive — outlined red. */
+.btn-cancel {
+  @extend %btn-base;
+  height: 36px !important;
+  padding: 0 14px !important;
+  background: #ffffff !important;
+  color: #b42318 !important;
+  border: 1px solid #fda29b !important;
+
+  &:hover:not(:disabled) {
+    background: #fef3f2 !important;
+    border-color: #f97066 !important;
+  }
+}
+
+/* Table text+icon button — used in table cells alongside .btn-icon-table. */
+.btn-table {
+  @extend %btn-base;
+  height: 32px !important;
+  padding: 0 12px !important;
+  font-size: 0.78rem !important;
+  background: var(--blue-pale, #f3f8ff) !important;
+  color: var(--navy-light, #1e6bb5) !important;
+  border: 1px solid var(--border-blue, #d0dcea) !important;
+
+  &:hover:not(:disabled) {
+    background: var(--navy-light, #1e6bb5) !important;
+    color: #ffffff !important;
+    border-color: var(--navy-light, #1e6bb5) !important;
+  }
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
+}
+
+/* Square icon-only table button — same color family as .btn-table. */
+.btn-icon-table {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  padding: 0 !important;
+  border-radius: 10px !important;
+  background: transparent!important;
+  color: var(--navy-light, #1e6bb5) !important;
+//   border: 1px solid var(--border-blue, #d0dcea) !important;
+  border: transparent !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.05s ease,
+    opacity 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--navy-light, #1e6bb5) !important;
+    color: #ffffff !important;
+    border-color: var(--navy-light, #1e6bb5) !important;
+  }
+
+  &:active:not(:disabled) { transform: translateY(1px); }
+
+  &[disabled],
+  &:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+}
+
+/* Tight grouping of buttons inside a table cell. */
+.row-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===== Legacy aliases — kept so we don't have to touch every template at once.
+   New code should prefer .btn-primary / .btn-table / .btn-icon-table directly.
+*/
+.main-btn   { @extend .btn-primary; margin-top: 18px; }
+.action-btn { @extend .btn-icon-table; }
+.action-2-btn { @extend .btn-table; }
+.shared-content-card {
+  width: 100%;
+  max-width: 860px;
+  background: #ffffff;
+  border: 1px solid #dfe3ea;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  padding: 28px;
+}
+
+/* slightly wider variant for pages like upload-report */
+.shared-content-card--wide {
+  max-width: 2000px;
+}
+
+/* ===== Shared headings ===== */
+
+.shared-page-title {
+  margin: 0!important;
+  font-weight: 700!important;
+  color: var(--navbar-color)!important;
+  line-height: 1.2!important;
+}
+
+.shared-page-subtitle {
+  font-size: medium;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+/* upload-report title sizing variant */
+.shared-page-title--dark {
+  color: #111827!important;
+  font-size: 2rem!important;
+}
+
+.shared-page-subtitle--lg {
+  color: #667085;
+  font-size: 1.1rem;
+  margin-top: 8px;
+  margin-bottom: 32px;
+}
+
+/* ===== Shared upload area ===== */
+
+.shared-upload-box {
+  border: 2px dashed #d8deeb;
+  border-radius: 16px;
+  padding: 28px 14px;
+  text-align: center;
+  margin-bottom: 28px;
+  background: var(--bg-color);
+}
+
+.shared-upload-icon {
+//   font-size: 42px;
+//   width: 42px;
+//   height: 42px;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.shared-upload-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #172033;
+  margin-bottom: 8px;
+}
+
+.shared-upload-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 18px;
+}
+
+/* variant closer to upload-report page */
+.shared-upload-box--report {
+  border-color: #d0d5dd;
+  border-radius: 18px;
+  padding: 40px 24px;
+  background: #fafafa;
+  margin-bottom: 24px;
+}
+
+.shared-upload-icon--report {
+//   font-size: 5rem;
+//   width: auto;
+//   height: auto;
+  color: #667085;
+  margin-bottom: 8px;
+}
+
+.shared-upload-title--report {
+  font-size: 1.8rem;
+  color: #111827;
+}
+
+.shared-upload-subtitle--report {
+  color: #667085;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+/* ===== Shared success section ===== */
+
+.shared-success-header {
+  display: flex;
+  gap: 12px;
+}
+
+.shared-success-header--top {
+  align-items: flex-start;
+}
+
+.shared-success-header--center {
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.shared-success-icon {
+//   font-size: 30px;
+//   width: 30px;
+//   height: 30px;
+  margin-top: 2px;
+}
+
+.shared-success-icon--green {
+  color: #22c55e;
+}
+
+.shared-success-icon--blue-outline {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #2f80ed;
+  color: #2f80ed;
+  font-weight: 700;
+  margin-top: 0;
+}
+
+/* ===== Shared summary grid ===== */
+
+.shared-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.shared-summary-label {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.shared-summary-value {
+  font-size: medium;
+  font-weight: 500;
+  color: var(--navbar-color);
+}
+
+/* ===== Shared responsive ===== */
+
+@media (max-width: 900px) {
+  .shared-page-section {
+    padding: 18px;
+  }
+
+  .shared-content-card {
+    padding: 20px;
+  }
+
+  .shared-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Unified Material form-field & select look =====
+   Picks the same colour as the navy/blue brand palette so every input,
+   textarea and dropdown across the app shares the same focused / hover state.
+*/
+.mat-mdc-form-field {
+  /* outline */
+  --mdc-outlined-text-field-outline-color:           #d0dcea;
+  --mdc-outlined-text-field-hover-outline-color:     var(--navy-light, #1e6bb5);
+  --mdc-outlined-text-field-focus-outline-color:     var(--navy-light, #1e6bb5);
+  --mdc-outlined-text-field-disabled-outline-color:  #e5e7eb;
+
+  /* labels */
+  --mdc-outlined-text-field-label-text-color:        #6b7280;
+  --mdc-outlined-text-field-hover-label-text-color:  var(--navy-light, #1e6bb5);
+  --mdc-outlined-text-field-focus-label-text-color:  var(--navy-light, #1e6bb5);
+
+  /* caret */
+  --mdc-outlined-text-field-caret-color:             var(--navy-light, #1e6bb5);
+}
+
+/* mat-select look */
+.mat-mdc-select-panel,
+.cdk-overlay-pane .mat-mdc-select-panel {
+  border-radius: 12px !important;
+}
+
+.mat-mdc-option.mat-mdc-option-active,
+.mat-mdc-option:hover:not(.mdc-list-item--disabled) {
+  background: var(--blue-pale, #f3f8ff) !important;
+}
+
+.mat-mdc-option .mdc-list-item__primary-text {
+  color: #1f2937;
+  font-size: 0.92rem;
+}
+
+/* Mat input/textarea radius alignment */
+.mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline > * {
+  border-radius: 0;
+}
+.mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline__leading {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* ===== Unified page heading styling — applied via existing .shared-page-title.
+   Make the colour and weight consistent everywhere (the variable already
+   maps to the navy palette in coevolution theme).
+*/
+.shared-page-title {
+  color: var(--navbar-color)!important;
+  font-weight: 700!important;
+  letter-spacing: -0.2px!important;
+}
+
+.shared-page-subtitle {
+  color: #6b7280;
+}
+
+/* Mat icon-button alignment — keeps tooltip alignment tidy. */
+.mat-mdc-icon-button.btn-icon-table .mat-mdc-button-touch-target {
+  width: 34px;
+  height: 34px;
 }

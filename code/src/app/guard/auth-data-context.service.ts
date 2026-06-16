@@ -12,7 +12,7 @@ export class AuthDataContextService {
     }
 
     logout() {
-        this._authData?.keycloak?.logout()
+        this._authData?.keycloak?.logout();
     }
 
     get authData(): AuthGuardData {
@@ -23,14 +23,23 @@ export class AuthDataContextService {
         return this._authData?.keycloak?.token || '';
     }
 
+    async getFreshToken(): Promise<string> {
+        const kc = this._authData?.keycloak;
+        if (!kc) return '';
+        try {
+            await kc.updateToken(30);
+        } catch {
+        }
+        return kc.token || '';
+    }
+
     get userId(): string {
+        const parsed = this._authData?.keycloak?.idTokenParsed;
+        return (parsed?.['preferred_username'] as string) || (parsed?.['sub'] as string) || '';
+    }
 
-        // *FIX
-        // console.log(this._authData?.keycloak.loadUserInfo);
-        // userProfile?.attributes?.elastic_id?.[0] || '';
-        // console.log(this._authData);
-
-        return 'true'
-
+    get username(): string {
+        const parsed = this._authData?.keycloak?.idTokenParsed;
+        return (parsed?.['preferred_username'] as string) || (parsed?.['name'] as string) || '';
     }
 }

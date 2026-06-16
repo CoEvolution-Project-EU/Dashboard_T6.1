@@ -13,14 +13,13 @@ export const appConfig: ApplicationConfig = {
     provideKeycloak({
       config: {
         url: environment.keycloakURL,
-        realm: 'coevolution',
-        clientId: 'coevolution',
+        realm: environment.realm,
+        clientId: environment.clientId,
       },
       initOptions: {
         onLoad: 'login-required',
-        checkLoginIframe: true,
-        checkLoginIframeInterval: 25,
-      },
+        checkLoginIframe: false,
+      }
     }),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),

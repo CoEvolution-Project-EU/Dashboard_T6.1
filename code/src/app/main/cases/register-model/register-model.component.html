@@ -1,0 +1,218 @@
+<div class="shared-page-section">
+
+  <!-- ── FORM ──────────────────────────────────────────────────────────────── -->
+  <div class="shared-content-card" *ngIf="!isSuccess">
+    <h1 class="shared-page-title">Register a Model</h1>
+    <p class="shared-page-subtitle">
+      Provide model metadata and upload a <strong>.zip</strong> file to receive a unique Model ID.
+    </p>
+
+    <!-- Upload box -->
+    <div
+      class="shared-upload-box"
+      [class.upload-box--filled]="selectedFile"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)">
+      <mat-icon class="shared-upload-icon">{{ selectedFile ? 'check_circle' : 'upload_file' }}</mat-icon>
+      <div class="shared-upload-title">
+        {{ selectedFile ? selectedFile.name : 'Upload model requirements file' }}
+      </div>
+      <div class="shared-upload-subtitle">
+        {{ selectedFile ? 'File ready to upload' : 'Drag & drop a .zip file, or click to browse' }}
+        <span *ngIf="!selectedFile" class="required"> *</span>
+      </div>
+    
+      <label class="file-label">
+        <input
+          type="file"
+          accept=".zip"
+          (change)="onFileSelected($event)"
+          hidden
+          #fileInput>
+        <button type="button" class="btn-secondary" (click)="fileInput.click()">
+          <mat-icon>{{ selectedFile ? 'sync' : 'attach_file' }}</mat-icon>
+          <span>{{ selectedFile ? 'Change file' : 'Choose file' }}</span>
+        </button>
+      </label>
+
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="registerForm" class="register-form">
+      <div class="form-grid">
+
+        <!-- Model Name -->
+        <div class="field-block">
+          <label>Model Name <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="modelName" placeholder="e.g. Production Line Sim v2">
+            <mat-error *ngIf="f['modelName'].hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Type -->
+        <div class="field-block">
+          <label>Model Type <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="type" placeholder="Select type">
+              <mat-option *ngFor="let t of modelTypes" [value]="t.value">{{ t.label }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="f['type'].hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Custom type (only when "Other" is selected) -->
+        <div class="field-block" *ngIf="isOtherType">
+          <label>Specify Type <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="customType" placeholder="Type your model type…">
+            <mat-error *ngIf="f['customType'].hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Input Modality (multi-select) -->
+        <div class="field-block">
+          <label>Input Modality <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="inputModality" placeholder="Select one or more" multiple>
+              <mat-option *ngFor="let m of inputModalities" [value]="m">{{ m }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="f['inputModality'].hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Architecture Family -->
+        <div class="field-block">
+          <label>Architecture Family <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="architectureFamily" placeholder="Select architecture">
+              <mat-option *ngFor="let a of architectureFamilies" [value]="a">{{ a }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="f['architectureFamily'].hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Framework -->
+        <div class="field-block">
+          <label>Framework <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="framework" placeholder="Select framework">
+              <mat-option *ngFor="let fw of frameworks" [value]="fw">{{ fw }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="f['framework'].hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Model Paradigm -->
+        <div class="field-block">
+          <label>Model Paradigm <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="modelParadigm" placeholder="Select paradigm">
+              <mat-option *ngFor="let p of modelParadigms" [value]="p">{{ p }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="f['modelParadigm'].hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Version -->
+        <div class="field-block">
+          <label>Version <span class="required">*</span></label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="version" placeholder="e.g. v1.0">
+            <mat-error *ngIf="f['version'].hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <!-- Description -->
+      <div class="field-block full-width">
+        <label>Description</label>
+        <mat-form-field appearance="outline">
+          <textarea
+            matInput
+            rows="5"
+            formControlName="description"
+            placeholder="Describe the model, its purpose, and expected outputs..."></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- Ethics & data questionnaire (optional for now) -->
+      <div class="questionnaire-row">
+        <button type="button" class="btn-secondary" (click)="openQuestionnaire()">
+          <mat-icon>fact_check</mat-icon>
+          <span>Ethics &amp; Data Questionnaire</span>
+        </button>
+        <span class="questionnaire-status" *ngIf="questionnaireCount > 0">
+          <mat-icon>check_circle</mat-icon>
+          {{ questionnaireCount }} answer{{ questionnaireCount === 1 ? '' : 's' }} saved
+        </span>
+        <span class="questionnaire-hint" *ngIf="questionnaireCount === 0">
+          Optional for now
+        </span>
+      </div>
+
+      <button
+        class="btn-primary"
+        type="button"
+        [disabled]="isSubmitting || registerForm.invalid || !selectedFile"
+        (click)="registerModel()">
+        <mat-icon *ngIf="!isSubmitting">how_to_reg</mat-icon>
+        <mat-spinner *ngIf="isSubmitting" diameter="18"></mat-spinner>
+        <span>{{ isSubmitting ? 'Registering…' : 'Register Model' }}</span>
+      </button>
+    </form>
+  </div>
+
+
+  <!-- ── SUCCESS SCREEN ────────────────────────────────────────────────────── -->
+  <div class="shared-content-card" *ngIf="isSuccess && submittedData">
+    <div class="shared-success-header shared-success-header--top">
+      <mat-icon class="shared-success-icon shared-success-icon--green">check_circle</mat-icon>
+      <div>
+        <h1 class="shared-page-title">Model Registered Successfully</h1>
+        <!-- <p class="shared-page-subtitle">Your model has been registered and assigned a unique identifier.</p> -->
+      </div>
+    </div>
+
+    <!-- Model ID box -->
+    <div class="model-id-box">
+      <div class="small-label">Model ID</div>
+      <div class="model-id-row">
+        <span class="model-id">{{ registeredModelId }}</span>
+        <button type="button" class="btn-icon-table" (click)="copyModelId()" matTooltip="Copy ID">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary grid -->
+    <div class="shared-summary-grid">
+      <div class="summary-item">
+        <div class="shared-small-label">Name</div>
+        <div class="shared-summary-value">{{ submittedData.modelName || '—' }}</div>
+      </div>
+
+      <div class="summary-item">
+        <div class="shared-small-label">Type</div>
+        <div class="shared-summary-value">{{ submittedData.type || '—' }}</div>
+      </div>
+
+      <div class="summary-item">
+        <div class="shared-small-label">Version</div>
+        <div class="shared-summary-value">{{ submittedData.version || '—' }}</div>
+      </div>
+
+      <div class="summary-item">
+        <div class="shared-small-label">Requirements File</div>
+        <div class="shared-summary-value"> {{ uploadedFileName || '—' }}</div>
+      </div>
+    </div>
+
+    <button class="btn-primary" type="button" (click)="goToMonitoring()">
+      <mat-icon>monitor_heart</mat-icon>
+      <span>Go to Model Monitoring</span>
+    </button>
+  </div>
+
+</div>

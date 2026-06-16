@@ -3,8 +3,8 @@ export const environment = {
 
   host: window["env"]["host"] || "",
   socket_host: window["env"]["socket_host"] || "",
-  keycloakURL: window["env"]["keycloakURL"] || ""
-
-
-
+  keycloakURL: window["env"]["keycloakURL"] || "",
+  apiUrl: window["env"]["apiUrl"] || "",
+  realm: window["env"]["realm"] || "coevolution",
+  clientId: window["env"]["clientId"] || "coevolution"
 };

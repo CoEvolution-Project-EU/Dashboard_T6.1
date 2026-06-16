@@ -3,9 +3,10 @@ kind: ConfigMap
 metadata:
   name: fvt-config
 data:
-  SERV_HOST: "https://api.example.com"
-  SOCKET_HOST: "http://localhost:80001"
-  KEYCLOAK_URL: "https://localhost:30012"
+  SERV_HOST: "https://aegis.coevolution-project.eu"
+  SOCKET_HOST: "https://aegis.coevolution-project.eu"
+  KEYCLOAK_URL: "https://aegis.coevolution-project.eu"
+  API_URL: "/api/v1"
 
 ---
 apiVersion: apps/v1
