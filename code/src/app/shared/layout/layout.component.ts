@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { environment } from 'src/environments/environment';
+
 // Spinner
 import { NgxSpinnerModule } from 'ngx-spinner';
 
@@ -90,12 +92,12 @@ export class LayoutComponent {
       route: '/data-generators',
       title: 'Data Generators'
     },
-    // {
-    //   name: 'Gadgets',
-    //   icon: 'extension',
-    //   route: '/gadgets',
-    //   title: 'Gadgets'
-    // },
+    {
+      name: 'Gadgets',
+      icon: 'extension',
+      route: '/gadgets',
+      title: 'Gadgets'
+    },
     {
       name: 'AIMBOM',
       icon: 'receipt_long',
@@ -125,7 +127,7 @@ export class LayoutComponent {
       icon: 'security',
       route: '/security-runtime',
       title: 'Security Runtime',
-      externalUrl: 'http://147.27.60.12:3000/dashboard.html'
+      externalUrl: environment.srme
     }
   ];
 

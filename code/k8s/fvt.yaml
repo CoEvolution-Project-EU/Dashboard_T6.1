@@ -7,6 +7,7 @@ data:
   SOCKET_HOST: "https://aegis.coevolution-project.eu"
   KEYCLOAK_URL: "https://aegis.coevolution-project.eu"
   API_URL: "/api/v1"
+  SRME: "http://147.27.60.12:3000/dashboard.html"
 
 ---
 apiVersion: apps/v1
