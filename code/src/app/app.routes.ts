@@ -111,7 +111,14 @@ export const appRoutes: Routes = [
         loadComponent: () =>
           import('./main/cases/aimbom/aimbom.component').then(m => m.AimbomComponent),
         data: { role: 'aimbom', title: 'AIMBOM' }
-      }
+      },
+      {
+        path: 'security-runtime',
+        canActivate: [canActivateAuthRole],
+        loadComponent: () =>
+          import('./main/cases/security-runtime/security-runtime.component').then(m => m.SecurityRuntimeComponent),
+        data: { role: 'security-runtime', title: 'Security Runtime' }
+      },
     ]
   },
   {

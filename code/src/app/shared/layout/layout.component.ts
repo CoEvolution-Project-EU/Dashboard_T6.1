@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { environment } from 'src/environments/environment';
+// import { environment } from 'src/environments/environment';
 
 // Spinner
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -126,8 +126,7 @@ export class LayoutComponent {
       name: 'Security Runtime',
       icon: 'security',
       route: '/security-runtime',
-      title: 'Security Runtime',
-      externalUrl: environment.srme
+      title: 'Security Runtime'
     }
   ];
 

@@ -1,0 +1,26 @@
+/*
+ * The layout chain uses min-height (not height) on .page-wrapper,
+ * so percentage heights won't resolve. We escape by sizing against
+ * the viewport directly.
+ *
+ * 97px  = .page-container padding-top (navbar + menu bar)
+ * 24px  = .page-wrapper padding-top
+ * 24px  = .page-wrapper padding-bottom
+ */
+:host {
+  display: block;
+}
+
+.security-runtime-wrapper {
+  width: calc(100% + 48px);   /* cancel the 24px left+right padding */
+  margin: -24px -24px -24px -24px;  /* pull back to page-wrapper edges */
+  height: calc(100vh - 97px); /* full remaining viewport below the top bars */
+  overflow: hidden;
+}
+
+.security-runtime-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
