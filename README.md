@@ -51,7 +51,7 @@ The following variables must be defined:
 
 # Running the Application
 
-# FVT Dashboard
+# Dashboard
 
 Frontend dashboard for the CoEvolution platform.
 
