@@ -99,13 +99,13 @@ The full list of Orchestrator endpoints is in the [Swagger documentation](https:
 
 Configuration is supplied **at runtime** through environment variables. The container writes them into `assets/env.js` at startup, so the same image runs in any environment without being rebuilt. On Kubernetes they come from the `fvt-config` ConfigMap.
 
-| Variable | Required | Description | CoEvolution deployment value |
+| Variable | Required | Description |
 | --- | --- | --- | --- |
-| `SERV_HOST` | Yes | Base URL of the Hub backend (Orchestrator) | `https://aegis.coevolution-project.eu` |
-| `API_URL` | Yes | API path prefix of the Orchestrator | `/api/v1` |
-| `KEYCLOAK_URL` | Yes | Base URL of the User and Credential Management (Keycloak) server | `https://aegis.coevolution-project.eu` |
-| `SRME` | Yes | URL of the SRME user interface loaded in the iframe | `https://<srme-host>/dashboard.html` |
-| `SOCKET_HOST` | No | Reserved for real-time updates (see [Roadmap](#roadmap)). Not used in the current version. | `https://aegis.coevolution-project.eu` |
+| `SERV_HOST` | Yes | Base URL of the Hub backend (Orchestrator) | 
+| `API_URL` | Yes | API path prefix of the Orchestrator | 
+| `KEYCLOAK_URL` | Yes | Base URL of the User and Credential Management (Keycloak) server | 
+| `SRME` | Yes | URL of the SRME user interface loaded in the iframe | 
+| `SOCKET_HOST` | No | Reserved for real-time updates (see [Roadmap](#roadmap)). Not used in the current version. | 
 
 API requests are sent to `SERV_HOST` + `API_URL`, for example `https://aegis.coevolution-project.eu/api/v1/models/register`.
 
